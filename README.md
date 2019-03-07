@@ -2,6 +2,17 @@
 
 Reddit like website.
 
+## Installation & run
+
+Install npm dependencies
+```
+npm install
+```
+Run local development server (localhost:3000)
+```
+npm run dev
+```
+
 ## Custom components API
 
 The app custom components with usage.
