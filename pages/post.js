@@ -1,5 +1,5 @@
 import React from 'react'
-import Dashboard from '../components/Dashboard'
+import PostComponent from '../components/PostComponent'
 import "../static/styles.scss"
 import MainLayout from "../layouts/MainLayout";
 
@@ -14,7 +14,7 @@ export default class Post extends React.Component {
     render() {
         return(
             <MainLayout>
-                <Post/>
+                <PostComponent/>
             </MainLayout>
         );
     }
