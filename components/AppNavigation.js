@@ -118,6 +118,12 @@ class TemporaryDrawer extends React.Component {
                             <ListItemText primary={'Configs'} />
                         </ListItem>
                     </Link>
+                    <Link href="/post">
+                        <ListItem button key={'Post'}>
+                            <ListItemIcon><InboxIcon/></ListItemIcon>
+                            <ListItemText primary={'Post'} />
+                        </ListItem>
+                    </Link>
                 </List>
             </div>
         );
@@ -130,7 +136,7 @@ class TemporaryDrawer extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                            Void IoT
+                            Reddit
                         </Typography>
                         <div className={classes.grow} />
                         <div className={classes.search}>
