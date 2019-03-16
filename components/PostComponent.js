@@ -113,7 +113,7 @@ class PostComponent extends React.Component {
 									/>
 									<CardMedia
 										className={classes.media}
-										image="/static/img/landscape-img-test.png"
+										image="/static/img/landscape-img-test.jpg"
 										title="contenu publication"
 									/>
 									<CardContent>
