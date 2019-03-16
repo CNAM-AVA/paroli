@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader } from '@material-ui/core';
+import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader, Divider } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 
 
@@ -50,6 +50,9 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
 	},
+	divider: {
+		margin: theme.spacing.unit,
+	},
 });
 
 class CommentComponent extends React.Component {
@@ -90,6 +93,7 @@ class CommentComponent extends React.Component {
 						<SendIcon className={classes.rightIcon}/>
 					</Button>
 				</Grid>
+				<Divider variant="middle" className={classes.divider}/>
 				<Typography variant="subtitle1" gutterBottom>
 					Commentaires
 				</Typography>

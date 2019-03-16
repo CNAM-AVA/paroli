@@ -16,7 +16,6 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Link from 'next/link';
-import { blue } from '@material-ui/core/colors';
 
 const styles = theme => ({
 	root: {
@@ -118,6 +117,12 @@ class TemporaryDrawer extends React.Component {
 						<ListItem button key={'Configs'}>
 							<ListItemIcon><InboxIcon/></ListItemIcon>
 							<ListItemText primary={'Configs'} />
+						</ListItem>
+					</Link>
+					<Link href="/sub">
+						<ListItem button key={'Sub'}>
+							<ListItemIcon><InboxIcon/></ListItemIcon>
+							<ListItemText primary={'Sub'} />
 						</ListItem>
 					</Link>
 					<Link href="/post">

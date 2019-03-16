@@ -35,6 +35,7 @@ const styles = theme => ({
 		padding: theme.spacing.unit * 2,
 	},
 	card: {
+		margin: theme.spacing.unit * 2,
   },
   media: {
 		marginTop: 0,
@@ -58,60 +59,54 @@ const styles = theme => ({
   },
 });
 
-class PostComponent extends React.Component {
+class SubComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			posts : Array(4).fill({title : 'Titre', author: 'John Doe', media: '', content : 'Lorem ipsum dolor sit amet', date: '??/??/????'})
+		};
 	}
-
-	state = { expanded: false };
-
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
 
 	render() {
 		const {classes} = this.props;
 
 		return(
 			<div className={classes.root}>
-					<Grid container>
-						<Grid item xs>
-							{/* <Paper className={classes.paper}>
-							</Paper> */}
-						</Grid>
-						<Grid item xs={9}>
-							<Card className={classes.card}>
+					<Grid container justify="center">
+						<Grid item xs={6}>
+							{this.state.posts.map((post, index) => (
+								<Card className={classes.card} key={index}>
 									<CardHeader
 										avatar={
 											<VoteComponent/>
 										}
 										title={
 											<Typography variant="h5" gutterBottom>
-												Titre de la publication
+												{post.title}
 											</Typography>
 										}
-										subheader="Auteur et date de la publication"
+										subheader={post.author}
 									/>
 									<CardMedia
 										className={classes.media}
-										image="/static/img/landscape-img-test.jpg"
+										image={post.media}
 										title="contenu publication"
 									/>
 									<CardContent>
+										<Typography variant="body1">
+										{post.content}
+										</Typography>
 										<Button color="default" className={classes.button}>
 											<CommentIcon className={classes.leftIcon}/> ??? Comments
 										</Button>
 										<Button className={classes.button}>
 											<ShareIcon className={classes.leftIcon}/>Share
 										</Button>
-										<CommentComponent/>
 									</CardContent>
 								</Card>
-						</Grid>
-						<Grid item xs>
-							{/* <Paper className={classes.paper}>
-							</Paper> */}
+							))}
+							
 						</Grid>
 					</Grid>
 			</div>
@@ -119,4 +114,4 @@ class PostComponent extends React.Component {
 	}
 }
 
-export default withStyles(styles)(PostComponent);
+export default withStyles(styles)(SubComponent);
