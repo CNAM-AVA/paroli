@@ -55,7 +55,7 @@ const styles = theme => ({
   },
   expandOpen: {
     transform: 'rotate(180deg)',
-  },
+	},
 });
 
 class PostComponent extends React.Component {

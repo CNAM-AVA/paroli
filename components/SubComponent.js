@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
-import { Grid, Paper, Icon, Button } from '@material-ui/core';
+import { Grid, Paper, Icon, Button, Link } from '@material-ui/core';
 import CommentComponent from './CommentComponent';
 import VoteComponent from './VoteComponent';
 
@@ -20,7 +20,13 @@ const styles = theme => ({
   	padding: theme.spacing.unit * 2,
     // margin: 'auto',
     // maxWidth: 500,
-  },
+	},
+	cardContent: {
+		paddingBottom: '0px !important',
+	},
+	cardContent2: {
+		padding: '0px',
+	},
 	cardsContainer: {
 		marginTop: 20
 	},
@@ -37,13 +43,6 @@ const styles = theme => ({
 	card: {
 		margin: theme.spacing.unit * 2,
   },
-  media: {
-		marginTop: 0,
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		width: 500,
-    height: 700,
-  },
   actions: {
     display: 'flex',
   },
@@ -56,15 +55,57 @@ const styles = theme => ({
   },
   expandOpen: {
     transform: 'rotate(180deg)',
-  },
+	},
+	media: {
+		marginTop: 0,
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		width: 500,
+		height: 700,
+	},
 });
+
+function DisplayMedia(props){
+	const media = props.media;
+	const content = props.content;
+	const classes = props.className;
+
+	switch(media){
+		case 'img': return (
+			<CardMedia
+				className={classes.media}
+				image={content}
+				title="contenu publication"
+			/>
+		);
+		case 'link': return (
+			<CardContent className={classes.cardContent2}>
+				<Typography variant="subtitle1">
+					<Link href={content}>{content}</Link>
+				</Typography>
+			</CardContent>
+		);
+		default : return (
+			<CardContent className={classes.cardContent2}>
+				<Typography variant="subtitle1">
+					{content}
+				</Typography>
+			</CardContent>
+		);
+	}
+}
 
 class SubComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			posts : Array(4).fill({title : 'Titre', author: 'John Doe', media: '', content : 'Lorem ipsum dolor sit amet', date: '??/??/????'})
+			posts : [
+				{title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
+				{title : 'Lorem Ipsum Dolor Sit Amet', author: 'Jules César', media: 'txt', content : 'Lorem Ipsum Dolor Sit Amet', date: '??/??/????'},
+				{title : 'Wiki mythologie grecque', author: 'Zeus', media: 'link', content : 'https://fr.wikipedia.org/wiki/Mythologie_grecque', date: '??/??/????'},
+				{title : 'Un petit gif sympathique !', author: 'Giffy', media: 'img', content : '/static/img/gif-test.gif', date: '??/??/????'},
+			 ], /* '/static/img/landscape-img-test.jpg' */
 		};
 	}
 
@@ -82,21 +123,20 @@ class SubComponent extends React.Component {
 											<VoteComponent/>
 										}
 										title={
-											<Typography variant="h5" gutterBottom>
-												{post.title}
-											</Typography>
+											<div>
+												<Typography variant="subtitle2" color="textSecondary">
+													{'Posté par '+post.author+' le '+post.date}
+												</Typography>
+												<Typography variant="h5" gutterBottom>
+													{post.title}
+												</Typography>
+											</div>
 										}
-										subheader={post.author}
+										subheader={
+											<DisplayMedia className={classes} media={post.media} content={post.content}/>
+										}
 									/>
-									<CardMedia
-										className={classes.media}
-										image={post.media}
-										title="contenu publication"
-									/>
-									<CardContent>
-										<Typography variant="body1">
-										{post.content}
-										</Typography>
+									<CardContent className={classes.cardContent}>
 										<Button color="default" className={classes.button}>
 											<CommentIcon className={classes.leftIcon}/> ??? Comments
 										</Button>
