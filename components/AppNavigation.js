@@ -82,9 +82,14 @@ const styles = theme => ({
 	fullList: {
 		width: 'auto',
 	},
+	appBar: {
+		[theme.breakpoints.down('md')]: {
+			paddingBottom: 60,
+		}
+	},
 });
 
-class TemporaryDrawer extends React.Component {
+class AppNavigation extends React.Component {
 	state = {
 		left: false
 	};
@@ -137,7 +142,7 @@ class TemporaryDrawer extends React.Component {
 
 		const appBar = (
 			<div className={classes.root}>
-				<AppBar position="static">
+				<AppBar position="fixed">
 					<Toolbar>
 						<IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" onClick={this.toggleDrawer(true)}>
 							<MenuIcon />
@@ -173,9 +178,9 @@ class TemporaryDrawer extends React.Component {
 		)
 
 		return (
-			<div>
+			<div className={classes.appBar}>
 				{appBar}
-				<Drawer open={this.state.left} onClose={this.toggleDrawer(false)}>
+				<Drawer open={this.state.left} onClose={this.toggleDrawer(false)} >
 					<div
 						tabIndex={0}
 						role="button"
@@ -190,8 +195,8 @@ class TemporaryDrawer extends React.Component {
 	}
 }
 
-TemporaryDrawer.propTypes = {
+AppNavigation.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(TemporaryDrawer);
+export default withStyles(styles)(AppNavigation);

@@ -2,12 +2,20 @@ import Head from 'next/head'
 import React from 'react'
 import AppNavigation from '../components/AppNavigation'
 import "../static/styles.scss"
+import { createMuiTheme, MuiThemeProvider, CssBaseline } from '@material-ui/core';
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'dark',
+    }
+});
 
 export default class MainLayout extends React.Component {
 
     constructor(props) {
         super(props);
     }
+
 
     render() {
         return(
@@ -18,8 +26,11 @@ export default class MainLayout extends React.Component {
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                 </Head>
-                <AppNavigation/>
-                {this.props.children}
+                <MuiThemeProvider theme={theme}>
+                    <CssBaseline/>
+                    <AppNavigation/>
+                    {this.props.children}
+                </MuiThemeProvider>
             </div>
         );
     }

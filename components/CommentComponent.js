@@ -53,6 +53,11 @@ const styles = theme => ({
 	divider: {
 		margin: theme.spacing.unit,
 	},
+	bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+		transform: 'scale(0.8)',
+  },
 });
 
 class CommentComponent extends React.Component {

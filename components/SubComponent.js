@@ -115,7 +115,7 @@ class SubComponent extends React.Component {
 		return(
 			<div className={classes.root}>
 					<Grid container justify="center">
-						<Grid item xs={6}>
+						<Grid item xs={12} sm={12} md={6} >
 							{this.state.posts.map((post, index) => (
 								<Card className={classes.card} key={index}>
 									<CardHeader
