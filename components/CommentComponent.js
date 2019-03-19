@@ -57,6 +57,9 @@ const styles = theme => ({
     display: 'inline-block',
     margin: '0 2px',
 		transform: 'scale(0.8)',
+	},
+	card: {
+		marginBottom: theme.spacing.unit,
   },
 });
 
@@ -70,11 +73,27 @@ class CommentComponent extends React.Component {
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
-  };
+	};
 
 	render() {
 		const {classes} = this.props;
 		const bull = <span className={classes.bullet}>•</span>;
+		const comments = this.props.comments;
+
+		const commentsCard = comments.map((item) => {
+			return (
+				<Card className={classes.card}>
+					<CardContent>
+						<Typography variant="subtitle2" color="textSecondary">
+							{item.author} {bull} {item.date}
+						</Typography>
+						<Typography variant="body1">
+							{item.content}
+						</Typography>
+					</CardContent>
+				</Card>
+			);
+		})
 
 		return(
 			<div className={classes.root}>
@@ -102,17 +121,7 @@ class CommentComponent extends React.Component {
 				<Typography variant="subtitle1" gutterBottom>
 					Commentaires
 				</Typography>
-				<Card>
-					<CardContent>
-						<Typography variant="subtitle2" color="textSecondary">
-							John Doe {bull} date du commentaire
-						</Typography>
-						<Typography variant="body1">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, 
-							dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
-						</Typography>
-					</CardContent>
-				</Card>
+				{commentsCard}
 			</div>
 		)
 	}

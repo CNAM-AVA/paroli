@@ -83,9 +83,12 @@ const styles = theme => ({
 		width: 'auto',
 	},
 	appBar: {
-		[theme.breakpoints.down('md')]: {
+		[theme.breakpoints.down('sm')]: {
+			paddingBottom: 50,
+		},
+		[theme.breakpoints.up('sm')]: {
 			paddingBottom: 60,
-		}
+		},
 	},
 });
 

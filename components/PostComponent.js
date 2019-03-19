@@ -14,7 +14,6 @@ import VoteComponent from './VoteComponent';
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
-		backgroundColor: 'grey'
 	},
 	paper: {
   	padding: theme.spacing.unit * 2,
@@ -58,13 +57,47 @@ const styles = theme => ({
 	},
 });
 
+function DisplayMedia(props){
+	const media = props.media;
+	const content = props.content;
+	const classes = props.className;
+
+	switch(media){
+		case 'img': return (
+			<CardMedia
+				className={classes.media}
+				image={content}
+				title="contenu publication"
+			/>
+		);
+		case 'link': return (
+			<CardContent className={classes.cardContent2}>
+				<Typography variant="subtitle1">
+					<Link href={content}>{content}</Link>
+				</Typography>
+			</CardContent>
+		);
+		default : return (
+			<CardContent className={classes.cardContent2}>
+				<Typography variant="subtitle1">
+					{content}
+				</Typography>
+			</CardContent>
+		);
+	}
+}
+
 class PostComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			post: {title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
+			comments: Array(9).fill(
+				{author: 'John Doe', date: '??/??/????', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.'},
+			)
+		}
 	}
-
-	state = { expanded: false };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -72,6 +105,8 @@ class PostComponent extends React.Component {
 
 	render() {
 		const {classes} = this.props;
+		const post = this.state.post;
+		const comments = this.state.comments;
 
 		return(
 			<div className={classes.root}>
@@ -87,16 +122,18 @@ class PostComponent extends React.Component {
 											<VoteComponent/>
 										}
 										title={
-											<Typography variant="h5" gutterBottom>
-												Titre de la publication
-											</Typography>
+											<div>
+												<Typography variant="subtitle2" color="textSecondary">
+												{'Posté par '+post.author+' le '+post.date}
+												</Typography>
+												<Typography variant="h5" gutterBottom>
+													{post.title}
+												</Typography>
+											</div>
 										}
-										subheader="Auteur et date de la publication"
-									/>
-									<CardMedia
-										className={classes.media}
-										image="/static/img/landscape-img-test.jpg"
-										title="contenu publication"
+										subheader={
+											<DisplayMedia className={classes} media={post.media} content={post.content}/>											
+										}
 									/>
 									<CardContent>
 										<Button color="default" className={classes.button}>
@@ -105,7 +142,7 @@ class PostComponent extends React.Component {
 										<Button className={classes.button}>
 											<ShareIcon className={classes.leftIcon}/>Share
 										</Button>
-										<CommentComponent/>
+										<CommentComponent comments={comments}/>
 									</CardContent>
 								</Card>
 						</Grid>
