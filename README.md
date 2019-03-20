@@ -47,7 +47,7 @@ La section suivante ne concerne pas l'installation, seulement les consignes de c
 
 ### Commit guidelines
 
-Each commit should follow a common patern, containing a header, body and footer. The header contains a <b>type</p>, a <b>scope</b> and a <b>subject</b>.
+Each commit should follow a common patern, containing a header, body and footer. The header contains a <b>type</b>, a <b>scope</b> and a <b>subject</b>.
 
 ```
 <type>(<scope>): <subject>
