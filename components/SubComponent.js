@@ -56,11 +56,15 @@ const styles = theme => ({
     transform: 'rotate(180deg)',
 	},
 	media: {
-		marginTop: 0,
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		width: 500,
-		height: 700,
+		// marginTop: 0,
+		// marginLeft: 'auto',
+		// marginRight: 'auto',
+		// width: 500,
+		// height: 700,
+		// height: 0,
+		maxHeight: '700px', // 16:9,
+		margin: '0 auto',
+		maxWidth: '100%',
 	},
 	avatar: {
 		margin: 10,
@@ -76,17 +80,17 @@ function DisplayMedia(props){
 
 	switch(media){
 		case 'img': return (
-			<CardMedia
-				className={classes.media}
-				image={content}
-				title="contenu publication"
-			/>
+			<Grid container justify="center">
+				<img className={classes.media} src={content} title={content}/>
+			</Grid>
 		);
 		case 'video': return (
-			<video autoPlay controls loop>
-				<source src={content} type="video/mp4"/>
-				Your browser does not support the video tag
-			</video>
+			<Grid container justify="center">
+				<video className={classes.media} autoPlay controls loop>
+					<source src={content} type="video/mp4"/>
+					Your browser does not support the video tag
+				</video>
+			</Grid>
 		);
 		case 'link': return (
 			<CardContent className={classes.cardContent2}>
@@ -134,7 +138,7 @@ class SubComponent extends React.Component {
 						</Toolbar>
 					</AppBar>
 					<Grid container justify="center">
-						<Grid item xs={12} sm={12} md={6} >
+						<Grid item xs={12} sm={12} md={8} lg={6}>
 							{this.state.posts.map((post, index) => (
 								<Card className={classes.card} key={index}>
 									<CardHeader

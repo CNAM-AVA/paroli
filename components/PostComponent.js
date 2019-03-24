@@ -64,11 +64,23 @@ function DisplayMedia(props){
 
 	switch(media){
 		case 'img': return (
-			<CardMedia
-				className={classes.media}
-				image={content}
-				title="contenu publication"
-			/>
+			<Grid container justify="center">
+				<img className={classes.media} src={content} title={content}/>
+			</Grid>
+		);
+		case 'video': return (
+			<Grid container justify="center">
+				<video className={classes.media} autoPlay controls loop>
+					<source src={content} type="video/mp4"/>
+					Your browser does not support the video tag
+				</video>
+			</Grid>
+		);
+		case 'video': return (
+			<video autoPlay controls loop>
+				<source src={content} type="video/mp4"/>
+				Your browser does not support the video tag
+			</video>
 		);
 		case 'link': return (
 			<CardContent className={classes.cardContent2}>
