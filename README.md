@@ -1,4 +1,4 @@
-# reddit-electric-boogaloo
+# Paroli
 
 Reddit like website.
 
