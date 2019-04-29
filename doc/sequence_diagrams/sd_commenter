@@ -1,0 +1,6 @@
+Utilisateur->Systeme: Demande d'acceder a la page d'accueil du site
+Systeme->Utilisateur: Affiche la page d'accueil
+Utilisateur->Systeme: Demande d'acceder a une publication du site
+Systeme->Utilisateur: Affiche la page de la publication
+Utilisateur->Systeme: Envoie d'un commentaire
+Systeme->Utilisateur: Enregistre le commentaire en base et l'affiche

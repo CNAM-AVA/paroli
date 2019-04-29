@@ -1,0 +1,12 @@
+Utilisateur->Systeme: Accéder à la page d'inscription
+Systeme->Utilisateur: Affichage de la page d'inscription
+
+loop informations invalides
+    Utilisateur->Systeme: Remplir e-mail
+    Utilisateur->Systeme: Remplir pseudo
+    Utilisateur->Systeme: Remplir mot de passe
+    Utilisateur->Systeme: Remplir mdp de confirmation
+    Utilisateur->Systeme: Confirmer les informations
+    Systeme->Systeme: Contrôle de saisie
+    Systeme-->Utilisateur: Afficher les erreurs
+end
