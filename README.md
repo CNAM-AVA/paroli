@@ -45,6 +45,21 @@ Usage:
 
 La section suivante ne concerne pas l'installation, seulement les consignes de commit sur Git.
 
+#### Architecture
+
+Each page should contain a folder in the components directory. Shared components should be in a common folder.
+
+### Branches
+
+ - database: firebase related stuff
+ - pages: contains de page branchs
+ - homepage: code for the homepage
+ - sub homepage: code for the sub homepage
+ - user settings: code for the user settings page
+ - user page: code for the user page
+ - post page: code for the post page
+ 
+
 ### Commit guidelines
 
 Each commit should follow a common patern, containing a header, body and footer. The header contains a <b>type</b>, a <b>scope</b> and a <b>subject</b>.
