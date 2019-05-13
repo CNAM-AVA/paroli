@@ -19,6 +19,7 @@ class Layout extends React.Component {
         return(
             <Container>
                 <AppNavigation/>
+                
                 {this.props.children}
             </Container>
         );
