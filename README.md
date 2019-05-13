@@ -41,6 +41,23 @@ Usage:
 </DashboardCard>
 ```
 
+### SubNavbar
+
+#### Props
+
+ * child components - SubNavbar actions
+ 
+ Usage:
+ 
+ ```html
+<Layout>
+    <SubNavbar>
+      <p>Test</p>
+    </SubNavbar>
+  <Dashboard/>
+</Layout>
+```
+
 ## Guide des commits
 
 La section suivante ne concerne pas l'installation, seulement les consignes de commit sur Git.
