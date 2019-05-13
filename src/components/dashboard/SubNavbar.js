@@ -15,6 +15,12 @@ const styles = {
       marginLeft: -18,
       marginRight: 10,
     },
+    centered: {
+        alignItems: 'center',
+    },
+    toolbar: {
+        height: 60
+    }
   };
 
 class SubNavbar extends React.Component {
@@ -31,8 +37,8 @@ class SubNavbar extends React.Component {
 
         return(
             <div className={classes.root}>
-                <AppBar position="static" color={"secondary"}>
-                    <Toolbar variant="dense">
+                <AppBar position="static" color={"inherit"} className={this.props.centered ? classes.centered : ''}>
+                    <Toolbar variant="dense" className={classes.toolbar}>
                         {this.props.children}
                     </Toolbar>
                 </AppBar>
