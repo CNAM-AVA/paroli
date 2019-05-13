@@ -1,7 +1,7 @@
 import React from 'react'
 import { withStyles } from "@material-ui/core/styles";
 import Grid from '@material-ui/core/Grid'
-import MainLayout from "../layouts/MainLayout";
+import Layout from '../src/components/common/Layout';
 
 const styles = theme => ({
     root: {
@@ -22,11 +22,11 @@ class boardBuilder extends React.Component {
         const { classes } = this.props;
 
         return(
-            <MainLayout>
+            <Layout>
                 <Grid container className={classes.root}>
                     <p>Test</p>
                 </Grid>
-            </MainLayout>
+            </Layout>
         )
     }
 }
