@@ -33,6 +33,9 @@
     "node-sass": "^4.12.0",
     "nodemon": "^1.18.10",
     "react": "^16.8.1",
-    "react-dom": "^16.8.1"
+    "react-dom": "^16.8.1",
+    "jss": "latest",
+    "react-jss": "^8.1.0",
+    "prop-types": "latest"
   }
 }

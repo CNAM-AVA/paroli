@@ -1,7 +1,7 @@
 import React from 'react'
-import PostComponent from '../components/PostComponent'
+import PostComponent from '../src/components/post/PostComponent'
 import "../static/styles.scss"
-import MainLayout from "../layouts/MainLayout";
+import Layout from '../src/components/common/Layout';
 
 export default class Post extends React.Component {
 
@@ -13,9 +13,9 @@ export default class Post extends React.Component {
 
     render() {
         return(
-            <MainLayout>
+            <Layout>
                 <PostComponent/>
-            </MainLayout>
+            </Layout>
         );
     }
 }
