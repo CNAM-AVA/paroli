@@ -82,7 +82,7 @@ class CommentComponent extends React.Component {
 
 		const commentsCard = comments.map((item) => {
 			return (
-				<Card className={classes.card}>
+				<Card className={classes.card} key={Math.random().toString(36).substr(2, 9)}>
 					<CardContent>
 						<Typography variant="subtitle2" color="textSecondary">
 							{item.author} {bull} {item.date}
@@ -108,7 +108,6 @@ class CommentComponent extends React.Component {
 					fullWidth
 					margin="dense"
 					variant="outlined"
-					gutterBottom
 				/>
 				<Grid container justify="flex-end">
 					<Button variant="contained" color="primary" className={classes.button}>

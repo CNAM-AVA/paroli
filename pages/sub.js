@@ -1,7 +1,7 @@
 import React from 'react'
 import "../static/styles.scss"
-import MainLayout from "../layouts/MainLayout";
-import SubComponent from '../components/SubComponent';
+import SubComponent from '../src/components/sub/SubComponent';
+import Layout from '../src/components/common/Layout';
 
 export default class Post extends React.Component {
 
@@ -13,9 +13,9 @@ export default class Post extends React.Component {
 
     render() {
         return(
-            <MainLayout>
+            <Layout>
                 <SubComponent/>
-            </MainLayout>
+            </Layout>
         );
     }
 }
