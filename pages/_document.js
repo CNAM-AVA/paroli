@@ -12,10 +12,7 @@ class ParoliDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           {/* Use minimum-scale=1 to enable GPU rasterization */}
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
+          <meta name="viewport" content="initial-scale=1.0, width=device-width, minimum-scale=1, shrink-to-fit=no" />
           {/* PWA primary color */}
           <meta
             name="theme-color"

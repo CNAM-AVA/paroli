@@ -7,6 +7,7 @@ import Layout from '../src/components/common/Layout';
 import SubNavbar from '../src/components/dashboard/SubNavbar';
 import { Button, Typography } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
+import DisplayFilter from '../src/components/common/DisplayFilter'
 
 const styles = {
     subnavItems: {
@@ -22,42 +23,6 @@ class Index extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            filter: {
-                hot: true,
-                new: false,
-                trending: false
-            }
-        };
-    }
-
-    changeFilter(filter) {
-
-        switch(filter) {
-            case 'hot':
-                this.setState({filter: {
-                    hot: true,
-                    new: false,
-                    trending: false
-                }})
-                break;
-            case 'new':
-                this.setState({filter: {
-                    hot: false,
-                    new: true,
-                    trending: false
-                }})
-                break;
-            case 'trending':
-                this.setState({filter: {
-                    hot: false,
-                    new: false,
-                    trending: true
-                }})
-                break;
-            default:
-                return;
-        }
     }
 
     render() {
@@ -67,10 +32,7 @@ class Index extends React.Component {
         return(
             <Layout>
                 <SubNavbar centered={true}>
-                    <Typography variant={"body2"} className={classes.subNavTitle}>SORT BY</Typography>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter('hot')} color={"primary"} label={"Hot"} variant={this.state.filter.hot ? "default": "outlined"}></Chip>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter('new')} color={"primary"} label={"New"} variant={this.state.filter.new ? "default": "outlined"}></Chip>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter('trending')} color={"primary"} label={"Trending"} variant={this.state.filter.trending ? "default": "outlined"}></Chip>
+                    <DisplayFilter/>
                 </SubNavbar>
                 <Dashboard/>
             </Layout>
