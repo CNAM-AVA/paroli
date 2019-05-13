@@ -45,13 +45,14 @@ Usage:
 
 #### Props
 
+ * centered (true / false) - Specify if childrens should be displayed in the center
  * child components - SubNavbar actions
  
  Usage:
  
  ```html
 <Layout>
-    <SubNavbar>
+    <SubNavbar centered={true}>
       <p>Test</p>
     </SubNavbar>
   <Dashboard/>
