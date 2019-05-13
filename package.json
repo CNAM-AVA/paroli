@@ -29,13 +29,13 @@
     "@zeit/next-sass": "^1.0.1",
     "express": "^4.16.4",
     "isomorphic-unfetch": "^3.0.0",
+    "jss": "latest",
     "next": "^7.0.3",
     "node-sass": "^4.12.0",
     "nodemon": "^1.18.10",
+    "prop-types": "latest",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "jss": "latest",
-    "react-jss": "^8.1.0",
-    "prop-types": "latest"
+    "react-jss": "^8.1.0"
   }
 }

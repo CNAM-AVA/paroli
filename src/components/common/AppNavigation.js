@@ -16,6 +16,8 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Link from 'next/link';
+import Button from '@material-ui/core/Button'
+import LoginModal from './LoginModal'
 
 const styles = theme => ({
 	root: {
@@ -43,6 +45,7 @@ const styles = theme => ({
 			backgroundColor: fade(theme.palette.common.white, 0.25),
 		},
 		marginLeft: 0,
+		marginRight: theme.spacing.unit,
 		width: '100%',
 		[theme.breakpoints.up('sm')]: {
 			marginLeft: theme.spacing.unit,
@@ -93,15 +96,28 @@ const styles = theme => ({
 });
 
 class AppNavigation extends React.Component {
-	state = {
-		left: false
-	};
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			left: false,
+			showLogin: false
+		}
+		this.toggleModal = this.toggleModal.bind(this);
+
+	}
 
 	toggleDrawer = (open) => () => {
 		this.setState({
 			left: open,
 		});
 	};
+
+	toggleModal() {
+		this.setState(prevState => ({
+			showLogin: !prevState.showLogin
+		}))
+	}
 
 	render() {
 		const { classes } = this.props;
@@ -161,13 +177,14 @@ class AppNavigation extends React.Component {
 								<SearchIcon />
 							</div>
 							<InputBase
-								placeholder="Search…"
+								placeholder="Rechercher…"
 								classes={{
 									root: classes.inputRoot,
 									input: classes.inputInput,
 								}}
 							/>
 						</div>
+						<Button onClick={() => this.toggleModal()} variant={"outlined"} color={"inherit"}>Connexion</Button>
 					</Toolbar>
 				</AppBar>
 				<style jsx global>{`
@@ -177,6 +194,7 @@ class AppNavigation extends React.Component {
 					}
 				`}
 				</style>
+				<LoginModal visible={this.state.showLogin} visibilityHandler={this.toggleModal}/>
 			</div>
 		)
 
