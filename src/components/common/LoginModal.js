@@ -34,12 +34,10 @@ class LoginModal extends React.Component {
     }
 
     classicLogin() {
-
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .catch((e) => {
                 this.setState({showLogginError: true})
             })
-
     }
 
     googleLogin() {
@@ -47,12 +45,14 @@ class LoginModal extends React.Component {
         const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth.languageCode = 'fr';
 
-        firebase.auth().signInWithPopup(provider).then(function(result) {
+        firebase.auth().signInWithPopup(provider).then((result) => {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             // The signed-in user info.
             var user = result.user;
             // ...
+            console.log(firebase.auth().currentUser);
+
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
@@ -62,6 +62,7 @@ class LoginModal extends React.Component {
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
             // ...
+            console.error('error with google login ' + errorMessage)
         });
     }
 

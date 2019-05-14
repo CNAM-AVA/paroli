@@ -18,6 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Link from 'next/link';
 import Button from '@material-ui/core/Button'
 import LoginModal from './LoginModal'
+import firebase from '../../../lib/firebase'
 
 const styles = theme => ({
 	root: {
@@ -114,6 +115,16 @@ class AppNavigation extends React.Component {
 	};
 
 	toggleModal() {
+
+		// If the user is logged in
+		/**if (firebase.auth().currentUser) {
+			firebase.auth().signOut().then(() => {
+				console.log('signed out')
+			})
+			return;
+		}**/
+
+		// User is not logged in, open dialog
 		this.setState(prevState => ({
 			showLogin: !prevState.showLogin
 		}))
@@ -184,7 +195,9 @@ class AppNavigation extends React.Component {
 								}}
 							/>
 						</div>
-						<Button onClick={() => this.toggleModal()} variant={"outlined"} color={"inherit"}>Connexion</Button>
+						<Button onClick={() => this.toggleModal()} variant={"outlined"} color={"inherit"}>
+							{firebase.auth().currentUser ? 'Déconnexion' : 'Connexion'}
+						</Button>
 					</Toolbar>
 				</AppBar>
 				<style jsx global>{`
