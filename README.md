@@ -15,51 +15,9 @@ npm run dev
 
 ## Custom components API
 
-The app custom components with usage.
+The app custom components with usage. see the [the wiki page](https://github.com/CNAM-AVA/paroli/wiki/Components-API).
 
-### DashboardCard
-
-#### Props
-
-* title - Card title
-* linkTitle - Title of the clickable link
-* link - Onclick destination link
-* icon - card's icon
-* child components - Card's content
-
-The following icons are available:
-
-- list
-- flipToFront
-- turnedInNot
-
-Usage:
-
-```html
-<DashboardCard icon={"list"} title={"bulder"} linkTitle={"Go to builder"} link={"/builder"}>
-  <p>Card's content</p>
-</DashboardCard>
-```
-
-### SubNavbar
-
-#### Props
-
- * centered (true / false) - Specify if childrens should be displayed in the center
- * child components - SubNavbar actions
- 
- Usage:
- 
- ```html
-<Layout>
-    <SubNavbar centered={true}>
-      <p>Test</p>
-    </SubNavbar>
-  <Dashboard/>
-</Layout>
-```
-
-## Guide des commits
+## Commit guidelines
 
 La section suivante ne concerne pas l'installation, seulement les consignes de commit sur Git.
 
