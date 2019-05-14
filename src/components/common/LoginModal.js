@@ -68,6 +68,16 @@ class LoginModal extends React.Component {
         });
     }
 
+    editEmailField(e) {
+        if (this.state.showLogginError) this.setState({showLogginError: false});
+        this.setState({email: e.target.value})
+    }
+
+    editPasswordField(e) {
+        if (this.state.showLogginError) this.setState({showLogginError: false});
+        this.setState({password: e.target.value})
+    }
+
     render() {
 
         const { classes } = this.props;
@@ -85,10 +95,10 @@ class LoginModal extends React.Component {
                     </DialogContentText>
                     <br/>
                     <TextField
-                        onChange={(e) => this.setState({email: e.target.value})}
+                        onChange={(e) => this.editEmailField(e)}
                         autoFocus
                         margin="dense"
-                        id="name"
+                        id="email"
                         label="Email Address"
                         type="email"
                         fullWidth
@@ -96,7 +106,7 @@ class LoginModal extends React.Component {
                         variant="outlined"
                     />
                     <TextField
-                        onChange={(e) => this.setState({password: e.target.value})}
+                        onChange={(e) => this.editPasswordField(e)}
                         margin="dense"
                         id="name"
                         label="Mot de passe"
