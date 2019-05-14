@@ -35,6 +35,9 @@ class LoginModal extends React.Component {
 
     classicLogin() {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then(() => {
+                this.props.visibilityHandler()
+            })
             .catch((e) => {
                 this.setState({showLogginError: true})
             })
