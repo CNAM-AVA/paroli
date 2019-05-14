@@ -114,15 +114,15 @@ class AppNavigation extends React.Component {
 		});
 	};
 
-	toggleModal() {
-
+	toggleModal(e) {
 		// If the user is logged in
-		/**if (firebase.auth().currentUser) {
+		if (e != null && e.target.textContent === 'Déconnexion') {
 			firebase.auth().signOut().then(() => {
-				console.log('signed out')
+				// Dummy call to setState to update the UI
+				this.setState({showLogin: false});
 			})
 			return;
-		}**/
+		}
 
 		// User is not logged in, open dialog
 		this.setState(prevState => ({
@@ -195,7 +195,7 @@ class AppNavigation extends React.Component {
 								}}
 							/>
 						</div>
-						<Button onClick={() => this.toggleModal()} variant={"outlined"} color={"inherit"}>
+						<Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>
 							{firebase.auth().currentUser ? 'Déconnexion' : 'Connexion'}
 						</Button>
 					</Toolbar>
