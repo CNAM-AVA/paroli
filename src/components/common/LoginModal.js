@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import getPageContext from '../../../src/getPageContext'
+import firebase from '../../../lib/firebase'
 import {
   Button,
   Dialog,
@@ -12,8 +14,6 @@ import {
   Fab,
   SvgIcon
 }from '@material-ui/core'
-
-import { firebaseApp } from '../../../lib/firebase'
 
 const styles = {
   loginButton: {
@@ -29,6 +29,29 @@ class LoginModal extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  googleLogin() {
+
+	const provider = new firebase.auth.GoogleAuthProvider();
+	firebase.auth.languageCode = 'fr';
+
+	firebase.auth().signInWithPopup(provider).then(function(result) {
+		// This gives you a Google Access Token. You can use it to access the Google API.
+		var token = result.credential.accessToken;
+		// The signed-in user info.
+		var user = result.user;
+		// ...
+	  }).catch(function(error) {
+		// Handle Errors here.
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		// The email of the user's account used.
+		var email = error.email;
+		// The firebase.auth.AuthCredential type that was used.
+		var credential = error.credential;
+		// ...
+	  });	  
   }
 
   render() {
@@ -68,7 +91,7 @@ class LoginModal extends React.Component {
           />
           <Typography variant={'body2'}>Mot de passe oublié</Typography>
           <Fab variant="extended" color="primary" className={classes.fab}>Connexion</Fab>
-          <Fab variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Connexion avec Google</Fab>
+          <Fab onClick={() => this.googleLogin()} variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Connexion avec Google</Fab>
         </DialogContent>
       </Dialog>
     );
