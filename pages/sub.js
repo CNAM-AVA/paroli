@@ -5,6 +5,8 @@ import SubNavbar from '../src/components/dashboard/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter';
 import { Grid, Card, CardContent, CardActions, Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Advertisement from '../src/components/common/Advertisement';
+import DisplayPosts from '../src/components/common/DisplayPosts';
 
 const styles = theme => ({
     cardsContainer: {
@@ -37,56 +39,12 @@ class Sub extends React.Component {
                 </SubNavbar>
                 <Grid container justify="center" className={classes.cardsContainer}>
                     <Grid item xs={10}>
-                        <Grid container spacing={24}>
-                            <Grid item xs={8}>
-                                <Card>
-                                    <CardContent>
-                                        <Typography color="textSecondary" gutterBottom>
-                                        Word of the Day
-                                        </Typography>
-                                        <Typography variant="h5" component="h2">
-                                        be
-                                        nev
-                                        lent
-                                        </Typography>
-                                        <Typography color="textSecondary">
-                                        adjective
-                                        </Typography>
-                                        <Typography component="p">
-                                        well meaning and kindly.
-                                        <br />
-                                        {'"a benevolent smile"'}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button size="small">Learn More</Button>
-                                    </CardActions>
-                                </Card>
+                        <Grid container justify="center" spacing={24}>
+                            <Grid item xs={6}>
+                                <DisplayPosts posts={this.state.posts}></DisplayPosts>
                             </Grid>
-                            <Grid item xs={4}>
-                            <Card>
-                                <CardContent>
-                                    <Typography color="textSecondary" gutterBottom>
-                                    Word of the Day
-                                    </Typography>
-                                    <Typography variant="h5" component="h2">
-                                    be
-                                    nev
-                                    lent
-                                    </Typography>
-                                    <Typography color="textSecondary">
-                                    adjective
-                                    </Typography>
-                                    <Typography component="p">
-                                    well meaning and kindly.
-                                    <br />
-                                    {'"a benevolent smile"'}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Button size="small">Learn More</Button>
-                                </CardActions>
-                            </Card>
+                            <Grid item xs={3}>
+                                <Advertisement></Advertisement>
                             </Grid>
                         </Grid>
                     </Grid>
