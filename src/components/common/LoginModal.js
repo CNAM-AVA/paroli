@@ -13,6 +13,8 @@ import {
   SvgIcon
 }from '@material-ui/core'
 
+import { firebaseApp } from '../../../lib/firebase'
+
 const styles = {
   loginButton: {
     margin: '20px 0px 0px 0px'
