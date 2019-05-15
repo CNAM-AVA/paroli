@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from '../../../lib/firebase'
+import anime from 'animejs'
 import {
     Dialog,
     DialogTitle,
@@ -31,9 +32,11 @@ class LoginModal extends React.Component {
             email: '',
             password: '',
             forgotEmail: '',
+            forgotFabText: 'Envoyer l\'email',
             showLoginError: false,
             showForgotPassword: false,
-            emailVerificationButtonDisabled: true
+            emailVerificationButtonDisabled: true,
+            showForgotEmailError: false
         }
     }
 
@@ -81,7 +84,20 @@ class LoginModal extends React.Component {
     }
 
     sendVerificationEmail() {
-        console.log(`Sending email to ${this.state.forgotEmail}`)
+
+        firebase.auth().sendPasswordResetEmail(this.state.forgotEmail).then(() => {
+            anime({
+                targets: '#forgotPasswordFab',
+                backgroundColor: "#32CD32",
+                duration: 500
+            })
+            this.setState({
+                forgotFabText: 'Email envoyé',
+                showForgotEmailError: false
+            })
+        }).catch((e) => {
+            this.setState({showForgotEmailError: true})
+        })
     }
 
     editForgotPasswordField(e) {
@@ -171,7 +187,11 @@ class LoginModal extends React.Component {
                                 required
                                 autoFocus
                             />
-                            <Fab disabled={this.state.emailVerificationButtonDisabled} onClick={() => this.sendVerificationEmail()} variant="extended" color="primary" className={classes.fab}>Envoyer l'email</Fab>
+                            {this.state.showForgotEmailError
+                                ? <Typography variant={'body2'} color="secondary">Utilisateur inexistant</Typography>
+                                : ''
+                            }
+                            <Fab id="forgotPasswordFab" disabled={this.state.emailVerificationButtonDisabled} onClick={() => this.sendVerificationEmail()} variant="extended" color="primary" className={classes.fab}>{this.state.forgotFabText}</Fab>
                         </DialogContent>
                     </Dialog>
                 </DialogContent>
