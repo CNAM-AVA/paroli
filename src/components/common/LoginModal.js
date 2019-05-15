@@ -11,6 +11,7 @@ import {
     Typography,
     Fab,
 }from '@material-ui/core'
+import Link from "@material-ui/core/Link";
 
 const styles = {
     loginButton: {
@@ -29,7 +30,10 @@ class LoginModal extends React.Component {
         this.state = {
             email: '',
             password: '',
-            showLogginError: false
+            forgotEmail: '',
+            showLoginError: false,
+            showForgotPassword: false,
+            emailVerificationButtonDisabled: true
         }
     }
 
@@ -39,8 +43,16 @@ class LoginModal extends React.Component {
                 this.props.visibilityHandler()
             })
             .catch((e) => {
-                this.setState({showLogginError: true})
+                this.setState({showLoginError: true})
             })
+    }
+
+    toggleForgotPassword() {
+        this.setState(prevState => ({
+            showForgotPassword: !prevState.showForgotPassword
+        }))
+
+        console.log(this.state.showForgotPassword)
     }
 
     googleLogin() {
@@ -68,13 +80,28 @@ class LoginModal extends React.Component {
         });
     }
 
+    sendVerificationEmail() {
+        console.log(`Sending email to ${this.state.forgotEmail}`)
+    }
+
+    editForgotPasswordField(e) {
+
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const isValidEmail = !emailRegex.test(String(e.target.value).toLocaleLowerCase());
+
+        this.setState({
+            forgotEmail: e.target.value,
+            emailVerificationButtonDisabled: isValidEmail
+        })
+    }
+
     editEmailField(e) {
-        if (this.state.showLogginError) this.setState({showLogginError: false});
+        if (this.state.showLoginError) this.setState({showLoginError: false});
         this.setState({email: e.target.value})
     }
 
     editPasswordField(e) {
-        if (this.state.showLogginError) this.setState({showLogginError: false});
+        if (this.state.showLoginError) this.setState({showLoginError: false});
         this.setState({password: e.target.value})
     }
 
@@ -99,7 +126,7 @@ class LoginModal extends React.Component {
                         autoFocus
                         margin="dense"
                         id="email"
-                        label="Email Address"
+                        label="Addresse email"
                         type="email"
                         fullWidth
                         required
@@ -115,13 +142,38 @@ class LoginModal extends React.Component {
                         required
                         variant="outlined"
                     />
-                    {this.state.showLogginError
+                    {this.state.showLoginError
                         ? <Typography variant={'body2'} color="secondary">Adresse email ou mot de passe invalide</Typography>
                         : ''
                     }
-                    <Typography variant={'body2'}>Mot de passe oublié</Typography>
+                    <Link onClick={() => this.toggleForgotPassword()} component={"button"} variant={'body2'}>Mot de passe oublié</Link>
                     <Fab onClick={() => this.classicLogin()} variant="extended" color="primary" className={classes.fab}>Connexion</Fab>
                     <Fab onClick={() => this.googleLogin()} variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Connexion avec Google</Fab>
+                    <Dialog
+                        open={this.state.showForgotPassword}
+                        onClose={() => this.toggleForgotPassword()}
+                    >
+                        <DialogTitle>Mot de passe oublié</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Vous avez oublié votre mot de passe ? <br/>Remplissez le champ ci-dessous.
+                                Vous recevrez un email de réinitialisation du mot de passe.
+                            </DialogContentText>
+                            <br/>
+                            <TextField
+                                onChange={(e) => this.editForgotPasswordField(e)}
+                                margin="dense"
+                                id="forgot"
+                                label="Adresse email"
+                                fullWidth
+                                variant="outlined"
+                                type={"email"}
+                                required
+                                autoFocus
+                            />
+                            <Fab disabled={this.state.emailVerificationButtonDisabled} onClick={() => this.sendVerificationEmail()} variant="extended" color="primary" className={classes.fab}>Envoyer l'email</Fab>
+                        </DialogContent>
+                    </Dialog>
                 </DialogContent>
             </Dialog>
         );
