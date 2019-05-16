@@ -63,6 +63,16 @@ class Index extends React.Component {
         )
     }
 
+    // Fetch user feed if logged in
+    fetchUserFeed(){
+
+    }
+
+    // Fetch random posts to feed p/all
+    fetchRandomPost() {
+
+    }
+
     render() {
 
         const { classes } = this.props;
