@@ -5,13 +5,27 @@ import { withStyles } from '@material-ui/core/styles';
 import Layout from '../src/components/common/Layout';
 import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter'
-import { Paper, Typography, Grid } from '@material-ui/core';
+import { Paper, Typography, Grid, Fab, Button, Avatar } from '@material-ui/core';
 import { topMargin } from '../lib/constants'
+import firebase from '../lib/firebase'
+import InfoCard from '../src/components/common/InfoCard';
+import PostComponent from '../src/components/post/PostComponent'
 
 const styles = theme => ({
     root: {
         paddingTop: theme.spacing.unit * topMargin,
         paddingRight: 20
+    },
+    fab: {
+        width: '90%',
+        marginTop: 10,
+        marginBottom: 10,
+        height: 30
+    },
+    communities: {
+        marginTop: 15
+    },
+    avatar: {
     }
 })
 
@@ -19,6 +33,52 @@ class Index extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            hotCommunities: [
+                {name: "p/porn", subs: 7000},
+                {name: "p/apex", subs: 25},
+                {name: "p/dofus", subs: 96}
+            ]
+        }
+    }
+
+    loggedInRender() {
+
+        const { classes } = this.props;
+
+        return(
+            <Grid container justify="center">
+                <Typography variant="body2">
+                    Your personal Reddit frontpage. Come here to check in with your favorite communities.
+                </Typography>
+                <Fab variant="extended" aria-label="Delete" color={"primary"} className={classes.fab}>Créer un post</Fab>
+                <Fab variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Créer un sub</Fab>
+                <Fab variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Explorer les subs</Fab>
+            </Grid>
+        )
+    }
+
+    mustLoginRender() {
+
+        const { classes } = this.props;
+
+        return(
+            <Grid container justify="center">
+                <Typography variant="body2">
+                    Connectez vous pour accéder à toutes les fonctionnalités !
+                </Typography>
+            </Grid>
+        )
+    }
+
+    // Fetch user feed if logged in
+    fetchUserFeed(){
+
+    }
+
+    // Fetch random posts to feed p/all
+    fetchRandomPost() {
+
     }
 
     render() {
@@ -38,9 +98,46 @@ class Index extends React.Component {
                             </Paper>
                         </Grid>
                         <Grid item xs={3}>
-                            <Paper>
-                                <Typography variant={"body2"}>Test</Typography>
-                            </Paper>
+                            <InfoCard title="Accueil">
+                                {
+                                    firebase.auth().currentUser 
+                                    ? this.loggedInRender()
+                                    : this.mustLoginRender()
+                                }
+                            </InfoCard>
+                            <InfoCard title="Hot">
+                                <Typography variant="subtitle1" color="primary">
+                                    Communities
+                                </Typography>
+
+                                {
+                                    this.state.hotCommunities.map((community, index) => {
+                                        return(
+                                            <Grid container className={classes.communities} key={`${community.name}${community.subs}`}>
+                                                <Grid container alignItems={"center"}>
+                                                    <Grid container justify={"space-between"} item xs={8}>
+                                                        <Grid item xs={3}>
+                                                            <Avatar className={classes.avatar}>{community.name.charAt(2).toUpperCase()}</Avatar>                                        
+                                                        </Grid>
+                                                        <Grid item xs={9}>
+                                                            <Typography>{community.name}</Typography>
+                                                            <Typography>{community.subs} subscribers</Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container item xs={4} justify={"flex-end"}>
+                                                        <Button variant={"contained"} color={"primary"}>Rejoindre</Button>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                    )})
+                                }
+                                
+                            </InfoCard>
+                            <InfoCard title="All">
+                                <Typography variant="body2">
+                                    Lorem ipsum lol
+                                </Typography>
+                            </InfoCard>
                         </Grid>
                     </Grid>
                 </Grid>
