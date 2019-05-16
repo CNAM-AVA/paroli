@@ -7,12 +7,12 @@ import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter'
 import { Paper, Typography, Grid } from '@material-ui/core';
 
-const styles = {
+const styles = theme => ({
     root: {
-        paddingTop: 30,
+        paddingTop: theme.spacing.unit * 4,
         paddingRight: 20
     }
-}
+})
 
 class Index extends React.Component {
 
