@@ -15,7 +15,8 @@ const styles = {
     },
     headerIconDiv: {
         'left': '90%',
-        'transform': 'translateY(-24px)'
+        'transform': 'translateY(-24px)',
+        'margin-bottom': '-24px'
     }
 }
 
