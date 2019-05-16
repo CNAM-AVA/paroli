@@ -7,7 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, Avatar } from '@material-ui/core';
+import blue from '@material-ui/core/colors/blue';
 
 const styles = theme => ({
 	root: {
@@ -27,6 +28,14 @@ const styles = theme => ({
 		marginTop: theme.spacing.unit * 4,
 		marginBottom: theme.spacing.unit * 4,
 	},
+	cardHeader: {
+		backgroundColor: blue[500],
+	},
+	typoHeader: {
+		color: 'white',
+	},
+	avatar: {
+  },
 });
 
 function DisplayMedia(props){
@@ -91,19 +100,39 @@ class PostCardComponent extends React.Component {
 							<CardHeader className={classes.cardHeader}
 								title={
 									<div>
-										<Typography variant="subtitle2" color="textSecondary">
-										{'Posté par '+post.author+' le '+post.date}
-										</Typography>
-										<Typography variant="h5" gutterBottom>
+										<Grid container direction={'row'} alignItems={'center'} justify={'space-between'}>
+											
+											<Grid item>
+												<Grid container alignItems={'center'}>
+													<Grid item>
+														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
+													</Grid>
+													<Grid item>
+														<Typography className={classes.typoHeader}>{post.sub+' - '+post.date}</Typography>
+													</Grid>
+												</Grid>
+											</Grid>
+											
+											<Grid item>
+												<Grid container alignItems={'center'}>
+													<Grid item>
+														<Typography className={classes.typoHeader}>{post.author}</Typography>
+													</Grid>
+													<Grid item>
+														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
+													</Grid>
+												</Grid>
+											</Grid>
+
+										</Grid>
+										<Typography className={classes.typoHeader} variant="h5" gutterBottom>
 											{post.title}
 										</Typography>
 									</div>
 								}
-								subheader={
-									<DisplayMedia className={classes} media={post.media} content={post.content}/>											
-								}
 							/>
 							<CardContent>
+								<DisplayMedia className={classes} media={post.media} content={post.content}/>
 								<Button color="default" className={classes.button}>
 									<CommentIcon className={classes.leftIcon}/> ??? Comments
 								</Button>

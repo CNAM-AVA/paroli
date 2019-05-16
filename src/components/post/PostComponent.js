@@ -10,6 +10,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import { Grid, Paper, Icon, Button } from '@material-ui/core';
 import CommentComponent from '../common/CommentComponent';
 import PostCardComponent from '../common/PostCardComponent';
+import pink from '@material-ui/core/colors/pink';
 
 const styles = theme => ({
 	root: {
@@ -23,6 +24,12 @@ const styles = theme => ({
 	cardsContainer: {
 		marginTop: 20
 	},
+	cardHeaderCom: {
+		backgroundColor: pink[500],
+	},
+	typoHeader: {
+		color: 'white',
+	},
 	button: {
 		margin: theme.spacing.unit,
 	},
@@ -34,9 +41,6 @@ const styles = theme => ({
 	},
 	card: {
 		color: 'secondary',
-	},
-	cardHeader: {
-		
 	},
 	media: {
 		marginTop: 0,
@@ -71,7 +75,7 @@ class PostComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			post: {title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
+			post: {title : 'Titre', author: 'u/johnDoe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: 'il y a 5 min.', sub:'p/test'},
 			comments: Array(9).fill(
 				{author: 'John Doe', date: '??/??/????', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.'},
 			)
@@ -88,31 +92,29 @@ class PostComponent extends React.Component {
 		const comments = this.state.comments;
 
 		return(
-			<div className={classes.root}>
-					<Grid container className={classes.container}>
-							<Grid item xs={2}></Grid>
-								<Grid item xs={8}>
-									<PostCardComponent post={post}/>
-								</Grid>
-							<Grid item xs={2}></Grid>
-					</Grid>
-					<Grid container>
-						<Grid item xs={2}></Grid>
-						<Grid item xs={1}></Grid>
-						<Grid item xs={7}>
-							<Card className={classes.card}>
-								<CardHeader>
-
-								</CardHeader>
-								<CardContent>
-									<CommentComponent comments={comments}/>
-								</CardContent>
-							</Card>
-						</Grid>
-						<Grid item xs={2}>
-						</Grid>
-					</Grid>
-			</div>
+			<Grid container className={classes.root} justify={"center"}>
+				<Grid item xs={8}>
+					<PostCardComponent post={post}/>
+				</Grid>
+				<Grid container item xs={8} >
+				<Grid item xs={1}></Grid>
+				<Grid item xs={11}>
+					<Card className={classes.card}>
+						<CardHeader className={classes.cardHeaderCom}
+						 title={
+							<Typography className={classes.typoHeader} variant="h5" gutterBottom>
+								{'Comments'}
+							</Typography>
+						 }>
+						</CardHeader>
+						<CardContent>
+							<CommentComponent comments={comments}/>
+						</CardContent>
+					</Card>
+				</Grid>
+				
+				</Grid>
+			</Grid>
 		)
 	}
 }

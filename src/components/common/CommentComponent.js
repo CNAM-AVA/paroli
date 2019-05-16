@@ -6,7 +6,6 @@ import SendIcon from '@material-ui/icons/Send';
 
 const styles = theme => ({
 	root: {
-		marginTop : theme.spacing.unit * 2,
 		flexGrow: 1,
 	},
 	paper: {
@@ -60,7 +59,7 @@ const styles = theme => ({
 	},
 	card: {
 		marginBottom: theme.spacing.unit,
-  },
+	},
 });
 
 class CommentComponent extends React.Component {
@@ -82,45 +81,44 @@ class CommentComponent extends React.Component {
 
 		const commentsCard = comments.map((item) => {
 			return (
-				<Card className={classes.card} key={Math.random().toString(36).substr(2, 9)}>
-					<CardContent>
-						<Typography variant="subtitle2" color="textSecondary">
-							{item.author} {bull} {item.date}
-						</Typography>
-						<Typography variant="body1">
-							{item.content}
-						</Typography>
-					</CardContent>
-				</Card>
+				<Grid container>
+					<Card className={classes.card} key={Math.random().toString(36).substr(2, 9)}>
+						<CardContent>
+							<Typography variant="subtitle2" color="textSecondary">
+								{item.author} {bull} {item.date}
+							</Typography>
+							<Typography variant="body1">
+								{item.content}
+							</Typography>
+						</CardContent>
+					</Card>
+				</Grid>
 			);
 		})
 
 		return(
 			<div className={classes.root}>
-				<TextField
-					id="outlined-multiline-flexible"
-					label="Commenter"
-					multiline
-					rows="3"
-					value={this.state.multiline}
-					// onChange={this.handleChange('multiline')}
-					className={classes.textField}
-					fullWidth
-					margin="dense"
-					variant="outlined"
-				/>
-				<Grid container justify="flex-end">
-					<Button variant="contained" color="primary" className={classes.button}>
-						Commenter
-						{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
-						<SendIcon className={classes.rightIcon}/>
-					</Button>
-				</Grid>
-				<Divider variant="middle" className={classes.divider}/>
-				<Typography variant="subtitle1" gutterBottom>
-					Commentaires
-				</Typography>
-				{commentsCard}
+					<TextField
+						id="outlined-multiline-flexible"
+						label="Commenter"
+						multiline
+						rows="3"
+						value={this.state.multiline}
+						// onChange={this.handleChange('multiline')}
+						className={classes.textField}
+						fullWidth
+						margin="dense"
+						variant="outlined"
+					/>
+					<Grid container justify="flex-end">
+						<Button variant="contained" color="primary" className={classes.button}>
+							Commenter
+							{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
+							<SendIcon className={classes.rightIcon}/>
+						</Button>
+					</Grid>
+					<Divider variant="middle" className={classes.divider}/>
+					{commentsCard}
 			</div>
 		)
 	}
