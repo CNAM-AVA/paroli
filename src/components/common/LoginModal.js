@@ -21,6 +21,11 @@ const styles = {
     fab: {
         marginTop: 20,
         width: '100%'
+    },
+    registerLink: {
+        marginTop: 20,
+        textAlign: 'center',
+        width: '100%'
     }
 }
 
@@ -165,6 +170,7 @@ class LoginModal extends React.Component {
                     <Link onClick={() => this.toggleForgotPassword()} component={"button"} variant={'body2'}>Mot de passe oublié</Link>
                     <Fab onClick={() => this.classicLogin()} variant="extended" color="primary" className={classes.fab}>Connexion</Fab>
                     <Fab onClick={() => this.googleLogin()} variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Connexion avec Google</Fab>
+                    <Link onClick={() => this.props.registerHandle()} component={"button"} variant={'body2'} className={classes.registerLink}>Inscription classique</Link>
                     <Dialog
                         open={this.state.showForgotPassword}
                         onClose={() => this.toggleForgotPassword()}

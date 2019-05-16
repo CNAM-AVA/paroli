@@ -18,6 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Link from 'next/link';
 import Button from '@material-ui/core/Button'
 import LoginModal from './LoginModal'
+import RegisterModal from './RegisterModal'
 import firebase from '../../../lib/firebase'
 
 const styles = theme => ({
@@ -102,9 +103,11 @@ class AppNavigation extends React.Component {
 		super(props);
 		this.state = {
 			left: false,
-			showLogin: false
+			showLogin: false,
+			showRegister: false
 		}
 		this.toggleModal = this.toggleModal.bind(this);
+		this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
 
 	}
 
@@ -127,6 +130,14 @@ class AppNavigation extends React.Component {
 		// User is not logged in, open dialog
 		this.setState(prevState => ({
 			showLogin: !prevState.showLogin
+		}))
+	}
+
+	toggleRegisterModal(e) {
+		
+		this.setState(prevState => ({
+			showLogin: false,
+			showRegister: !prevState.showRegister
 		}))
 	}
 
@@ -207,7 +218,8 @@ class AppNavigation extends React.Component {
 					}
 				`}
 				</style>
-				<LoginModal visible={this.state.showLogin} visibilityHandler={this.toggleModal}/>
+				<LoginModal visible={this.state.showLogin} visibilityHandler={this.toggleModal} registerHandle={this.toggleRegisterModal}/>
+				<RegisterModal visible={this.state.showRegister} visibilityHandler={this.toggleRegisterModal}/>
 			</div>
 		)
 
