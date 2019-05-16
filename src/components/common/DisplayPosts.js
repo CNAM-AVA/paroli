@@ -1,6 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Card, CardContent, Typography, CardActions, Button } from '@material-ui/core';
+import SinglePost from './DisplayPostsComponents/SinglePost';
 
 const styles = {
     card: {
@@ -10,7 +11,7 @@ const styles = {
 
 class DisplayPosts extends React.Component {
 
-    getDefaultProps() {
+    static async defaultProps() {
         return {
             posts: []
         }
@@ -26,34 +27,12 @@ class DisplayPosts extends React.Component {
         return(
             <Grid container>
                 <Grid item xs={12}>
-                {
-                    this.props.posts.map((post, i) => {     
-                    return (
-                    <Card className={classes.card}>
-                        <CardContent>
-                            <Typography color="textSecondary" gutterBottom>
-                            Word of the Day
-                            </Typography>
-                            <Typography variant="h5" component="h2">
-                            be
-                            lent
-                            </Typography>
-                            <Typography color="textSecondary">
-                            adjective
-                            </Typography>
-                            <Typography component="p">
-                            well meaning and kindly.
-                            <br />
-                            {'"a benevolent smile"'}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small">Learn More</Button>
-                        </CardActions>
-                    </Card>
-                    ) 
-                })}
-                    
+                    {
+                        this.props.posts.map((post, i) => {     
+                        return (
+                            <SinglePost key={post.id+"-"+post.title} post={post} className={classes.card}></SinglePost>
+                        ) 
+                    })}
                 </Grid>
             </Grid>
         );
