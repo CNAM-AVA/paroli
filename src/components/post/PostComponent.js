@@ -9,17 +9,17 @@ import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
 import { Grid, Paper, Icon, Button } from '@material-ui/core';
 import CommentComponent from '../common/CommentComponent';
-import VoteComponent from '../common/VoteComponent';
+import PostCardComponent from '../common/PostCardComponent';
 
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
 	},
 	paper: {
-  	padding: theme.spacing.unit * 2,
-    // margin: 'auto',
-    // maxWidth: 500,
-  },
+		padding: theme.spacing.unit * 2,
+		// margin: 'auto',
+		// maxWidth: 500,
+	},
 	cardsContainer: {
 		marginTop: 20
 	},
@@ -29,75 +29,42 @@ const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit,
 	},
-	
 	control: {
 		padding: theme.spacing.unit * 2,
 	},
 	card: {
-  },
-  media: {
+		color: 'secondary',
+	},
+	cardHeader: {
+		
+	},
+	media: {
 		marginTop: 0,
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		width: 500,
-    height: 700,
-  },
-  actions: {
-    display: 'flex',
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
+		height: 700,
+	},
+	actions: {
+		display: 'flex',
+	},
+	expand: {
+		transform: 'rotate(0deg)',
+		marginLeft: 'auto',
+		transition: theme.transitions.create('transform', {
+		duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+    	transform: 'rotate(180deg)',
+	},
+	container: {
+		alignItems:'center',
+		justify: 'center',
+		marginTop: theme.spacing.unit * 4,
+		marginBottom: theme.spacing.unit * 4,
 	},
 });
-
-function DisplayMedia(props){
-	const media = props.media;
-	const content = props.content;
-	const classes = props.className;
-
-	switch(media){
-		case 'img': return (
-			<Grid container justify="center">
-				<img className={classes.media} src={content} title={content}/>
-			</Grid>
-		);
-		case 'video': return (
-			<Grid container justify="center">
-				<video className={classes.media} autoPlay controls loop>
-					<source src={content} type="video/mp4"/>
-					Your browser does not support the video tag
-				</video>
-			</Grid>
-		);
-		case 'video': return (
-			<video autoPlay controls loop>
-				<source src={content} type="video/mp4"/>
-				Your browser does not support the video tag
-			</video>
-		);
-		case 'link': return (
-			<CardContent className={classes.cardContent2}>
-				<Typography variant="subtitle1">
-					<Link href={content}>{content}</Link>
-				</Typography>
-			</CardContent>
-		);
-		default : return (
-			<CardContent className={classes.cardContent2}>
-				<Typography variant="subtitle1">
-					{content}
-				</Typography>
-			</CardContent>
-		);
-	}
-}
 
 class PostComponent extends React.Component {
 
@@ -122,45 +89,27 @@ class PostComponent extends React.Component {
 
 		return(
 			<div className={classes.root}>
+					<Grid container className={classes.container}>
+							<Grid item xs={2}></Grid>
+								<Grid item xs={8}>
+									<PostCardComponent post={post}/>
+								</Grid>
+							<Grid item xs={2}></Grid>
+					</Grid>
 					<Grid container>
-						<Grid item xs>
-							{/* <Paper className={classes.paper}>
-							</Paper> */}
-						</Grid>
-						<Grid item xs={9}>
+						<Grid item xs={2}></Grid>
+						<Grid item xs={1}></Grid>
+						<Grid item xs={7}>
 							<Card className={classes.card}>
-									<CardHeader
-										avatar={
-											<VoteComponent/>
-										}
-										title={
-											<div>
-												<Typography variant="subtitle2" color="textSecondary">
-												{'Posté par '+post.author+' le '+post.date}
-												</Typography>
-												<Typography variant="h5" gutterBottom>
-													{post.title}
-												</Typography>
-											</div>
-										}
-										subheader={
-											<DisplayMedia className={classes} media={post.media} content={post.content}/>											
-										}
-									/>
-									<CardContent>
-										<Button color="default" className={classes.button}>
-											<CommentIcon className={classes.leftIcon}/> ??? Comments
-										</Button>
-										<Button className={classes.button}>
-											<ShareIcon className={classes.leftIcon}/>Share
-										</Button>
-										<CommentComponent comments={comments}/>
-									</CardContent>
-								</Card>
+								<CardHeader>
+
+								</CardHeader>
+								<CardContent>
+									<CommentComponent comments={comments}/>
+								</CardContent>
+							</Card>
 						</Grid>
-						<Grid item xs>
-							{/* <Paper className={classes.paper}>
-							</Paper> */}
+						<Grid item xs={2}>
 						</Grid>
 					</Grid>
 			</div>
