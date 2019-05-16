@@ -9,6 +9,7 @@ import { Paper, Typography, Grid, Fab, Button, Avatar } from '@material-ui/core'
 import { topMargin } from '../lib/constants'
 import firebase from '../lib/firebase'
 import InfoCard from '../src/components/common/InfoCard';
+import PostComponent from '../src/components/post/PostComponent'
 
 const styles = theme => ({
     root: {
@@ -32,6 +33,13 @@ class Index extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            hotCommunities: [
+                {name: "p/porn", subs: 7000},
+                {name: "p/apex", subs: 25},
+                {name: "p/dofus", subs: 96}
+            ]
+        }
     }
 
     loggedInRender() {
@@ -101,18 +109,29 @@ class Index extends React.Component {
                                 <Typography variant="subtitle1" color="primary">
                                     Communities
                                 </Typography>
-                                <Grid container className={classes.communities}>
-                                    <Grid container justify={"center"} alignItems={"center"}>
-                                        <Grid item xs={6}>
-                                            <Avatar className={classes.avatar}>P</Avatar>
-                                            <Typography>p/porn</Typography>
-                                            <Typography>700 subscribers</Typography>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Button variant={"contained"} color={"primary"}>Rejoindre</Button>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+
+                                {
+                                    this.state.hotCommunities.map((community, index) => {
+                                        return(
+                                            <Grid container className={classes.communities} key={`${community.name}${community.subs}`}>
+                                                <Grid container alignItems={"center"}>
+                                                    <Grid container justify={"space-between"} item xs={8}>
+                                                        <Grid item xs={3}>
+                                                            <Avatar className={classes.avatar}>{community.name.charAt(2).toUpperCase()}</Avatar>                                        
+                                                        </Grid>
+                                                        <Grid item xs={9}>
+                                                            <Typography>{community.name}</Typography>
+                                                            <Typography>{community.subs} subscribers</Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container item xs={4} justify={"flex-end"}>
+                                                        <Button variant={"contained"} color={"primary"}>Rejoindre</Button>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                    )})
+                                }
+                                
                             </InfoCard>
                             <InfoCard title="All">
                                 <Typography variant="body2">
