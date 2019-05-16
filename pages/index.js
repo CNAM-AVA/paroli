@@ -10,6 +10,7 @@ import { topMargin } from '../lib/constants'
 import firebase from '../lib/firebase'
 import InfoCard from '../src/components/common/InfoCard';
 import PostComponent from '../src/components/post/PostComponent'
+import SubRow from '../src/components/common/SubRow'
 
 const styles = theme => ({
     root: {
@@ -34,12 +35,22 @@ class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            uid: null,
             hotCommunities: [
-                {name: "p/porn", subs: 7000},
+                {name: "p/orn", subs: 7000},
                 {name: "p/apex", subs: 25},
                 {name: "p/dofus", subs: 96}
             ]
         }
+    }
+
+    componentDidMount = async () => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user)
+                this.setState({uid: user.uid})
+            else
+                this.setState({uid: null})
+        })
     }
 
     loggedInRender() {
@@ -113,22 +124,7 @@ class Index extends React.Component {
                                 {
                                     this.state.hotCommunities.map((community, index) => {
                                         return(
-                                            <Grid container className={classes.communities} key={`${community.name}${community.subs}`}>
-                                                <Grid container alignItems={"center"}>
-                                                    <Grid container justify={"space-between"} item xs={8}>
-                                                        <Grid item xs={3}>
-                                                            <Avatar className={classes.avatar}>{community.name.charAt(2).toUpperCase()}</Avatar>                                        
-                                                        </Grid>
-                                                        <Grid item xs={9}>
-                                                            <Typography>{community.name}</Typography>
-                                                            <Typography>{community.subs} subscribers</Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                    <Grid container item xs={4} justify={"flex-end"}>
-                                                        <Button variant={"contained"} color={"primary"}>Rejoindre</Button>
-                                                    </Grid>
-                                                </Grid>
-                                            </Grid>
+                                            <SubRow key={index} community={community}/>
                                     )})
                                 }
                                 
