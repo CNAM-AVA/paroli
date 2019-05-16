@@ -89,7 +89,7 @@ class Index extends React.Component {
                             </InfoCard>
                             <InfoCard title="Hot">
                                 <Typography variant="subtitle1" color="primary">
-                                    Lorem ipsum lol
+                                    Communities
                                 </Typography>
                                 <Grid container className={classes.communities}>
                                     <Grid container justify={"center"} alignItems={"center"}>
