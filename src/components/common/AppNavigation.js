@@ -20,6 +20,8 @@ import Button from '@material-ui/core/Button'
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
 import firebase from '../../../lib/firebase'
+import Select from '@material-ui/core/Select';
+import { MenuItem, FormControl, InputLabel } from '@material-ui/core';
 
 const styles = theme => ({
 	root: {
@@ -95,6 +97,9 @@ const styles = theme => ({
 			paddingBottom: 60,
 		},
 	},
+	avatar: {
+		cursor: 'pointer'
+	}
 });
 
 class AppNavigation extends React.Component {
@@ -206,9 +211,12 @@ class AppNavigation extends React.Component {
 								}}
 							/>
 						</div>
-						<Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>
-							{firebase.auth().currentUser ? 'Déconnexion' : 'Connexion'}
-						</Button>
+						{
+							firebase.auth().currentUser
+							? <Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>Déconnexion</Button>
+							: <Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>Connexion</Button>
+						}
+						
 					</Toolbar>
 				</AppBar>
 				<style jsx global>{`
