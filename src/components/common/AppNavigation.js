@@ -21,7 +21,8 @@ import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
 import firebase from '../../../lib/firebase'
 import Select from '@material-ui/core/Select';
-import { MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { MenuItem, FormControl, InputLabel, Avatar, Snackbar, Grid } from '@material-ui/core';
+import { appName } from '../../../lib/constants'
 
 const styles = theme => ({
 	root: {
@@ -109,7 +110,8 @@ class AppNavigation extends React.Component {
 		this.state = {
 			left: false,
 			showLogin: false,
-			showRegister: false
+			showRegister: false,
+			showSnackbar: false
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 		this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
@@ -127,7 +129,7 @@ class AppNavigation extends React.Component {
 		if (e != null && e.target.textContent === 'Déconnexion') {
 			firebase.auth().signOut().then(() => {
 				// Dummy call to setState to update the UI
-				this.setState({showLogin: false});
+				this.setState({ showLogin: false });
 			})
 			return;
 		}
@@ -139,10 +141,16 @@ class AppNavigation extends React.Component {
 	}
 
 	toggleRegisterModal(e) {
-		
+
 		this.setState(prevState => ({
 			showLogin: false,
 			showRegister: !prevState.showRegister
+		}))
+	}
+
+	toggleSnackbar() {
+		this.setState(prevState => ({
+			showSnackbar: !prevState.showSnackbar
 		}))
 	}
 
@@ -160,25 +168,25 @@ class AppNavigation extends React.Component {
 					</Link>
 					<Link href="/vled">
 						<ListItem button key={'Board Builder'}>
-							<ListItemIcon><InboxIcon/></ListItemIcon>
+							<ListItemIcon><InboxIcon /></ListItemIcon>
 							<ListItemText primary={'Board Builder'} />
 						</ListItem>
 					</Link>
 					<Link href="/">
 						<ListItem button key={'Configs'}>
-							<ListItemIcon><InboxIcon/></ListItemIcon>
+							<ListItemIcon><InboxIcon /></ListItemIcon>
 							<ListItemText primary={'Configs'} />
 						</ListItem>
 					</Link>
 					<Link href="/sub">
 						<ListItem button key={'Sub'}>
-							<ListItemIcon><InboxIcon/></ListItemIcon>
+							<ListItemIcon><InboxIcon /></ListItemIcon>
 							<ListItemText primary={'Sub'} />
 						</ListItem>
 					</Link>
 					<Link href="/post">
 						<ListItem button key={'Post'}>
-							<ListItemIcon><InboxIcon/></ListItemIcon>
+							<ListItemIcon><InboxIcon /></ListItemIcon>
 							<ListItemText primary={'Post'} />
 						</ListItem>
 					</Link>
@@ -195,7 +203,7 @@ class AppNavigation extends React.Component {
 						</IconButton>
 						<Typography className={classes.title} variant="h6" color="inherit" noWrap>
 							<Link href="/">
-								<a>Reddit</a>
+								<a>{appName}</a>
 							</Link>
 						</Typography>
 						<div className={classes.grow} />
@@ -213,10 +221,27 @@ class AppNavigation extends React.Component {
 						</div>
 						{
 							firebase.auth().currentUser
-							? <Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>Déconnexion</Button>
-							: <Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>Connexion</Button>
+								? <Avatar className={classes.avatar} onClick={() => this.toggleSnackbar()} alt="p">P</Avatar>
+								: <Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>Connexion</Button>
 						}
-						
+						<Snackbar
+							anchorOrigin={{vertical: 'top',horizontal: 'right'}}
+							open={this.state.showSnackbar}
+							onClose={() => this.toggleSnackbar()}
+							ContentProps={{
+								'aria-describedby': 'message-id',
+							}}
+							message={
+								<Grid container spacing={16}>
+									<Grid item>
+										<Button color={"primary"} variant={"contained"}>Paramètres</Button>									
+									</Grid>
+									<Grid item>
+										<Button onClick={(e) => {this.toggleSnackbar();this.toggleModal(e)}} color={"secondary"} variant={"contained"}>Déconnexion</Button>
+									</Grid>
+								</Grid>
+							}
+						/>
 					</Toolbar>
 				</AppBar>
 				<style jsx global>{`
@@ -226,8 +251,8 @@ class AppNavigation extends React.Component {
 					}
 				`}
 				</style>
-				<LoginModal visible={this.state.showLogin} visibilityHandler={this.toggleModal} registerHandle={this.toggleRegisterModal}/>
-				<RegisterModal visible={this.state.showRegister} visibilityHandler={this.toggleRegisterModal}/>
+				<LoginModal visible={this.state.showLogin} visibilityHandler={this.toggleModal} registerHandle={this.toggleRegisterModal} />
+				<RegisterModal visible={this.state.showRegister} visibilityHandler={this.toggleRegisterModal} />
 			</div>
 		)
 
