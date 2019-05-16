@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, Button } from '@material-ui/core'
+import firebase from '../../../lib/firebase'
 
 const styles = theme => ({
 
@@ -14,6 +15,15 @@ class SubRow extends React.Component {
         this.state = {
 
         }
+    }
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user)
+                this.setState({uid: user.uid})
+            else
+                this.setState({uid: null})
+        })
     }
 
     render() {
