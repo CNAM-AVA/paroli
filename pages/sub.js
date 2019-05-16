@@ -1,7 +1,7 @@
 import React from 'react'
 import "../static/styles.scss"
 import Layout from '../src/components/common/Layout';
-import SubNavbar from '../src/components/dashboard/SubNavbar';
+import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter';
 import { Grid, Card, CardContent, CardActions, Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
