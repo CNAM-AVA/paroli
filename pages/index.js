@@ -6,10 +6,11 @@ import Layout from '../src/components/common/Layout';
 import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter'
 import { Paper, Typography, Grid } from '@material-ui/core';
+import { topMargin } from '../lib/constants'
 
 const styles = theme => ({
     root: {
-        paddingTop: theme.spacing.unit * 4,
+        paddingTop: theme.spacing.unit * topMargin,
         paddingRight: 20
     }
 })
