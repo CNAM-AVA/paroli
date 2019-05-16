@@ -27,17 +27,17 @@ class SubRulesCard extends React.Component {
     render() {
         const { classes } = this.props;
 
-        return(
-            <InfoCard title={"p/"+this.props.sub.name+" rules"}>
+        return (
+            <InfoCard title={"p/" + this.props.sub.name + " rules"}>
                 {
-                this.props.sub.rules.map((rule, i) => {     
-                    return (
-                        <div key={i}>
-                            <h4 className={classes.title}>{i+1}. {rule.title}</h4>
-                            <p className={classes.p}>{rule.description}</p>
-                        </div>
-                    ) 
-                })}
+                    this.props.sub.rules.map((rule, i) => {
+                        return (
+                            <div key={i}>
+                                <h4 className={classes.title}>{i + 1}. {rule.title}</h4>
+                                <p className={classes.p}>{rule.description}</p>
+                            </div>
+                        )
+                    })}
             </InfoCard>
         );
     }

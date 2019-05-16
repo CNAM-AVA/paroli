@@ -10,6 +10,7 @@ import DisplayPosts from '../src/components/common/DisplayPosts';
 import InfoCard from '../src/components/common/InfoCard';
 import SubDescriptionCard from '../src/components/sub/SubDescriptionCard';
 import SubRulesCard from '../src/components/sub/SubRulesCard';
+import HotSubs from '../src/components/common/HotSubs';
 
 const styles = theme => ({
 	cardsContainer: {
@@ -25,13 +26,25 @@ class Sub extends React.Component {
 			sub: {
 				id: 1,
 				name: "climbing",
-				members: 1,
+				subs: 469,
 				online: 5,
 				rules: [
 					{
 						title: "Ouin",
 						description: "Arrêtez de brailler"
-					}
+					},
+					{
+						title: "Coucou",
+						description: "Byril se fait chier"
+					},
+					{
+						title: "Byril",
+						description: "Lorem ipsum [B]olor sit amet"
+					},
+					{
+						title: "Salut",
+						description: "Salut les amis"
+					},
 				]
 			},
 			posts : [
@@ -62,6 +75,8 @@ class Sub extends React.Component {
 								<SubDescriptionCard sub={this.state.sub}></SubDescriptionCard>
 								<Advertisement></Advertisement>
 								<SubRulesCard sub={this.state.sub}></SubRulesCard>
+								<HotSubs></HotSubs>
+								<Advertisement></Advertisement>
 							</Grid>
 						</Grid>
 					</Grid>

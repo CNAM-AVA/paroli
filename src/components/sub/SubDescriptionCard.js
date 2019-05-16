@@ -1,6 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import InfoCard from '../common/InfoCard';
+import SubRow from '../common/SubRow';
 
 const styles = {
     card: {
@@ -25,6 +26,7 @@ class SubDescriptionCard extends React.Component {
 
         return(
             <InfoCard title={"p/"+this.props.sub.name}>
+                <SubRow community={this.props.sub}></SubRow>
                 <p>Lorem ipsum dolor sit amet</p>
             </InfoCard>
         );
