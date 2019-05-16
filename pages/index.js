@@ -1,20 +1,15 @@
 import React from 'react'
-import Dashboard from '../src/components/dashboard/Dashboard'
 import "../static/styles.scss"
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Layout from '../src/components/common/Layout';
-import SubNavbar from '../src/components/dashboard/SubNavbar';
-import { Button, Typography } from '@material-ui/core';
-import Chip from '@material-ui/core/Chip';
+import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter'
+import { Paper, Typography, Grid } from '@material-ui/core';
 
 const styles = {
-    subnavItems: {
-        padding: '0px 10px 0px 10px',
-        margin: '0px 5px 0px 5px'
-    },
-    subNavTitle: {
+    root: {
+        paddingTop: 30,
         paddingRight: 20
     }
 }
@@ -34,7 +29,20 @@ class Index extends React.Component {
                 <SubNavbar centered={true}>
                     <DisplayFilter/>
                 </SubNavbar>
-                <Dashboard/>
+                <Grid container className={classes.root}>
+                    <Grid container justify="center" spacing={40}>
+                        <Grid item xs={5}>
+                            <Paper>
+                                <Typography variant={"body2"}>Test</Typography>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Paper>
+                                <Typography variant={"body2"}>Test</Typography>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Layout>
         );
     }
