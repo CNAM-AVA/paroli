@@ -11,6 +11,7 @@ import firebase from '../lib/firebase'
 import InfoCard from '../src/components/common/InfoCard';
 import PostComponent from '../src/components/post/PostComponent'
 import SubRow from '../src/components/common/SubRow'
+import HotSubs from '../src/components/HotSubs';
 
 const styles = theme => ({
     root: {
@@ -35,12 +36,7 @@ class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid: null,
-            hotCommunities: [
-                {name: "p/orn", subs: 7000},
-                {name: "p/apex", subs: 25},
-                {name: "p/dofus", subs: 96}
-            ]
+            uid: null
         }
     }
 
@@ -116,19 +112,7 @@ class Index extends React.Component {
                                     : this.mustLoginRender()
                                 }
                             </InfoCard>
-                            <InfoCard title="Hot">
-                                <Typography variant="subtitle1" color="primary">
-                                    Communities
-                                </Typography>
-
-                                {
-                                    this.state.hotCommunities.map((community, index) => {
-                                        return(
-                                            <SubRow key={index} community={community}/>
-                                    )})
-                                }
-                                
-                            </InfoCard>
+                            <HotSubs/>
                             <InfoCard title="All">
                                 <Typography variant="body2">
                                     Lorem ipsum lol
