@@ -1,42 +1,47 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, CardActions, Button } from '@material-ui/core';
+import { Card, CardContent, Typography } from '@material-ui/core';
 
 const styles = {
-
+    img: {
+        'object-fit': 'cover',
+        'width': '100%',
+        'max-height': '100%',
+        'display': 'block'
+    },
 }
 
 class Advertisement extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            adverts: [
+                {id:1, text:"Can't sleep? New sleeping pills are out!"}
+            ],
+            advert: {}
+        }
+    }
+
+    componentDidMount() {
+        this.pickAdvert();
     }
 
     render() {
+        const { classes } = this.props;
+
         return(
             <Card>
                 <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                    Word of the Day
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                    be
-                    lent
-                    </Typography>
-                    <Typography color="textSecondary">
-                    adjective
-                    </Typography>
-                    <Typography component="p">
-                    well meaning and kindly.
-                    <br />
-                    {'"a benevolent smile"'}
-                    </Typography>
+                    <img src={"/static/img/adverts/ad_"+this.state.advert.id+".png"} className={classes.img}/>
+                    {this.state.advert.text}
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Learn More</Button>
-                </CardActions>
             </Card>
         );
+    }
+
+    pickAdvert() {
+        this.setState({advert: this.state.adverts[Math.floor(Math.random() * this.state.adverts.length)]});
     }
 }
 
