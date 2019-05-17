@@ -35,7 +35,13 @@ const styles = theme => ({
 		color: 'white',
 	},
 	avatar: {
-  },
+	},
+	button: {
+		margin: theme.spacing.unit,
+	},
+	leftIcon: {
+		marginRight: theme.spacing.unit,
+	},
 });
 
 function DisplayMedia(props){
@@ -125,7 +131,7 @@ class PostCardComponent extends React.Component {
 											</Grid>
 
 										</Grid>
-										<Typography className={classes.typoHeader} variant="h5" gutterBottom>
+										<Typography className={classes.typoHeader} variant="h6">
 											{post.title}
 										</Typography>
 									</div>

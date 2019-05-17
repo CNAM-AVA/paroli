@@ -2,6 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader, Divider } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import CommentCardComponent from './CommentCardComponent';
 
 
 const styles = theme => ({
@@ -50,7 +51,10 @@ const styles = theme => ({
     transform: 'rotate(180deg)',
 	},
 	divider: {
-		margin: theme.spacing.unit,
+		marginTop: theme.spacing.unit,
+		marginBottom: theme.spacing.unit,
+		marginLeft: 0,
+		marginRight: 0,
 	},
 	bullet: {
     display: 'inline-block',
@@ -58,6 +62,10 @@ const styles = theme => ({
 		transform: 'scale(0.8)',
 	},
 	card: {
+		marginBottom: theme.spacing.unit,
+	},
+	textField: {
+		marginTop: theme.spacing.unit,
 		marginBottom: theme.spacing.unit,
 	},
 });
@@ -80,20 +88,7 @@ class CommentComponent extends React.Component {
 		const comments = this.props.comments;
 
 		const commentsCard = comments.map((item) => {
-			return (
-				<Grid container>
-					<Card className={classes.card} key={Math.random().toString(36).substr(2, 9)}>
-						<CardContent>
-							<Typography variant="subtitle2" color="textSecondary">
-								{item.author} {bull} {item.date}
-							</Typography>
-							<Typography variant="body1">
-								{item.content}
-							</Typography>
-						</CardContent>
-					</Card>
-				</Grid>
-			);
+			return (<CommentCardComponent comment={item}/>);
 		})
 
 		return(
@@ -107,7 +102,6 @@ class CommentComponent extends React.Component {
 						// onChange={this.handleChange('multiline')}
 						className={classes.textField}
 						fullWidth
-						margin="dense"
 						variant="outlined"
 					/>
 					<Grid container justify="flex-end">
