@@ -1,7 +1,10 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types';
-import { Typography, Paper } from '@material-ui/core';
+import { Typography, Paper, Grid } from '@material-ui/core';
+import GrainIcon from '@material-ui/icons/Grain'
+import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import { titleIcon } from '../../../lib/constants'
 
 const styles = theme => ({
     root: {
@@ -10,7 +13,8 @@ const styles = theme => ({
     rootPaper: {
         marginTop: 10,
         padding: 15
-    }
+    },
+    icon: titleIcon
 })
 
 class InfoCard extends React.Component {
@@ -21,18 +25,35 @@ class InfoCard extends React.Component {
 
         }
     }
+    
+    applyIcon() {
+
+        const { classes } = this.props;
+
+        switch (this.props.icon) {
+            case 'hot':
+                return <TrendingUpIcon className={classes.icon}/>
+            case 'home': 
+                return <GrainIcon className={classes.icon}/>
+            default:
+                return ''
+        }
+    }
 
     render() {
 
         const { classes } = this.props;
 
         return(
-            <div className={classes.root}>
-                <Typography variant="h6">{this.props.title}</Typography>
+            <Grid container className={classes.root}>
+                <Grid container alignItems={"center"}>
+                    <Typography variant="h6">{this.props.title}</Typography>
+                    {this.applyIcon()}
+                </Grid>
                 <Paper className={classes.rootPaper}>
                     {this.props.children}
                 </Paper>
-            </div>
+            </Grid>
         )
     }
 

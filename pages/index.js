@@ -12,6 +12,9 @@ import InfoCard from '../src/components/common/InfoCard';
 import PostComponent from '../src/components/post/PostComponent'
 import SubRow from '../src/components/common/SubRow'
 import HotSubs from '../src/components/common/HotSubs';
+import DisplayPosts from '../src/components/common/DisplayPosts'
+import RssFeedIcon from '@material-ui/icons/RssFeed'
+import { titleIcon } from '../lib/constants'
 
 const styles = theme => ({
     root: {
@@ -28,7 +31,14 @@ const styles = theme => ({
     communities: {
         marginTop: 15
     },
-    avatar: {
+    infoCards: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        }
+    },
+    icon: titleIcon,
+    sectionHeader: {
+        marginBottom: 10
     }
 })
 
@@ -81,12 +91,33 @@ class Index extends React.Component {
 
     // Fetch user feed if logged in
     fetchUserFeed(){
+        const posts = [
+            {title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
+			{title : 'Lorem Ipsum Dolor Sit Amet', author: 'Jules César', media: 'txt', content : 'Valentin mon meilleur copain', date: '??/??/????'},
+			{title : 'Wiki mythologie grecque', author: 'Zeus', media: 'link', content : 'https://fr.wikipedia.org/wiki/Mythologie_grecque', date: '??/??/????'},
+			{title : 'Un petit gif sympathique !', author: 'Giffy', media: 'img', content : 'http://www.roseedemiel.fr/wp-content/uploads/2012/10/question-mark-200x300.jpg', date: '??/??/????'},
+			{title : 'Just Do It !', author: 'Shia Laboeuf', media: 'video', content : 'https://www.youtube.com/embed/watch?v=qD54sROmeIM?autoplay=1', date: '??/??/????'},
+        ];
 
+        return (
+            <DisplayPosts posts={posts}/>
+        )
     }
 
     // Fetch random posts to feed p/all
     fetchRandomPost() {
 
+        const posts = [
+            {title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
+			{title : 'Lorem Ipsum Dolor Sit Amet', author: 'Jules César', media: 'txt', content : 'Valentin mon meilleur copain', date: '??/??/????'},
+			{title : 'Wiki mythologie grecque', author: 'Zeus', media: 'link', content : 'https://fr.wikipedia.org/wiki/Mythologie_grecque', date: '??/??/????'},
+			{title : 'Un petit gif sympathique !', author: 'Giffy', media: 'img', content : 'http://www.roseedemiel.fr/wp-content/uploads/2012/10/question-mark-200x300.jpg', date: '??/??/????'},
+			{title : 'Just Do It !', author: 'Shia Laboeuf', media: 'video', content : 'https://www.youtube.com/embed/watch?v=qD54sROmeIM?autoplay=1', date: '??/??/????'},
+        ];
+
+        return (
+            <DisplayPosts posts={posts}/>
+        )
     }
 
     render() {
@@ -101,12 +132,19 @@ class Index extends React.Component {
                 <Grid container className={classes.root}>
                     <Grid container justify="center" spacing={40}>
                         <Grid item xs={12} sm={6} md={5} lg={5} xl={5}>
-                            <Paper>
-                                <Typography variant={"body2"}>Test</Typography>
-                            </Paper>
+                            <Grid container alignItems={"center"} className={classes.sectionHeader}>
+                                <Typography variant="h6" className={classes.feedTypo}>Feed</Typography>                            
+                                <RssFeedIcon className={classes.icon}/>
+                            </Grid>
+                            
+                            {
+                                firebase.auth().currentUser
+                                ? this.fetchUserFeed()
+                                : this.fetchRandomPost()
+                            }
                         </Grid>
-                        <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
-                            <InfoCard title="Accueil">
+                        <Grid className={classes.infoCards} item xs={12} sm={6} md={5} lg={4} xl={3}>
+                            <InfoCard title="Accueil" icon='home'>
                                 {
                                     firebase.auth().currentUser 
                                     ? this.loggedInRender()
@@ -114,11 +152,6 @@ class Index extends React.Component {
                                 }
                             </InfoCard>
                             <HotSubs/>
-                            <InfoCard title="All">
-                                <Typography variant="body2">
-                                    Lorem ipsum lol
-                                </Typography>
-                            </InfoCard>
                         </Grid>
                     </Grid>
                 </Grid>
