@@ -16,7 +16,8 @@ import HotSubs from '../src/components/common/HotSubs';
 const styles = theme => ({
     root: {
         paddingTop: theme.spacing.unit * topMargin,
-        paddingRight: 20
+        paddingRight: 20,
+        paddingLeft: 20
     },
     fab: {
         width: '90%',
@@ -99,12 +100,12 @@ class Index extends React.Component {
                 </SubNavbar>
                 <Grid container className={classes.root}>
                     <Grid container justify="center" spacing={40}>
-                        <Grid item xs={5}>
+                        <Grid item xs={12} sm={6} md={5} lg={5} xl={5}>
                             <Paper>
                                 <Typography variant={"body2"}>Test</Typography>
                             </Paper>
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
                             <InfoCard title="Accueil">
                                 {
                                     firebase.auth().currentUser 
