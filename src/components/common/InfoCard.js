@@ -12,7 +12,8 @@ const styles = theme => ({
     },
     rootPaper: {
         marginTop: 10,
-        padding: 15
+        padding: 15,
+        width: '100%'
     },
     icon: titleIcon
 })
