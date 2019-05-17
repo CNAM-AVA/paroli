@@ -13,7 +13,7 @@ class NoResultsFound extends React.Component {
 
     render() {
         return(
-            <p>Aucune donnée trouvée!</p>
+            <p>No data found!</p>
         );
     }
 }
