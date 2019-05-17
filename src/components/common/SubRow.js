@@ -36,11 +36,11 @@ class SubRow extends React.Component {
                 <Grid container alignItems={"center"}>
                     <Grid container justify={"space-between"} item xs={8}>
                         <Grid item xs={3}>
-                            <Avatar className={classes.avatar}>{community.name.charAt(2).toUpperCase()}</Avatar>
+                            <Avatar className={classes.avatar}>{community.name.charAt(0).toUpperCase()}</Avatar>
                         </Grid>
                         <Grid item xs={9}>
                             <Typography>{community.name}</Typography>
-                            <Typography>{community.subs} subscribers</Typography>
+                            <Typography>{community.subscribers} subscribers</Typography>
                         </Grid>
                     </Grid>
                     <Grid container item xs={4} justify={"flex-end"}>

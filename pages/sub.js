@@ -11,74 +11,81 @@ import InfoCard from '../src/components/common/InfoCard';
 import SubDescriptionCard from '../src/components/sub/SubDescriptionCard';
 import SubRulesCard from '../src/components/sub/SubRulesCard';
 import HotSubs from '../src/components/common/HotSubs';
+import { firestore } from '../lib/firebase';
+import NoResultsFound from '../src/components/common/NoResultsFound';
 
 const styles = theme => ({
 	cardsContainer: {
-	  marginTop: 24
+		marginTop: 24
 	},
 });
 
 class Sub extends React.Component {
 
+	static async getInitialProps({ query }) {
+		return {
+			query
+		}
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
-			sub: {
-				id: 1,
-				name: "climbing",
-				subs: 469,
-				online: 5,
-				rules: [
-					{
-						title: "Ouin",
-						description: "Arrêtez de brailler"
-					},
-					{
-						title: "Coucou",
-						description: "Byril se fait chier"
-					},
-					{
-						title: "Byril",
-						description: "Lorem ipsum [B]olor sit amet"
-					},
-					{
-						title: "Salut",
-						description: "Salut les amis"
-					},
-				]
-			},
-			posts : [
-				{title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
-				{title : 'Lorem Ipsum Dolor Sit Amet', author: 'Jules César', media: 'txt', content : 'Valentin mon meilleur copain', date: '??/??/????'},
-				{title : 'Wiki mythologie grecque', author: 'Zeus', media: 'link', content : 'https://fr.wikipedia.org/wiki/Mythologie_grecque', date: '??/??/????'},
-				{title : 'Un petit gif sympathique !', author: 'Giffy', media: 'img', content : 'http://www.roseedemiel.fr/wp-content/uploads/2012/10/question-mark-200x300.jpg', date: '??/??/????'},
-				{title : 'Just Do It !', author: 'Shia Laboeuf', media: 'video', content : 'https://www.youtube.com/embed/watch?v=qD54sROmeIM?autoplay=1', date: '??/??/????'},
-			 ],
+			sub: null,
+			posts: [
+				{ title: 'Titre', author: 'John Doe', media: 'img', content: '/static/img/landscape-img-test.jpg', date: '??/??/????' },
+				{ title: 'Lorem Ipsum Dolor Sit Amet', author: 'Jules César', media: 'txt', content: 'Valentin mon meilleur copain', date: '??/??/????' },
+				{ title: 'Wiki mythologie grecque', author: 'Zeus', media: 'link', content: 'https://fr.wikipedia.org/wiki/Mythologie_grecque', date: '??/??/????' },
+				{ title: 'Un petit gif sympathique !', author: 'Giffy', media: 'img', content: 'http://www.roseedemiel.fr/wp-content/uploads/2012/10/question-mark-200x300.jpg', date: '??/??/????' },
+				{ title: 'Just Do It !', author: 'Shia Laboeuf', media: 'video', content: 'https://www.youtube.com/embed/watch?v=qD54sROmeIM?autoplay=1', date: '??/??/????' },
+			],
 		};
-	} 
+
+		let citiesRef = firestore.collection("subs").where('name', '==', this.props.query.slug).limit(1).get();
+
+		citiesRef.then((r) => {
+			r.forEach((e) => {
+				this.setState({ sub: e.data() })
+			})
+		}).catch((r) => {
+			console.log(r);
+		});
+	}
 
 	render() {
 		const { classes } = this.props;
 
-		return(
+		return (
 			<Layout>
 				<SubNavbar>
 					<DisplayFilter></DisplayFilter>
 				</SubNavbar>
 				<Grid container justify="center" className={classes.cardsContainer}>
 					<Grid item xs={10}>
-						<Grid container justify="center" spacing={24}>
-							<Grid item xs={6}>
-								<DisplayPosts posts={this.state.posts}></DisplayPosts>
-							</Grid>
-							<Grid item xs={3}>
-								<SubDescriptionCard sub={this.state.sub}></SubDescriptionCard>
-								<Advertisement></Advertisement>
-								<SubRulesCard sub={this.state.sub}></SubRulesCard>
-								<HotSubs></HotSubs>
-								<Advertisement></Advertisement>
-							</Grid>
-						</Grid>
+						{
+							this.state.sub
+								? <Grid container justify="center" spacing={24}>
+									<Grid item xs={6}>
+										<DisplayPosts posts={this.state.posts}></DisplayPosts>
+									</Grid>
+									<Grid item xs={3}>
+										<SubDescriptionCard sub={this.state.sub}></SubDescriptionCard>
+										<Advertisement></Advertisement>
+										{
+											this.state.sub.rules
+											? <SubRulesCard sub={this.state.sub}></SubRulesCard>
+											: null
+										}
+										<HotSubs></HotSubs>
+										<Advertisement></Advertisement>
+									</Grid>
+								</Grid>
+								: <Grid container justify="center" spacing={24}>
+									<Grid item xs={8}>
+										<NoResultsFound/>
+									</Grid>
+								</Grid>
+						}
 					</Grid>
 				</Grid>
 			</Layout>
