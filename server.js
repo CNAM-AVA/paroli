@@ -1,10 +1,10 @@
 const express = require('express')
 const next = require('next')
 require('dotenv').config()
-
+const routes = require('./routes')
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
-const handle = app.getRequestHandler()
+const handle = routes.getRequestHandler(app)
 const port = dev ? 3000 : 8080;
 
 app.prepare()
