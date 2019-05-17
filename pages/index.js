@@ -11,7 +11,7 @@ import firebase from '../lib/firebase'
 import InfoCard from '../src/components/common/InfoCard';
 import PostComponent from '../src/components/post/PostComponent'
 import SubRow from '../src/components/common/SubRow'
-import HotSubs from '../src/components/HotSubs';
+import HotSubs from '../src/components/common/HotSubs';
 
 const styles = theme => ({
     root: {

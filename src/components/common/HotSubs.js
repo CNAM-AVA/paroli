@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, Button } from '@material-ui/core'
-import InfoCard from '../components/common/InfoCard'
-import SubRow from '../components/common/SubRow'
+import InfoCard from './InfoCard'
+import SubRow from './SubRow'
 
 const styles = theme => ({
 

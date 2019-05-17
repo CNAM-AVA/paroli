@@ -7,6 +7,10 @@ import { Grid, Card, CardContent, CardActions, Typography, Button } from '@mater
 import { withStyles } from '@material-ui/core/styles';
 import Advertisement from '../src/components/common/Advertisement';
 import DisplayPosts from '../src/components/common/DisplayPosts';
+import InfoCard from '../src/components/common/InfoCard';
+import SubDescriptionCard from '../src/components/sub/SubDescriptionCard';
+import SubRulesCard from '../src/components/sub/SubRulesCard';
+import HotSubs from '../src/components/common/HotSubs';
 
 const styles = theme => ({
 	cardsContainer: {
@@ -19,6 +23,30 @@ class Sub extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			sub: {
+				id: 1,
+				name: "climbing",
+				subs: 469,
+				online: 5,
+				rules: [
+					{
+						title: "Ouin",
+						description: "Arrêtez de brailler"
+					},
+					{
+						title: "Coucou",
+						description: "Byril se fait chier"
+					},
+					{
+						title: "Byril",
+						description: "Lorem ipsum [B]olor sit amet"
+					},
+					{
+						title: "Salut",
+						description: "Salut les amis"
+					},
+				]
+			},
 			posts : [
 				{title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
 				{title : 'Lorem Ipsum Dolor Sit Amet', author: 'Jules César', media: 'txt', content : 'Valentin mon meilleur copain', date: '??/??/????'},
@@ -44,6 +72,10 @@ class Sub extends React.Component {
 								<DisplayPosts posts={this.state.posts}></DisplayPosts>
 							</Grid>
 							<Grid item xs={3}>
+								<SubDescriptionCard sub={this.state.sub}></SubDescriptionCard>
+								<Advertisement></Advertisement>
+								<SubRulesCard sub={this.state.sub}></SubRulesCard>
+								<HotSubs></HotSubs>
 								<Advertisement></Advertisement>
 							</Grid>
 						</Grid>
