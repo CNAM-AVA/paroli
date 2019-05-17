@@ -41,9 +41,9 @@ class Sub extends React.Component {
 			],
 		};
 
-		let citiesRef = firestore.collection("subs").where('name', '==', this.props.query.slug).limit(1).get();
+		let subsRef = firestore.collection("subs").where('name', '==', this.props.query.slug).limit(1);
 
-		citiesRef.then((r) => {
+		subsRef.get().then((r) => {
 			r.forEach((e) => {
 				this.setState({ sub: e.data() })
 			})
@@ -73,8 +73,8 @@ class Sub extends React.Component {
 										<Advertisement></Advertisement>
 										{
 											this.state.sub.rules
-											? <SubRulesCard sub={this.state.sub}></SubRulesCard>
-											: null
+												? <SubRulesCard sub={this.state.sub}></SubRulesCard>
+												: null
 										}
 										<HotSubs></HotSubs>
 										<Advertisement></Advertisement>
@@ -82,7 +82,7 @@ class Sub extends React.Component {
 								</Grid>
 								: <Grid container justify="center" spacing={24}>
 									<Grid item xs={8}>
-										<NoResultsFound/>
+										<NoResultsFound />
 									</Grid>
 								</Grid>
 						}
