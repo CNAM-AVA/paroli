@@ -12,7 +12,7 @@ app.prepare()
         const server = express()
 
         if (dev) server.use(require('express-naked-redirect')(true))
-        server.use(express.json());
+        server.use(handle);
 
         server.get('*', (req, res) => {
             return handle(req, res)
