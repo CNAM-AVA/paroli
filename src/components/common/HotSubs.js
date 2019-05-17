@@ -27,7 +27,7 @@ class HotSubs extends React.Component {
         const { classes } = this.props;
 
         return (
-            <InfoCard title="Hot">
+            <InfoCard title="Hot" icon='hot'>
                 <Typography variant="subtitle1" color="primary">
                     Communities
                 </Typography>

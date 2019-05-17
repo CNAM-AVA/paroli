@@ -5,7 +5,10 @@ import { Grid, Avatar, Typography, Button } from '@material-ui/core'
 import firebase from '../../../lib/firebase'
 
 const styles = theme => ({
-
+    communities: {
+        marginTop: 10,
+        marginBottom: 10
+    }
 })
 
 class SubRow extends React.Component {
