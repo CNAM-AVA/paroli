@@ -76,12 +76,14 @@ class Sub extends React.Component {
 
         subsRef.get().then((r) => {
             r.forEach((e) => {
-                this.setState({sub: e.data()})
+                this.setState({sub: e.data()},() => {
+                    document.title = this.state.sub.pageTitle || this.state.sub.name;
+                })
             })
             this.setState({isLoading: false})
         }).catch((r) => {
-            console.log(r);
             this.setState({isLoading: false})
+            document.title = "You appear to be lost.";
         });
     }
 
