@@ -6,7 +6,10 @@ import AppNavigation from './AppNavigation'
 
 
 const styles = {
-
+    main: {
+        background: 'url("../../static/background.png") no-repeat center center fixed',
+        backgroundSize: 'cover'
+    }
 }
 
 class Layout extends React.Component {
@@ -16,11 +19,16 @@ class Layout extends React.Component {
     }
 
     render() {
+
+        const { classes } = this.props;
+
         return(
             <Container>
                 <AppNavigation/>
                 
-                {this.props.children}
+                <div className={classes.main}>
+                    {this.props.children}
+                </div>
             </Container>
         );
     }
