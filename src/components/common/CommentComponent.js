@@ -79,7 +79,7 @@ class CommentComponent extends React.Component {
 	state = { expanded: false };
 
   handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
+		this.setState(state => ({ expanded: !state.expanded }));
 	};
 
 	render() {
@@ -88,7 +88,7 @@ class CommentComponent extends React.Component {
 		const comments = this.props.comments;
 
 		const commentsCard = comments.map((item) => {
-			return (<CommentCardComponent comment={item}/>);
+			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/>);
 		})
 
 		return(

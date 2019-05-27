@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Card, Typography, CardContent, Button } from '@material-ui/core';
+import { Grid, Card, Typography, CardContent, Button, Collapse, TextField } from '@material-ui/core';
 import CommentIcon from '@material-ui/icons/Comment';
 import VoteComponent from './VoteComponent';
 
@@ -25,18 +25,20 @@ class CommentCardComponent extends React.Component {
 
 	state = { expanded: false };
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
+  	handleExpandClick = () => {
+		this.setState(state => ({ expanded: !state.expanded }));
+		console.log("test");
+		
 	};
 
 	render() {
 		const {classes} = this.props;
 		const bull = <span className={classes.bullet}>•</span>;
 		const comment = this.props.comment;
+		const {expanded} = this.state;
 
 		return(
 			<Grid container>
-				<div key={Math.random().toString(36).substr(2, 9)}>
 					<Grid container>
 						<Grid item xs={1}>
 							<VoteComponent className={classes.voteComment}/>
@@ -48,12 +50,24 @@ class CommentCardComponent extends React.Component {
 							<Typography variant="body1">
 								{comment.content}
 							</Typography>
-							<Button color="default" className={classes.button}>
-								<CommentIcon className={classes.leftIcon}/>Reply
+							<Button color="default" className={classes.button} onClick={() => this.handleExpandClick()}>
+								<CommentIcon className={classes.leftIcon} />Reply
 							</Button>
+							<Collapse in={expanded}>
+								<TextField
+									id="outlined-multiline-flexible"
+									label="Commenter"
+									multiline
+									rows="3"
+									value={this.state.multiline}
+									// onChange={this.handleChange('multiline')}
+									className={classes.textField}
+									fullWidth
+									variant="outlined"
+								/>
+							</Collapse>
 						</Grid>
 					</Grid>
-				</div>
 			</Grid>
 		)
 	}

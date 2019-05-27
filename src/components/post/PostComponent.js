@@ -77,7 +77,7 @@ class PostComponent extends React.Component {
 		this.state = {
 			post: {title : 'Titre', author: 'u/johnDoe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: 'il y a 5 min.', sub:'p/test'},
 			comments: Array(9).fill(
-				{author: 'r/johnDoe', date: '5 min. ago', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.'},
+				{author: 'r/johnDoe', date: '5 min. ago', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.'},
 			)
 		}
 	}
