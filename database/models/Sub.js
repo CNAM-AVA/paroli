@@ -7,7 +7,6 @@ const DEFAULT_VALUES = {
     mods: [],
     name: null,
     pageTitle: null,
-    posts: [],
 };
 
 const FILLABLE = [
