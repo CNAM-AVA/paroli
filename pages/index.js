@@ -15,6 +15,7 @@ import HotSubs from '../src/components/common/HotSubs';
 import DisplayPosts from '../src/components/common/DisplayPosts'
 import RssFeedIcon from '@material-ui/icons/RssFeed'
 import { titleIcon } from '../lib/constants'
+import SubCreationModal from '../src/components/sub/SubCreationModal';
 
 const styles = theme => ({
     root: {
@@ -47,9 +48,13 @@ class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid: null
+            uid: null,
+            showSubCreationModal: false
         }
+
+        this.switchSubCreationModal = this.switchSubCreationModal.bind(this);
     }
+    
 
     componentDidMount = async () => {
         firebase.auth().onAuthStateChanged((user) => {
@@ -58,6 +63,12 @@ class Index extends React.Component {
             else
                 this.setState({uid: null})
         })
+    }
+
+    switchSubCreationModal() {
+        this.setState(prevState => ({
+			showSubCreationModal: !prevState.showSubCreationModal,
+		}))
     }
 
     loggedInRender() {
@@ -69,9 +80,9 @@ class Index extends React.Component {
                 <Typography variant="body2">
                     Your personal Reddit frontpage. Come here to check in with your favorite communities.
                 </Typography>
-                <Fab variant="extended" aria-label="Delete" color={"primary"} className={classes.fab}>Créer un post</Fab>
-                <Fab variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Créer un sub</Fab>
+                <Fab onClick={() => this.switchSubCreationModal()} variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Créer un sub</Fab>
                 <Fab variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Explorer les subs</Fab>
+                <SubCreationModal visible={this.state.showSubCreationModal} visibilityHandler={this.switchSubCreationModal}/>
             </Grid>
         )
     }
