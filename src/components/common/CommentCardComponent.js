@@ -3,17 +3,25 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid, Card, Typography, CardContent, Button, Collapse, TextField } from '@material-ui/core';
 import CommentIcon from '@material-ui/icons/Comment';
 import VoteComponent from './VoteComponent';
+import SendIcon from '@material-ui/icons/Send';
+
 
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
 	},
 	button: {
+		marginTop: theme.spacing.unit,
+		marginBottom: theme.spacing.unit,
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit,
+		fontSize: theme.spacing.unit * 2,
 	},
-	voteComment: {
+	bullet: {
+		display: 'inline-block',
+		margin: '0 2px',
+		transform: 'scale(0.8)',
 	},
 });
 
@@ -33,7 +41,7 @@ class CommentCardComponent extends React.Component {
 
 	render() {
 		const {classes} = this.props;
-		const bull = <span className={classes.bullet}>•</span>;
+		const bull = <span>•</span>;
 		const comment = this.props.comment;
 		const {expanded} = this.state;
 
@@ -51,7 +59,7 @@ class CommentCardComponent extends React.Component {
 								{comment.content}
 							</Typography>
 							<Button color="default" className={classes.button} onClick={() => this.handleExpandClick()}>
-								<CommentIcon className={classes.leftIcon} />Reply
+								<CommentIcon className={classes.leftIcon} /><Typography className={classes.small}>Reply</Typography>
 							</Button>
 							<Collapse in={expanded}>
 								<TextField
@@ -65,6 +73,10 @@ class CommentCardComponent extends React.Component {
 									fullWidth
 									variant="outlined"
 								/>
+								<Button variant="contained" color="primary" className={classes.button}>
+									Reply
+									<SendIcon className={classes.rightIcon}/>
+								</Button>
 							</Collapse>
 						</Grid>
 					</Grid>
