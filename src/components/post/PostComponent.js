@@ -75,7 +75,7 @@ class PostComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			post: {title : 'Titre', author: 'u/johnDoe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: 'il y a 5 min.', sub:'p/test'},
+			post: {title : 'Titre', author: 'u/johnDoe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: 'il y a 5 min.', sub:'p/test', upvotes: 1000, downvotes: 20},
 			comments: Array(4).fill(
 				{
 					id: 6516,
@@ -84,40 +84,33 @@ class PostComponent extends React.Component {
 					content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, \
 					dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. \
 					Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-					subComments: [
-						{
-							id: 16516,
-							author: 'r/toto',
-							date: '3 min. ago', 
-							content: 'a sub-comment',
-							subComments: [
-								{
-									id: 7417,
-									author: 'r/titi',
-									date: '2 min. ago', 
-									content: 'a sub-sub-comment',
-									subComments: [
-									],
-								}
-							]
-						},
-						{
-							id: 59632,
-							author: 'r/tata',
-							date: '3 min. ago', 
-							content: 'a second sub-comment',
-							subComments: [
-							],
-						},
-					]
+					upvotes: 10,
+					downvotes: 3,
+					subComments: [],
 				},
 			)
 		}
+		this.upvote = this.upvote.bind(this);
+		this.downvote = this.downvote.bind(this);
 	}
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
+	upvote() {
+		let post = {...this.state.post};
+		post.upvotes = post.upvotes + 1;
+		this.setState({post : post});
+		console.log('up');
+	}
+
+	downvote() {
+		let post = {...this.state.post};
+		post.downvotes = post.downvotes + 1;
+		this.setState({post : post});
+		console.log('down');
+	}
+
+	handleExpandClick = () => {
+		this.setState(state => ({ expanded: !state.expanded }));
+	};
 
 	render() {
 		const {classes} = this.props;
@@ -127,25 +120,24 @@ class PostComponent extends React.Component {
 		return(
 			<Grid container className={classes.root} justify={"center"}>
 				<Grid item md={8} xs={12}>
-					<PostCardComponent post={post}/>
+					<PostCardComponent post={post} upvote={this.upvote} downvote={this.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
 				</Grid>
 				<Grid container item md={8} xs={12} >
-				<Grid item md={1} xs={0}></Grid>
-				<Grid item md={11} xs={12}>
-					<Card className={classes.card}>
-						<CardHeader className={classes.cardHeaderCom}
-						 title={
-							<Typography className={classes.typoHeader} variant="h6" >
-								{'Comments'}
-							</Typography>
-						 }>
-						</CardHeader>
-						<CardContent>
-							<CommentComponent comments={comments}/>
-						</CardContent>
-					</Card>
-				</Grid>
-				
+					<Grid item md={1}></Grid>
+					<Grid item md={11} xs={12}>
+						<Card className={classes.card}>
+							<CardHeader className={classes.cardHeaderCom}
+							title={
+								<Typography className={classes.typoHeader} variant="h6" >
+									{'Comments'}
+								</Typography>
+							}>
+							</CardHeader>
+							<CardContent>
+								<CommentComponent comments={comments}/>
+							</CardContent>
+						</Card>
+					</Grid>
 				</Grid>
 			</Grid>
 		)

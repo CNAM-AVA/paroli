@@ -42,8 +42,6 @@ const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit,
 	},
-	vote: {
-	},
 });
 
 function DisplayMedia(props){
@@ -96,12 +94,14 @@ class PostCardComponent extends React.Component {
 
 	render() {
 		const {classes} = this.props;
-		const post = this.props.post
+		const post = this.props.post;
+
+		// console.log(this.props);
 
 		return(
 			<Grid container className={classes.container}>
 				<Grid item xs={1} className={classes.vote}>
-					<VoteComponent/>
+					<VoteComponent upvote={this.props.upvote} downvote={this.props.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
 				</Grid>
 				<Grid item xs={11}>
 					<Card className={classes.card}>
@@ -139,7 +139,7 @@ class PostCardComponent extends React.Component {
 									</div>
 								}
 							/>
-							<CardContent>
+							<CardContent style={{paddingBottom: 0}}>
 								<DisplayMedia className={classes} media={post.media} content={post.content}/>
 								<Button color="default" className={classes.button}>
 									<CommentIcon className={classes.leftIcon}/> ??? Comments
