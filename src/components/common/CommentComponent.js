@@ -2,11 +2,11 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader, Divider } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import CommentCardComponent from './CommentCardComponent';
 
 
 const styles = theme => ({
 	root: {
-		marginTop : theme.spacing.unit * 2,
 		flexGrow: 1,
 	},
 	paper: {
@@ -51,7 +51,10 @@ const styles = theme => ({
     transform: 'rotate(180deg)',
 	},
 	divider: {
-		margin: theme.spacing.unit,
+		marginTop: theme.spacing.unit,
+		marginBottom: theme.spacing.unit,
+		marginLeft: 0,
+		marginRight: 0,
 	},
 	bullet: {
     display: 'inline-block',
@@ -60,7 +63,11 @@ const styles = theme => ({
 	},
 	card: {
 		marginBottom: theme.spacing.unit,
-  },
+	},
+	textField: {
+		marginTop: theme.spacing.unit,
+		marginBottom: theme.spacing.unit,
+	},
 });
 
 class CommentComponent extends React.Component {
@@ -72,7 +79,7 @@ class CommentComponent extends React.Component {
 	state = { expanded: false };
 
   handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
+		this.setState(state => ({ expanded: !state.expanded }));
 	};
 
 	render() {
@@ -81,46 +88,31 @@ class CommentComponent extends React.Component {
 		const comments = this.props.comments;
 
 		const commentsCard = comments.map((item) => {
-			return (
-				<Card className={classes.card} key={Math.random().toString(36).substr(2, 9)}>
-					<CardContent>
-						<Typography variant="subtitle2" color="textSecondary">
-							{item.author} {bull} {item.date}
-						</Typography>
-						<Typography variant="body1">
-							{item.content}
-						</Typography>
-					</CardContent>
-				</Card>
-			);
+			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/>);
 		})
 
 		return(
 			<div className={classes.root}>
-				<TextField
-					id="outlined-multiline-flexible"
-					label="Commenter"
-					multiline
-					rows="3"
-					value={this.state.multiline}
-					// onChange={this.handleChange('multiline')}
-					className={classes.textField}
-					fullWidth
-					margin="dense"
-					variant="outlined"
-				/>
-				<Grid container justify="flex-end">
-					<Button variant="contained" color="primary" className={classes.button}>
-						Commenter
-						{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
-						<SendIcon className={classes.rightIcon}/>
-					</Button>
-				</Grid>
-				<Divider variant="middle" className={classes.divider}/>
-				<Typography variant="subtitle1" gutterBottom>
-					Commentaires
-				</Typography>
-				{commentsCard}
+					<TextField
+						id="outlined-multiline-flexible"
+						label="Commenter"
+						multiline
+						rows="3"
+						value={this.state.multiline}
+						// onChange={this.handleChange('multiline')}
+						className={classes.textField}
+						fullWidth
+						variant="outlined"
+					/>
+					<Grid container justify="flex-end">
+						<Button variant="contained" color="primary" className={classes.button}>
+							Commenter
+							{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
+							<SendIcon className={classes.rightIcon}/>
+						</Button>
+					</Grid>
+					<Divider variant="middle" className={classes.divider}/>
+					{commentsCard}
 			</div>
 		)
 	}
