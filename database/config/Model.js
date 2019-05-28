@@ -1,11 +1,22 @@
+import {firestore} from "../../lib/firebase";
+
 export default class Model {
     fillable = [];
+    collectionName;
 
-    constructor(data, defaultValues = {}, fillable = []) {
-        this.fill(defaultValues);
+    constructor(data, documentId, defaultValues = {}, fillable = []) {
+        this.defaultValues = defaultValues;
+        this.resetToDefault();
+        this.documentId = documentId;
         this.fillable = fillable;
         this.fill(data);
         this.clearAfterConstructor();
+    }
+
+    resetToDefault() {
+        Object.entries(this.defaultValues).forEach(([key, value]) => {
+            this[key] = value;
+        });
     }
 
     fill(data) {
@@ -14,6 +25,25 @@ export default class Model {
                 this[key] = value;
             }
         );
+    }
+
+    save() {
+        if(this.documentId) {
+            return firestore.collection(this.collectionName).doc(this.documentId).set(this.getData());
+        } else {
+            let newModel = firestore.collection(this.collectionName).doc();
+            return newModel.set(this.getData());
+        }
+    }
+
+    getData() {
+        let ret = {};
+        this.fillable.forEach((e) => {
+            if(typeof this[e] !== 'undefined') {
+                ret[e] = this[e];
+            }
+        });
+        return ret;
     }
 
     clearAfterConstructor() {

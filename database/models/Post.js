@@ -1,28 +1,27 @@
 import Model from "../config/Model";
-import {firestore} from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
-    comments: [],
-    content: null,
     created: null,
     creator: null,
-    downvotes: 0,
-    upvotes: 0,
+    sub: null,
+    title: null,
     type: null,
+    content: null,
 };
 
 const FILLABLE = [
-    "comments",
-    "content",
     "created",
     "creator",
-    "downvotes",
-    "upvotes",
+    "sub",
+    "title",
     "type",
+    "content"
 ];
 
 export default class Post extends Model {
-    constructor(data = {}) {
-        super(data, DEFAULT_VALUES, FILLABLE);
+    collectionName = "posts";
+
+    constructor(data = {}, documentId = null) {
+        super(data, documentId, DEFAULT_VALUES, FILLABLE);
     }
 }

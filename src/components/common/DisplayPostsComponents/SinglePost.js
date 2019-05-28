@@ -39,7 +39,7 @@ class SinglePost extends React.Component {
                             case TYPE_TEXT:
                                 return  <p>{this.props.post.content}</p>
                             case TYPE_IMAGE:
-                                return <Image post={this.props.post}></Image>
+                                return <Image post={this.props.post}/>
                             case TYPE_LINK:
                                 return  <a href={this.props.post.content}>{this.props.post.title}</a>
                             case TYPE_VIDEO:

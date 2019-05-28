@@ -28,6 +28,10 @@ class Image extends React.Component {
         }
     }
 
+    componentDidMount() {
+        window.addEventListener("resize", this.onResize);
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -36,15 +40,19 @@ class Image extends React.Component {
             dimensions: {
                 height: 0,
                 width: 0
-            }
+            },
+            imageHeight: 200
         }
         this.onImgLoad = this.onImgLoad.bind(this);
-
+        this.onResize = this.onResize.bind(this);
     }
 
     onImgLoad({target:img}) {
-        this.setState({dimensions:{height:img.naturalHeight,
-                                   width:img.naturalWidth}});
+        this.setState({imageHeight: img.height});
+    }
+
+    onResize() {
+        this.setState({imageHeight: document.getElementById("image").height})
     }
 
     render() {
@@ -52,13 +60,13 @@ class Image extends React.Component {
 
         return(
             <div>
-                <Collapse in={this.state.isShown} collapsedHeight={Math.min(this.state.maxImageHeight, this.state.dimensions.height)+'px'}>
+                <Collapse in={this.state.isShown} collapsedHeight={Math.min(this.state.maxImageHeight, this.state.imageHeight)+'px'}>
                     <div>
-                        <img onLoad={this.onImgLoad} className={classes.img} src={this.props.post.content}/>
+                        <img onLoad={this.onImgLoad} className={classes.img} src={this.props.post.content} id="image"/>
                     </div>
                 </Collapse>
                 {(() => {
-                    if(this.state.dimensions.height > this.state.maxImageHeight)
+                    if(this.state.imageHeight > this.state.maxImageHeight)
                         return  <div>
                                     <Fab size="small" className={classes.headerIconDiv} color="primary" aria-label="Add" onClick={() => { this.setState({isShown: !this.state.isShown}) }}>
                                     {(() => {
