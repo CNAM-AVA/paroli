@@ -9,19 +9,26 @@ import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
 import { Grid, Paper, Icon, Button } from '@material-ui/core';
 import CommentComponent from '../common/CommentComponent';
-import VoteComponent from '../common/VoteComponent';
+import PostCardComponent from '../common/PostCardComponent';
+import pink from '@material-ui/core/colors/pink';
 
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
 	},
 	paper: {
-  	padding: theme.spacing.unit * 2,
-    // margin: 'auto',
-    // maxWidth: 500,
-  },
+		padding: theme.spacing.unit * 2,
+		// margin: 'auto',
+		// maxWidth: 500,
+	},
 	cardsContainer: {
 		marginTop: 20
+	},
+	cardHeaderCom: {
+		backgroundColor: pink[500],
+	},
+	typoHeader: {
+		color: 'white',
 	},
 	button: {
 		margin: theme.spacing.unit,
@@ -29,84 +36,81 @@ const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit,
 	},
-	
 	control: {
 		padding: theme.spacing.unit * 2,
 	},
 	card: {
-  },
-  media: {
+		color: 'secondary',
+	},
+	media: {
 		marginTop: 0,
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		width: 500,
-    height: 700,
-  },
-  actions: {
-    display: 'flex',
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
+		height: 700,
+	},
+	actions: {
+		display: 'flex',
+	},
+	expand: {
+		transform: 'rotate(0deg)',
+		marginLeft: 'auto',
+		transition: theme.transitions.create('transform', {
+		duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+    	transform: 'rotate(180deg)',
+	},
+	container: {
+		alignItems:'center',
+		justify: 'center',
+		marginTop: theme.spacing.unit * 4,
+		marginBottom: theme.spacing.unit * 4,
 	},
 });
-
-function DisplayMedia(props){
-	const media = props.media;
-	const content = props.content;
-	const classes = props.className;
-
-	switch(media){
-		case 'img': return (
-			<Grid container justify="center">
-				<img className={classes.media} src={content} title={content}/>
-			</Grid>
-		);
-		case 'video': return (
-			<Grid container justify="center">
-				<video className={classes.media} autoPlay controls loop>
-					<source src={content} type="video/mp4"/>
-					Your browser does not support the video tag
-				</video>
-			</Grid>
-		);
-		case 'video': return (
-			<video autoPlay controls loop>
-				<source src={content} type="video/mp4"/>
-				Your browser does not support the video tag
-			</video>
-		);
-		case 'link': return (
-			<CardContent className={classes.cardContent2}>
-				<Typography variant="subtitle1">
-					<Link href={content}>{content}</Link>
-				</Typography>
-			</CardContent>
-		);
-		default : return (
-			<CardContent className={classes.cardContent2}>
-				<Typography variant="subtitle1">
-					{content}
-				</Typography>
-			</CardContent>
-		);
-	}
-}
 
 class PostComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			post: {title : 'Titre', author: 'John Doe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: '??/??/????'},
-			comments: Array(9).fill(
-				{author: 'John Doe', date: '??/??/????', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.'},
+			post: {title : 'Titre', author: 'u/johnDoe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: 'il y a 5 min.', sub:'p/test'},
+			comments: Array(4).fill(
+				{
+					id: 6516,
+					author: 'r/johnDoe', 
+					date: '5 min. ago', 
+					content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, \
+					dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. \
+					Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
+					subComments: [
+						{
+							id: 16516,
+							author: 'r/toto',
+							date: '3 min. ago', 
+							content: 'a sub-comment',
+							subComments: [
+								{
+									id: 7417,
+									author: 'r/titi',
+									date: '2 min. ago', 
+									content: 'a sub-sub-comment',
+									subComments: [
+									],
+								}
+							]
+						},
+						{
+							id: 59632,
+							author: 'r/tata',
+							date: '3 min. ago', 
+							content: 'a second sub-comment',
+							subComments: [
+							],
+						},
+					]
+				},
 			)
 		}
 	}
@@ -121,49 +125,29 @@ class PostComponent extends React.Component {
 		const comments = this.state.comments;
 
 		return(
-			<div className={classes.root}>
-					<Grid container>
-						<Grid item xs>
-							{/* <Paper className={classes.paper}>
-							</Paper> */}
-						</Grid>
-						<Grid item xs={9}>
-							<Card className={classes.card}>
-									<CardHeader
-										avatar={
-											<VoteComponent/>
-										}
-										title={
-											<div>
-												<Typography variant="subtitle2" color="textSecondary">
-												{'Posté par '+post.author+' le '+post.date}
-												</Typography>
-												<Typography variant="h5" gutterBottom>
-													{post.title}
-												</Typography>
-											</div>
-										}
-										subheader={
-											<DisplayMedia className={classes} media={post.media} content={post.content}/>											
-										}
-									/>
-									<CardContent>
-										<Button color="default" className={classes.button}>
-											<CommentIcon className={classes.leftIcon}/> ??? Comments
-										</Button>
-										<Button className={classes.button}>
-											<ShareIcon className={classes.leftIcon}/>Share
-										</Button>
-										<CommentComponent comments={comments}/>
-									</CardContent>
-								</Card>
-						</Grid>
-						<Grid item xs>
-							{/* <Paper className={classes.paper}>
-							</Paper> */}
-						</Grid>
-					</Grid>
-			</div>
+			<Grid container className={classes.root} justify={"center"}>
+				<Grid item xs={8}>
+					<PostCardComponent post={post}/>
+				</Grid>
+				<Grid container item xs={8} >
+				<Grid item xs={1}></Grid>
+				<Grid item xs={11}>
+					<Card className={classes.card}>
+						<CardHeader className={classes.cardHeaderCom}
+						 title={
+							<Typography className={classes.typoHeader} variant="h6" >
+								{'Comments'}
+							</Typography>
+						 }>
+						</CardHeader>
+						<CardContent>
+							<CommentComponent comments={comments}/>
+						</CardContent>
+					</Card>
+				</Grid>
+				
+				</Grid>
+			</Grid>
 		)
 	}
 }
