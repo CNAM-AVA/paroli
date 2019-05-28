@@ -13,6 +13,7 @@ import SubRulesCard from '../src/components/sub/SubRulesCard';
 import HotSubs from '../src/components/common/HotSubs';
 import {firestore} from '../lib/firebase';
 import NoResultsFound from '../src/components/common/NoResultsFound';
+import SubType from '../database/models/Sub';
 
 const styles = theme => ({
     cardsContainer: {
@@ -72,11 +73,11 @@ class Sub extends React.Component {
             isLoading: true
         };
 
-        let subsRef = firestore.collection("subs").where('name', '==', this.props.query.slug).limit(1);
+        let subsRef = SubType.getByName(this.props.query.slug);
 
         subsRef.get().then((r) => {
             r.forEach((e) => {
-                this.setState({sub: e.data()},() => {
+                this.setState({sub: new SubType(e.data())},() => {
                     document.title = this.state.sub.pageTitle || this.state.sub.name;
                 })
             })
@@ -93,7 +94,7 @@ class Sub extends React.Component {
         return (
             <Layout>
                 <SubNavbar>
-                    <DisplayFilter></DisplayFilter>
+                    <DisplayFilter/>
                 </SubNavbar>
                 <Grid container justify="center" className={classes.cardsContainer}>
                     <Grid item xs={10}>
@@ -101,24 +102,24 @@ class Sub extends React.Component {
                             this.state.isLoading
                                 ? <Grid container justify="center" spacing={24}>
                                     <Grid item xs={8}>
-                                        <Loading></Loading>
+                                        <Loading/>
                                     </Grid>
                                 </Grid>
                                 : this.state.sub
                                 ? <Grid container justify="center" spacing={24}>
                                     <Grid item xs={6}>
-                                        <DisplayPosts posts={this.state.posts}></DisplayPosts>
+                                        <DisplayPosts posts={this.state.posts}/>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <SubDescriptionCard sub={this.state.sub}></SubDescriptionCard>
-                                        <Advertisement></Advertisement>
+                                        <SubDescriptionCard sub={this.state.sub}/>
+                                        <Advertisement/>
                                         {
                                             this.state.sub.rules
-                                                ? <SubRulesCard sub={this.state.sub}></SubRulesCard>
+                                                ? <SubRulesCard sub={this.state.sub}/>
                                                 : null
                                         }
-                                        <HotSubs></HotSubs>
-                                        <Advertisement></Advertisement>
+                                        <HotSubs/>
+                                        <Advertisement/>
                                     </Grid>
                                 </Grid>
                                 : <Grid container justify="center" spacing={24}>
