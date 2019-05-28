@@ -49,6 +49,10 @@ class SubCreationModal extends React.Component {
         .then(() => {
             console.log('validated');
             this.props.visibilityHandler();
+            this.setState({
+                display: false
+            })
+            window.location.replace(`/p/${this.state.name}`);
         })
         .catch((e) => {
             console.log('catched');
