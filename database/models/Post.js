@@ -2,29 +2,27 @@ import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
+    comments: [],
+    content: null,
     created: null,
     creator: null,
-    mods: [],
-    name: null,
-    pageTitle: null,
-    posts: []
+    downvotes: 0,
+    upvotes: 0,
+    type: null,
 };
 
 const FILLABLE = [
+    "comments",
+    "content",
     "created",
     "creator",
-    "mods",
-    "name",
-    "pageTitle",
-    "posts"
+    "downvotes",
+    "upvotes",
+    "type",
 ];
 
-export default class Sub extends Model {
+export default class Post extends Model {
     constructor(data = {}) {
         super(data, DEFAULT_VALUES, FILLABLE);
-    }
-
-    static getByName(name) {
-        return firestore.collection("subs").where('name', '==', name).limit(1).get();
     }
 }
