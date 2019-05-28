@@ -1,8 +1,10 @@
 import React from 'react'
 import Layout from '../src/components/common/Layout';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, withStyles, Button } from '@material-ui/core';
 import Router from 'next/router'
 import firebase from '../lib/firebase'
+import { topMargin } from '../lib/constants'
+import LoginModal from '../src/components/common/LoginModal';
 
 
 /**
@@ -18,38 +20,88 @@ import firebase from '../lib/firebase'
  * 
  * Reference: https://firebase.google.com/docs/auth/admin
  */
-export default class Parameters extends React.Component {
+
+const styles = theme => ({
+    root: {
+        paddingTop: theme.spacing.unit * topMargin
+    },
+    redirectRoot: {
+        textAlign: 'center'
+    },
+    loginButton: {
+        marginTop: 15
+    }
+})
+
+class Parameters extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            showLoginModal: false
         };
+
+        this.visibilityHandler = this.visibilityHandler.bind(this);
     }
 
-    static async getInitialProps(req) {
-        // This code is running server side
-        // if (window === 'undefined') {
-        //     // Require firebase admin and check the user token
-        // } else {
-        //     if (!firebase.auth().currentUser) {
-        //         window.location.replace('/');
-        //     }
-        // }
+    visibilityHandler() {
+        this.setState(prevState => ({
+            showLoginModal: !prevState.showLoginModal
+        }))
+    }
 
-        return {};
+    renderRedirectMessage() {
+
+        const { classes } = this.props;
+
+        return(
+            <Grid container alignItems={'center'} className={classes.redirectRoot}>
+                <Grid item xs={12}>
+                    <Typography variant='body2'>
+                        Connectez-vous pour accéder à cette page ou retournez à l'accueil.
+                    </Typography>
+                    <Button
+                        onClick={() => this.visibilityHandler()}
+                        className={classes.loginButton}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Connexion
+                    </Button>
+                    <LoginModal visible={this.state.showLoginModal} visibilityHandler={this.visibilityHandler}/>
+                </Grid>
+            </Grid>
+        )
+    }
+
+    renderParameters() {
+        const { classes } = this.props;
+
+        return(
+            <Typography variant='body1'>
+                Yes
+            </Typography>
+        )
     }
 
     render() {
+
+        const { classes } = this.props;
+
         return(
             <Layout>
-                <Grid container alignItems={"center"} justify={"center"}>
+                <Grid container alignItems={"center"} justify={"center"} className={classes.root}>
                     <Grid item xs={6}>
-                        <Typography variant={"body2"}>
-                            Paramètres
-                        </Typography>
+                        {
+                            !firebase.auth().currentUser
+                            ? this.renderRedirectMessage()
+                            : this.renderParameters()
+                        }
                     </Grid>
                 </Grid>
             </Layout>
         );
     }
 }
+
+export default withStyles(styles)(Parameters);

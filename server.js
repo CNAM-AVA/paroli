@@ -14,12 +14,6 @@ app.prepare()
         if (dev) server.use(require('express-naked-redirect')(true))
         server.use(handle);
 
-        server.get('parameters', (req, res) => {
-
-
-            return handle(req, res)
-        })
-
         server.get('*', (req, res) => {
 
             return handle(req, res)
