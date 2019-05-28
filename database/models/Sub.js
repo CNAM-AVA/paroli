@@ -27,7 +27,7 @@ export default class Sub extends Model {
     }
 
     static getByName(name) {
-        return firestore.collection("subs").where('name', '==', name).limit(1);
+        return firestore.collection("subs").where('name', '==', name).limit(1).get();
     }
 
     getDisplayName() {
