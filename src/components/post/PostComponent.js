@@ -126,12 +126,12 @@ class PostComponent extends React.Component {
 
 		return(
 			<Grid container className={classes.root} justify={"center"}>
-				<Grid item xs={8}>
+				<Grid item md={8} xs={12}>
 					<PostCardComponent post={post}/>
 				</Grid>
-				<Grid container item xs={8} >
-				<Grid item xs={1}></Grid>
-				<Grid item xs={11}>
+				<Grid container item md={8} xs={12} >
+				<Grid item md={1} xs={0}></Grid>
+				<Grid item md={11} xs={12}>
 					<Card className={classes.card}>
 						<CardHeader className={classes.cardHeaderCom}
 						 title={

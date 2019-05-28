@@ -42,6 +42,8 @@ const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit,
 	},
+	vote: {
+	},
 });
 
 function DisplayMedia(props){
@@ -98,7 +100,7 @@ class PostCardComponent extends React.Component {
 
 		return(
 			<Grid container className={classes.container}>
-				<Grid item xs={1}>
+				<Grid item xs={1} className={classes.vote}>
 					<VoteComponent/>
 				</Grid>
 				<Grid item xs={11}>

@@ -16,6 +16,9 @@ const styles = theme => ({
 		flexDirection: 'column',
 		justify: 'flex-start',
 	},
+	vote: {
+		padding: '7px'
+	}
 });
 
 class CommentComponent extends React.Component {
