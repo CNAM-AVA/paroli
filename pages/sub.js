@@ -75,9 +75,9 @@ class Sub extends React.Component {
 
         let subsRef = SubType.getByName(this.props.query.slug);
 
-        subsRef.get().then((r) => {
+        subsRef.then((r) => {
             r.forEach((e) => {
-                this.setState({sub: new SubType(e.data())},() => {
+                this.setState({sub: new SubType(e.data(), e.id)},() => {
                     document.title = this.state.sub.pageTitle || this.state.sub.name;
                 })
             })

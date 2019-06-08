@@ -7,7 +7,6 @@ const DEFAULT_VALUES = {
     mods: [],
     name: null,
     pageTitle: null,
-    posts: []
 };
 
 const FILLABLE = [
@@ -16,15 +15,22 @@ const FILLABLE = [
     "mods",
     "name",
     "pageTitle",
-    "posts"
+    "posts",
+    "subscribers",
 ];
 
 export default class Sub extends Model {
-    constructor(data = {}) {
-        super(data, DEFAULT_VALUES, FILLABLE);
+    collectionName = "subs";
+
+    constructor(data = {}, documentId = null) {
+        super(data, documentId, DEFAULT_VALUES, FILLABLE);
     }
 
     static getByName(name) {
-        return firestore.collection("subs").where('name', '==', name).limit(1);
+        return firestore.collection("subs").where('name', '==', name).limit(1).get();
+    }
+
+    getDisplayName() {
+        return "p/"+this.name;
     }
 }
