@@ -12,6 +12,7 @@ import CommentComponent from '../common/CommentComponent';
 import PostCardComponent from '../common/PostCardComponent';
 import pink from '@material-ui/core/colors/pink';
 
+
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
@@ -75,7 +76,6 @@ class PostComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			post: {title : 'Titre', author: 'u/johnDoe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: 'il y a 5 min.', sub:'p/test', upvotes: 1000, downvotes: 20},
 			comments: Array(4).fill(
 				{
 					id: 6516,
@@ -88,34 +88,34 @@ class PostComponent extends React.Component {
 					downvotes: 3,
 					subComments: [],
 				},
-			)
+			),
 		}
 		this.upvote = this.upvote.bind(this);
 		this.downvote = this.downvote.bind(this);
 	}
 
+	
+
 	upvote() {
-		let post = {...this.state.post};
+		let post = {...this.props.post};
 		post.upvotes = post.upvotes + 1;
 		this.setState({post : post});
 		console.log('up');
 	}
 
 	downvote() {
-		let post = {...this.state.post};
+		let post = {...this.props.post};
 		post.downvotes = post.downvotes + 1;
 		this.setState({post : post});
 		console.log('down');
 	}
 
-	handleExpandClick = () => {
-		this.setState(state => ({ expanded: !state.expanded }));
-	};
-
 	render() {
 		const {classes} = this.props;
-		const post = this.state.post;
+		const post = this.props.post;
 		const comments = this.state.comments;
+
+		console.log('post : ', post);
 
 		return(
 			<Grid container className={classes.root} justify={"center"}>
@@ -134,7 +134,7 @@ class PostComponent extends React.Component {
 							}>
 							</CardHeader>
 							<CardContent>
-								<CommentComponent comments={comments}/>
+								<CommentComponent comments={comments} post={post}/>
 							</CardContent>
 						</Card>
 					</Grid>

@@ -92,11 +92,14 @@ class PostCardComponent extends React.Component {
 		super(props);
 	}
 
+
+
 	render() {
 		const {classes} = this.props;
 		const post = this.props.post;
+		const sub = post.sub;
 
-		// console.log(this.props);
+		console.log('card sub : ', sub);
 
 		return(
 			<Grid container className={classes.container}>
@@ -116,7 +119,7 @@ class PostCardComponent extends React.Component {
 														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
 													</Grid>
 													<Grid item>
-														<Typography className={classes.typoHeader}>{post.sub+' - '+post.date}</Typography>
+														<Typography className={classes.typoHeader}>{sub +' - '+ post.created}</Typography>
 													</Grid>
 												</Grid>
 											</Grid>
@@ -124,7 +127,7 @@ class PostCardComponent extends React.Component {
 											<Grid item>
 												<Grid container alignItems={'center'}>
 													<Grid item>
-														<Typography className={classes.typoHeader}>{post.author}</Typography>
+														<Typography className={classes.typoHeader}>{post.creator}</Typography>
 													</Grid>
 													<Grid item>
 														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
