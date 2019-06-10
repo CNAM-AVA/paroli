@@ -12,6 +12,7 @@ import CommentComponent from '../common/CommentComponent';
 import PostCardComponent from '../common/PostCardComponent';
 import pink from '@material-ui/core/colors/pink';
 
+
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
@@ -75,77 +76,68 @@ class PostComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			post: {title : 'Titre', author: 'u/johnDoe', media: 'img', content : '/static/img/landscape-img-test.jpg', date: 'il y a 5 min.', sub:'p/test'},
-			comments: Array(4).fill(
-				{
-					id: 6516,
-					author: 'r/johnDoe', 
-					date: '5 min. ago', 
-					content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, \
-					dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. \
-					Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-					subComments: [
-						{
-							id: 16516,
-							author: 'r/toto',
-							date: '3 min. ago', 
-							content: 'a sub-comment',
-							subComments: [
-								{
-									id: 7417,
-									author: 'r/titi',
-									date: '2 min. ago', 
-									content: 'a sub-sub-comment',
-									subComments: [
-									],
-								}
-							]
-						},
-						{
-							id: 59632,
-							author: 'r/tata',
-							date: '3 min. ago', 
-							content: 'a second sub-comment',
-							subComments: [
-							],
-						},
-					]
-				},
-			)
+			// comments: Array(4).fill(
+			// 	{
+			// 		id: 6516,
+			// 		author: 'r/johnDoe', 
+			// 		date: '5 min. ago', 
+			// 		content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, \
+			// 		dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. \
+			// 		Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
+			// 		upvotes: 10,
+			// 		downvotes: 3,
+			// 		subComments: [],
+			// 	},
+			// ),
 		}
+		this.upvote = this.upvote.bind(this);
+		this.downvote = this.downvote.bind(this);
 	}
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
+	
+
+	upvote() {
+		let post = {...this.props.post};
+		post.upvotes = post.upvotes + 1;
+		this.setState({post : post});
+		console.log('up');
+	}
+
+	downvote() {
+		let post = {...this.props.post};
+		post.downvotes = post.downvotes + 1;
+		this.setState({post : post});
+		console.log('down');
+	}
 
 	render() {
 		const {classes} = this.props;
-		const post = this.state.post;
-		const comments = this.state.comments;
+		const post = this.props.post;
+		const comments = this.props.comments;
+
+		console.log('post : ', post);
 
 		return(
 			<Grid container className={classes.root} justify={"center"}>
-				<Grid item xs={8}>
-					<PostCardComponent post={post}/>
+				<Grid item md={8} xs={12}>
+					<PostCardComponent post={post} upvote={this.upvote} downvote={this.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
 				</Grid>
-				<Grid container item xs={8} >
-				<Grid item xs={1}></Grid>
-				<Grid item xs={11}>
-					<Card className={classes.card}>
-						<CardHeader className={classes.cardHeaderCom}
-						 title={
-							<Typography className={classes.typoHeader} variant="h6" >
-								{'Comments'}
-							</Typography>
-						 }>
-						</CardHeader>
-						<CardContent>
-							<CommentComponent comments={comments}/>
-						</CardContent>
-					</Card>
-				</Grid>
-				
+				<Grid container item md={8} xs={12} >
+					<Grid item md={1}></Grid>
+					<Grid item md={11} xs={12}>
+						<Card className={classes.card}>
+							<CardHeader className={classes.cardHeaderCom}
+							title={
+								<Typography className={classes.typoHeader} variant="h6" >
+									{'Comments'}
+								</Typography>
+							}>
+							</CardHeader>
+							<CardContent>
+								<CommentComponent comments={comments} post={post}/>
+							</CardContent>
+						</Card>
+					</Grid>
 				</Grid>
 			</Grid>
 		)

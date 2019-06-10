@@ -29,6 +29,22 @@ class CommentCardComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.upvote = this.upvote.bind(this);
+		this.downvote = this.downvote.bind(this);
+	}
+
+	upvote(){
+		let comment = this.props.comment;
+		comment.upvotes = comment.upvotes + 1;
+		this.setState({comment : comment});
+		console.log('up');
+	}
+
+	downvote(){
+		let comment = this.props.comment;
+		comment.downvotes = comment.downvotes + 1;
+		this.setState({comment : comment});
+		console.log('down');
 	}
 
 	state = { expanded: false };
@@ -49,11 +65,11 @@ class CommentCardComponent extends React.Component {
 			<Grid container>
 					<Grid container>
 						<Grid item xs={1}>
-							<VoteComponent className={classes.voteComment}/>
+							<VoteComponent className={classes.voteComment} upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} />
 						</Grid>
 						<Grid item xs={11}>
 							<Typography variant="subtitle2" color="textSecondary">
-								{comment.author} {bull} {comment.date}
+								{comment.creator} {bull} {comment.created}
 							</Typography>
 							<Typography variant="body1">
 								{comment.content}

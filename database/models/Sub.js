@@ -26,6 +26,10 @@ export default class Sub extends Model {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);
     }
 
+    static getById(id) {
+        return firestore.collection("subs").doc(id).get();
+    }
+
     static getByName(name) {
         return firestore.collection("subs").where('name', '==', name).limit(1).get();
     }

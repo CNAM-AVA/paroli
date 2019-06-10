@@ -92,14 +92,19 @@ class PostCardComponent extends React.Component {
 		super(props);
 	}
 
+
+
 	render() {
 		const {classes} = this.props;
-		const post = this.props.post
+		const post = this.props.post;
+		const sub = post.sub;
+
+		console.log('card sub : ', sub);
 
 		return(
 			<Grid container className={classes.container}>
-				<Grid item xs={1}>
-					<VoteComponent/>
+				<Grid item xs={1} className={classes.vote}>
+					<VoteComponent upvote={this.props.upvote} downvote={this.props.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
 				</Grid>
 				<Grid item xs={11}>
 					<Card className={classes.card}>
@@ -114,7 +119,7 @@ class PostCardComponent extends React.Component {
 														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
 													</Grid>
 													<Grid item>
-														<Typography className={classes.typoHeader}>{post.sub+' - '+post.date}</Typography>
+														<Typography className={classes.typoHeader}>{sub +' - '+ post.created}</Typography>
 													</Grid>
 												</Grid>
 											</Grid>
@@ -122,7 +127,7 @@ class PostCardComponent extends React.Component {
 											<Grid item>
 												<Grid container alignItems={'center'}>
 													<Grid item>
-														<Typography className={classes.typoHeader}>{post.author}</Typography>
+														<Typography className={classes.typoHeader}>{post.creator}</Typography>
 													</Grid>
 													<Grid item>
 														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
@@ -137,7 +142,7 @@ class PostCardComponent extends React.Component {
 									</div>
 								}
 							/>
-							<CardContent>
+							<CardContent style={{paddingBottom: 0}}>
 								<DisplayMedia className={classes} media={post.media} content={post.content}/>
 								<Button color="default" className={classes.button}>
 									<CommentIcon className={classes.leftIcon}/> ??? Comments
