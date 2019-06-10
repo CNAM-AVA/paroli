@@ -1,4 +1,5 @@
 import Model from "../config/Model";
+import {firestore} from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
     created: null,
@@ -23,5 +24,13 @@ export default class Comment extends Model {
 
     constructor(data = {}, documentId = null) {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);
+    }
+
+    static getById(id) {
+        return firestore.collection("comments").doc(id).get();
+    }
+
+    static getByPost(postId) {
+        return firestore.collection("comments").where('post', '==', postId).orderBy('created', 'desc').get();
     }
 }

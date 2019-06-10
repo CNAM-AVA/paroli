@@ -69,7 +69,7 @@ class CommentCardComponent extends React.Component {
 						</Grid>
 						<Grid item xs={11}>
 							<Typography variant="subtitle2" color="textSecondary">
-								{comment.author} {bull} {comment.date}
+								{comment.creator} {bull} {comment.created}
 							</Typography>
 							<Typography variant="body1">
 								{comment.content}

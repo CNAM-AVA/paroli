@@ -76,19 +76,19 @@ class PostComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			comments: Array(4).fill(
-				{
-					id: 6516,
-					author: 'r/johnDoe', 
-					date: '5 min. ago', 
-					content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, \
-					dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. \
-					Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-					upvotes: 10,
-					downvotes: 3,
-					subComments: [],
-				},
-			),
+			// comments: Array(4).fill(
+			// 	{
+			// 		id: 6516,
+			// 		author: 'r/johnDoe', 
+			// 		date: '5 min. ago', 
+			// 		content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, \
+			// 		dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. \
+			// 		Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
+			// 		upvotes: 10,
+			// 		downvotes: 3,
+			// 		subComments: [],
+			// 	},
+			// ),
 		}
 		this.upvote = this.upvote.bind(this);
 		this.downvote = this.downvote.bind(this);
@@ -113,7 +113,7 @@ class PostComponent extends React.Component {
 	render() {
 		const {classes} = this.props;
 		const post = this.props.post;
-		const comments = this.state.comments;
+		const comments = this.props.comments;
 
 		console.log('post : ', post);
 

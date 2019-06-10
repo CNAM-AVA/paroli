@@ -112,10 +112,13 @@ class CommentComponent extends React.Component {
 		const {classes} = this.props;
 		const bull = <span className={classes.bullet}>•</span>;
 		const comments = this.props.comments;
+		console.log('toto: ', comments);
 
 		const commentsCard = comments.map((item) => {
 			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/>);
-		})
+		});
+
+		console.log(commentsCard);
 
 		return(
 			<div className={classes.root}>
@@ -138,7 +141,11 @@ class CommentComponent extends React.Component {
 						</Button>
 					</Grid>
 					<Divider variant="middle" className={classes.divider}/>
-					{commentsCard}
+						{ commentsCard.length 
+							? (commentsCard)
+							: <center><Typography variant="body1" style={{margin: '30px'}}>Be the first to comment !</Typography></center> 
+						}
+					
 			</div>
 		)
 	}
