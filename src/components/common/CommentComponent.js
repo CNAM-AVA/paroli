@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader, Divider } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CommentCardComponent from './CommentCardComponent';
+import Comment from "../../../database/models/Comment";
+import firebase from "../../../lib/firebase";
 
 
 const styles = theme => ({
@@ -74,22 +76,49 @@ class CommentComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			multiline : '',
+		}
+		this.handleMultiline = this.handleMultiline.bind(this);
 	}
 
-	state = { expanded: false };
+	componentDidMount = async () => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user)
+                this.setState({uid: user.uid})
+            else
+                this.setState({uid: null})
+        })
+    }
 
-  handleExpandClick = () => {
-		this.setState(state => ({ expanded: !state.expanded }));
-	};
+	handleMultiline(event) {
+        this.setState({multiline: event.target.value});
+    }
+	
+	createComment() {
+        if (this.state.uid) {
+            let comment = new Comment({
+                creator: this.state.uid,
+				created: new Date(),
+				post: this.props.post.id,
+                content: this.state.multiline
+            });
+			comment.save();
+			this.setState({multiline: ''});
+        }
+    }
 
 	render() {
 		const {classes} = this.props;
 		const bull = <span className={classes.bullet}>•</span>;
 		const comments = this.props.comments;
+		console.log('toto: ', comments);
 
 		const commentsCard = comments.map((item) => {
 			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/>);
-		})
+		});
+
+		console.log(commentsCard);
 
 		return(
 			<div className={classes.root}>
@@ -99,20 +128,24 @@ class CommentComponent extends React.Component {
 						multiline
 						rows="3"
 						value={this.state.multiline}
-						// onChange={this.handleChange('multiline')}
+						onChange={this.handleMultiline}
 						className={classes.textField}
 						fullWidth
 						variant="outlined"
 					/>
 					<Grid container justify="flex-end">
-						<Button variant="contained" color="primary" className={classes.button}>
+						<Button variant="contained" color="primary" className={classes.button} onClick={() => this.createComment()}>
 							Commenter
 							{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
 							<SendIcon className={classes.rightIcon}/>
 						</Button>
 					</Grid>
 					<Divider variant="middle" className={classes.divider}/>
-					{commentsCard}
+						{ commentsCard.length 
+							? (commentsCard)
+							: <center><Typography variant="body1" style={{margin: '30px'}}>Be the first to comment !</Typography></center> 
+						}
+					
 			</div>
 		)
 	}
