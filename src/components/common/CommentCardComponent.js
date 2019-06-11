@@ -94,6 +94,8 @@ class CommentCardComponent extends React.Component {
 									<SendIcon className={classes.rightIcon}/>
 								</Button>
 							</Collapse>
+							{/* Reprendre ici (lol) */}
+							{/* <CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/> */}
 						</Grid>
 					</Grid>
 			</Grid>

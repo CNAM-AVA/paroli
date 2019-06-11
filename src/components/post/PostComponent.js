@@ -115,8 +115,6 @@ class PostComponent extends React.Component {
 		const post = this.props.post;
 		const comments = this.props.comments;
 
-		console.log('post : ', post);
-
 		return(
 			<Grid container className={classes.root} justify={"center"}>
 				<Grid item md={8} xs={12}>
@@ -134,7 +132,7 @@ class PostComponent extends React.Component {
 							}>
 							</CardHeader>
 							<CardContent>
-								<CommentComponent comments={comments} post={post}/>
+								<CommentComponent comments={comments} post={post} event={this.props.event}/>
 							</CardContent>
 						</Card>
 					</Grid>

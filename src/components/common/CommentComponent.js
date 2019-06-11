@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader, Divider } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CommentCardComponent from './CommentCardComponent';
-import Comment from "../../../database/models/Comment";
 import firebase from "../../../lib/firebase";
 
 
@@ -95,30 +94,23 @@ class CommentComponent extends React.Component {
         this.setState({multiline: event.target.value});
     }
 	
-	createComment() {
-        if (this.state.uid) {
-            let comment = new Comment({
-                creator: this.state.uid,
-				created: new Date(),
-				post: this.props.post.id,
-                content: this.state.multiline
-            });
-			comment.save();
+	handleComment = () => {
+		if(this.state.uid){
+			this.props.event(this.state.multiline, this.state.uid);
 			this.setState({multiline: ''});
-        }
+		} else {
+			console.log('you must log in to comment !');
+		}
     }
 
 	render() {
 		const {classes} = this.props;
 		const bull = <span className={classes.bullet}>•</span>;
 		const comments = this.props.comments;
-		console.log('toto: ', comments);
 
 		const commentsCard = comments.map((item) => {
 			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/>);
 		});
-
-		console.log(commentsCard);
 
 		return(
 			<div className={classes.root}>
@@ -134,7 +126,7 @@ class CommentComponent extends React.Component {
 						variant="outlined"
 					/>
 					<Grid container justify="flex-end">
-						<Button variant="contained" color="primary" className={classes.button} onClick={() => this.createComment()}>
+						<Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleComment()}>
 							Commenter
 							{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
 							<SendIcon className={classes.rightIcon}/>
@@ -143,7 +135,7 @@ class CommentComponent extends React.Component {
 					<Divider variant="middle" className={classes.divider}/>
 						{ commentsCard.length 
 							? (commentsCard)
-							: <center><Typography variant="body1" style={{margin: '30px'}}>Be the first to comment !</Typography></center> 
+							: <center style={{margin: '30px'}}><Typography variant="title">No comments yet</Typography><Typography variant="body1">Be the first to comment !</Typography></center> 
 						}
 					
 			</div>

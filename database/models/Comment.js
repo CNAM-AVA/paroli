@@ -2,6 +2,7 @@ import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
+    parentId: null,
     created: null,
     creator: null,
     post: null,
@@ -11,6 +12,7 @@ const DEFAULT_VALUES = {
 };
 
 const FILLABLE = [
+    "parentId",
     "created",
     "creator",
     "post",
@@ -32,5 +34,13 @@ export default class Comment extends Model {
 
     static getByPost(postId) {
         return firestore.collection("comments").where('post', '==', postId).orderBy('created', 'desc').get();
+    }
+
+    static getSubComments(postId, commentId) {
+        return firestore.collection("comments")
+            .where('post', '==', postId)
+            .where('parentId', '==', commentId)
+            .orderBy('created', 'desc')
+            .get();
     }
 }

@@ -92,14 +92,10 @@ class PostCardComponent extends React.Component {
 		super(props);
 	}
 
-
-
 	render() {
 		const {classes} = this.props;
 		const post = this.props.post;
 		const sub = post.sub;
-
-		console.log('card sub : ', sub);
 
 		return(
 			<Grid container className={classes.container}>
