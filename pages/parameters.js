@@ -48,15 +48,34 @@ class Parameters extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user: null,
             showLoginModal: false,
             emailEdit: '',
             showEmailError: false,
             errorMessage: '',
-            currentEmail: firebase.auth().currentUser ? firebase.auth().currentUser.email : '',
-            showSnackBar: false
+            currentEmail: '',
+            showSnackBar: false,
+            password: '',
+            passwordConfirm: '',
+            passErrorMessage: '',
+            showPasswordError: false
         };
 
         this.visibilityHandler = this.visibilityHandler.bind(this);
+    }
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    user: user,
+                    currentEmail: user.email
+                })
+            }
+            else {
+                this.setState({ user: null })
+            }
+        })
     }
 
     visibilityHandler() {
@@ -66,7 +85,24 @@ class Parameters extends React.Component {
     }
 
     changePassword() {
-
+        if (this.state.password !== this.state.passwordConfirm) {
+            this.setState({
+                passErrorMessage: 'Les mots de passe ne correpondent pas.',
+                showPasswordError: true
+            })
+        } else {
+            this.state.user.updatePassword(this.state.passwordConfirm).then(() => {
+                this.setState(prevState => ({
+                    snackbarContent: 'Mot de passe mis à jours !',
+                    showSnackBar: true
+                }))
+            }).catch((error) => {
+                console.log(error);
+                this.setState({
+                    passErrorMessage: 'Une erreur est survenue'
+                })
+            });
+        }
     }
 
     changeEmail() {
@@ -126,7 +162,7 @@ class Parameters extends React.Component {
                 <Snackbar
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     open={this.state.showSnackBar}
-                    onClose={() => this.setState({showSnackBar: false})}
+                    onClose={() => this.setState({ showSnackBar: false })}
                     ContentProps={{
                         'aria-describedby': 'message-id',
                         classes: {
@@ -174,9 +210,29 @@ class Parameters extends React.Component {
                         <Typography variant='subtitle1'>
                             Mot de passe
                         </Typography>
+                        <TextField
+                            id="emailinput"
+                            label={'Nouveau mot de passe'}
+                            className={classes.textField}
+                            type="password"
+                            onChange={(e) => this.setState({ password: e.target.value })}
+                        />
+                        <TextField
+                            id="emailinput"
+                            label={'Confirmer mot de passe'}
+                            className={classes.textField}
+                            type="password"
+                            autoComplete="current-email"
+                            onChange={(e) => this.setState({ passwordConfirm: e.target.value })}
+                        />
+                        {
+                            this.state.showPasswordError
+                                ? <Typography variant={"body2"} color={"secondary"}>{this.state.passErrorMessage}</Typography>
+                                : ''
+                        }
                     </Grid>
                     <Grid item xs={12} sm={4} md={2}>
-                        <Button variant={"contained"} color={"primary"}>Modifier</Button>
+                        <Button variant={"contained"} color={"primary"} onClick={() => this.changePassword()}>Modifier</Button>
                     </Grid>
                 </Grid>
             </Paper>
@@ -192,7 +248,7 @@ class Parameters extends React.Component {
                 <Grid container alignItems={"center"} justify={"center"} className={classes.root}>
                     <Grid item xs={11} md={6}>
                         {
-                            !firebase.auth().currentUser
+                            !this.state.user
                                 ? this.renderRedirectMessage()
                                 : this.renderParameters()
                         }
