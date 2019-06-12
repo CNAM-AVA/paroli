@@ -16,7 +16,8 @@ const FILLABLE = [
     "name",
     "pageTitle",
     "posts",
-    "subscribers",
+    "subscribersCount",
+    "subscribers"
 ];
 
 export default class Sub extends Model {
@@ -36,5 +37,9 @@ export default class Sub extends Model {
 
     getDisplayName() {
         return "p/"+this.name;
+    }
+
+    static subscribeToSub(userId, subId) {
+        
     }
 }
