@@ -3,9 +3,10 @@ import "../static/styles.scss"
 import Layout from '../src/components/common/Layout';
 import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter';
-import {Grid} from '@material-ui/core';
+import {Grid, CircularProgress, Typography} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import Advertisement from '../src/components/common/Advertisement';
+import YouveReachedBottom from '../src/components/common/YouveReachedBottom';
 import DisplayPosts from '../src/components/common/DisplayPosts';
 import Loading from '../src/components/common/Loading';
 import SubDescriptionCard from '../src/components/sub/SubDescriptionCard';
@@ -56,26 +57,26 @@ class Sub extends React.Component {
             this.setState({isLoading: false})
             document.title = "You appear to be lost.";
         });
-
     }
 
     reloadPosts() {
         if(this.state.can_reload) {
             this.setState({can_reload: false});
-            console.log("is reloading");
             let postsRef = Post.filtered({
                 sub: this.state.sub,
                 lastPost: this.state.lastVisible,
                 filterType: "top",
-                limit: 3
             });
 
             postsRef.then((r) => {
-                let newPosts = r.docs.map(x => new Post(x.data(), x.id));
-                this.setState({posts: this.state.posts.concat(newPosts)},() => {
-                    this.setState({can_reload: true});
-                });
-                this.setState({lastVisible: r});
+                if(r.docs.length > 0) {
+                    let lastVisible = r.docs[r.docs.length-1];
+                    let newPosts = r.docs.map(x => new Post(x.data(), x.id));
+                    this.setState({lastVisible, posts: this.state.posts.concat(newPosts)});
+                } else {
+                    this.setState({no_more_posts: true});
+                }
+                this.setState({can_reload: true});
             })
         }
     }
@@ -102,6 +103,16 @@ class Sub extends React.Component {
                                 ? <Grid container justify="center" spacing={24}>
                                     <Grid item xs={6}>
                                         <DisplayPosts posts={this.state.posts}/>
+                                        {
+                                            !this.state.can_reload ?
+                                            <Loading/>
+                                            : null
+                                        }
+                                        {
+                                            this.state.no_more_posts ?
+                                            <YouveReachedBottom/>
+                                            : null
+                                        }
                                     </Grid>
                                     <Grid item xs={3}>
                                         <SubDescriptionCard sub={this.state.sub}/>
