@@ -38,8 +38,4 @@ export default class Sub extends Model {
     getDisplayName() {
         return "p/"+this.name;
     }
-
-    static subscribeToSub(userId, subId) {
-        
-    }
 }
