@@ -11,10 +11,10 @@ const styles = theme => ({
 		flexGrow: 1,
 	},
 	paper: {
-  	padding: theme.spacing.unit * 2,
-    // margin: 'auto',
-    // maxWidth: 500,
-  },
+		padding: theme.spacing.unit * 2,
+		// margin: 'auto',
+		// maxWidth: 500,
+	},
 	cardsContainer: {
 		marginTop: 20
 	},
@@ -29,27 +29,27 @@ const styles = theme => ({
 		padding: theme.spacing.unit * 2,
 	},
 	card: {
-    // maxWidth: 400,
-  },
-  media: {
+		// maxWidth: 400,
+	},
+	media: {
 		marginTop: 0,
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		width: 500,
-    height: 700,
-  },
-  actions: {
-    display: 'flex',
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
+		height: 700,
+	},
+	actions: {
+		display: 'flex',
+	},
+	expand: {
+		transform: 'rotate(0deg)',
+		marginLeft: 'auto',
+		transition: theme.transitions.create('transform', {
+			duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+		transform: 'rotate(180deg)',
 	},
 	divider: {
 		marginTop: theme.spacing.unit,
@@ -58,8 +58,8 @@ const styles = theme => ({
 		marginRight: 0,
 	},
 	bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
+		display: 'inline-block',
+		margin: '0 2px',
 		transform: 'scale(0.8)',
 	},
 	card: {
@@ -82,17 +82,17 @@ class CommentComponent extends React.Component {
 	}
 
 	componentDidMount = async () => {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user)
-                this.setState({uid: user.uid})
-            else
-                this.setState({uid: null})
-        })
-    }
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user)
+				this.setState({uid: user.uid})
+			else
+				this.setState({uid: null})
+		});
+	}
 
 	handleMultiline(event) {
-        this.setState({multiline: event.target.value});
-    }
+		this.setState({multiline: event.target.value});
+	}
 	
 	handleComment = () => {
 		if(this.state.uid){
@@ -101,7 +101,7 @@ class CommentComponent extends React.Component {
 		} else {
 			console.log('you must log in to comment !');
 		}
-    }
+	}
 
 	render() {
 		const {classes} = this.props;
@@ -109,7 +109,7 @@ class CommentComponent extends React.Component {
 		const comments = this.props.comments;
 
 		const commentsCard = comments.map((item) => {
-			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/>);
+			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event}/>);
 		});
 
 		return(

@@ -4,7 +4,8 @@ import { Grid, Card, Typography, CardContent, Button, Collapse, TextField } from
 import CommentIcon from '@material-ui/icons/Comment';
 import VoteComponent from './VoteComponent';
 import SendIcon from '@material-ui/icons/Send';
-
+import ComDB from '../../../database/models/Comment';
+import firebase from "../../../lib/firebase";
 
 const styles = theme => ({
 	root: {
@@ -29,8 +30,27 @@ class CommentCardComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			multiline : '',
+		}
 		this.upvote = this.upvote.bind(this);
 		this.downvote = this.downvote.bind(this);
+		this.getSubComments(props.comment.post, props.comment.id);
+
+		this.handleMultiline = this.handleMultiline.bind(this)
+	}
+
+	componentDidMount = async () => {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user)
+				this.setState({uid: user.uid})
+			else
+				this.setState({uid: null})
+		});
+	}
+
+	handleMultiline(event) {
+		this.setState({multiline: event.target.value});
 	}
 
 	upvote(){
@@ -47,13 +67,44 @@ class CommentCardComponent extends React.Component {
 		console.log('down');
 	}
 
+	handleSubComment = () => {
+		if(this.state.uid != null){
+			this.props.event(this.state.multiline, this.state.uid, this.props.comment.id);
+			this.setState({multiline: ''});
+		} else {
+			console.log('you must log in to comment !');
+		}
+	}
+
+	getSubComments(postId, commentId){
+		let subComments = ComDB.getSubComments(postId, commentId);
+		subComments.then(snapshot => {
+			if (snapshot.empty) {
+				console.log('No matching sub comments.');
+				return;
+			}
+			console.log('sub comments : ', snapshot);
+			// this.setState({comments : []});
+			// snapshot.forEach(doc => {
+			// 	let comments = this.state.comments;
+			// 	let comment = doc.data();
+			// 	comment.id = doc.id;
+			// 	comment.created = moment.unix(comment.created.seconds).fromNow();
+			// 	comments.push(comment);
+			// 	this.setState({comments : comments});
+			// });
+		})
+		.catch(err => {
+			console.log('Error getting sub comments', err);
+		});
+	}
+
 	state = { expanded: false };
 
   	handleExpandClick = () => {
 		this.setState(state => ({ expanded: !state.expanded }));
 		console.log("test");
-		
-	};
+	};	
 
 	render() {
 		const {classes} = this.props;
@@ -84,17 +135,16 @@ class CommentCardComponent extends React.Component {
 									multiline
 									rows="3"
 									value={this.state.multiline}
-									// onChange={this.handleChange('multiline')}
+									onChange={this.handleMultiline}
 									className={classes.textField}
 									fullWidth
 									variant="outlined"
 								/>
-								<Button variant="contained" color="primary" className={classes.button}>
+								<Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleSubComment()}>
 									Reply
 									<SendIcon className={classes.rightIcon}/>
 								</Button>
 							</Collapse>
-							{/* Reprendre ici (lol) */}
 							{/* <CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/> */}
 						</Grid>
 					</Grid>

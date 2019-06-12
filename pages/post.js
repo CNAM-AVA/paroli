@@ -87,13 +87,14 @@ export default class Post extends React.Component {
 
 	
 
-	handleCommentEvent(multiline, uid){
+	handleCommentEvent(multiline, uid, parentId = null){
 		console.log('tutu : ', multiline);
 		let comment = new ComDB({
 			creator: uid,
 			created: new Date(),
 			post: this.state.post.id,
 			content: multiline,
+			parentId: parentId,
 		});
 		console.log('new comment : ', comment);
 		console.log('muti : ', multiline);
