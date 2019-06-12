@@ -33,7 +33,7 @@ export default class Comment extends Model {
     }
 
     static getByPost(postId) {
-        return firestore.collection("comments").where('post', '==', postId).orderBy('created', 'desc').get();
+        return firestore.collection("comments").where('post', '==', postId).where('parentId', '==', null).orderBy('created', 'desc').get();
     }
 
     static getSubComments(postId, commentId) {

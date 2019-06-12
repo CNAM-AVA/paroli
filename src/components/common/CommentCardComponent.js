@@ -6,6 +6,7 @@ import VoteComponent from './VoteComponent';
 import SendIcon from '@material-ui/icons/Send';
 import ComDB from '../../../database/models/Comment';
 import firebase from "../../../lib/firebase";
+import moment from 'moment';
 
 const styles = theme => ({
 	root: {
@@ -31,6 +32,7 @@ class CommentCardComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			subComments: [],
 			multiline : '',
 		}
 		this.upvote = this.upvote.bind(this);
@@ -83,16 +85,14 @@ class CommentCardComponent extends React.Component {
 				console.log('No matching sub comments.');
 				return;
 			}
-			console.log('sub comments : ', snapshot);
-			// this.setState({comments : []});
-			// snapshot.forEach(doc => {
-			// 	let comments = this.state.comments;
-			// 	let comment = doc.data();
-			// 	comment.id = doc.id;
-			// 	comment.created = moment.unix(comment.created.seconds).fromNow();
-			// 	comments.push(comment);
-			// 	this.setState({comments : comments});
-			// });
+			snapshot.forEach(doc => {
+				let subComments = this.state.subComments;
+				let subComment = doc.data();
+				subComment.id = doc.id;
+				subComment.created = moment.unix(subComment.created.seconds).fromNow();
+				subComments.push(subComment);
+				this.setState({subComments : subComments});
+			});
 		})
 		.catch(err => {
 			console.log('Error getting sub comments', err);
@@ -110,13 +110,18 @@ class CommentCardComponent extends React.Component {
 		const {classes} = this.props;
 		const bull = <span>•</span>;
 		const comment = this.props.comment;
+		const subComments = this.state.subComments;
 		const {expanded} = this.state;
+
+		const commentsCard = subComments.map((item) => {
+			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event}/>);
+		});
 
 		return(
 			<Grid container>
 					<Grid container>
 						<Grid item xs={1}>
-							<VoteComponent className={classes.voteComment} upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} />
+							<VoteComponent upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} />
 						</Grid>
 						<Grid item xs={11}>
 							<Typography variant="subtitle2" color="textSecondary">
@@ -125,8 +130,8 @@ class CommentCardComponent extends React.Component {
 							<Typography variant="body1">
 								{comment.content}
 							</Typography>
-							<Button color="default" className={classes.button} onClick={() => this.handleExpandClick()}>
-								<CommentIcon className={classes.leftIcon} /><Typography className={classes.small}>Reply</Typography>
+							<Button color="default" onClick={() => this.handleExpandClick()}>
+								<CommentIcon  /><Typography >Reply</Typography>
 							</Button>
 							<Collapse in={expanded}>
 								<TextField
@@ -136,16 +141,16 @@ class CommentCardComponent extends React.Component {
 									rows="3"
 									value={this.state.multiline}
 									onChange={this.handleMultiline}
-									className={classes.textField}
+									
 									fullWidth
 									variant="outlined"
 								/>
-								<Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleSubComment()}>
+								<Button variant="contained" color="primary"  onClick={() => this.handleSubComment()}>
 									Reply
-									<SendIcon className={classes.rightIcon}/>
+									<SendIcon/>
 								</Button>
 							</Collapse>
-							{/* <CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/> */}
+							{commentsCard}
 						</Grid>
 					</Grid>
 			</Grid>
