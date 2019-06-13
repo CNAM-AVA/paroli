@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, Button } from '@material-ui/core'
 import firebase from '../../../lib/firebase'
-import { subscribeToPost } from '../../../lib/sub'
+import { subscribeToSub } from '../../../lib/sub'
 import Sub from '../../../database/models/Sub';
 
 const styles = theme => ({
@@ -34,15 +34,20 @@ class SubRow extends React.Component {
     async subscribe() {
 
         let sub = await Sub.getByName(this.props.community.name);
-        console.log(sub.docs[0].data());
 
-        console.log(`Going to sub with params: ${this.state.uid}, ${sub.name}`);
+        subscribeToSub(this.state.uid, sub.docs[0].data().name).then(() => {
 
-        subscribeToPost(this.state.uid, sub.docs[0].data().name).then(() => {
-            console.log("subbed");
         }).catch((e) => {
-            console.log(e);
         })
+    }
+
+    subButtonHandler() {
+
+        
+
+        return(
+            <Button variant={"contained"} color={"primary"} onClick={() => this.subscribe()}>Rejoindre</Button>
+        )
     }
 
     render() {
@@ -59,14 +64,14 @@ class SubRow extends React.Component {
                         </Grid>
                         <Grid item xs={9}>
                             <Typography>{community.name}</Typography>
-                            <Typography>{community.subscribers} subscribers</Typography>
+                            <Typography>{community.subscribersCount} subscribers</Typography>
                         </Grid>
                     </Grid>
                     <Grid container item xs={4} justify={"flex-end"}>
                         {
                             this.state.uid === null
                                 ? ''
-                                : <Button variant={"contained"} color={"primary"} onClick={() => this.subscribe()}>Rejoindre</Button>
+                                : this.subButtonHandler()
                         }
                     </Grid>
                 </Grid>
