@@ -38,10 +38,11 @@ class SubRow extends React.Component {
         subscribeToSub(this.state.uid, sub.docs[0].data().name).then(() => {
 
         }).catch((e) => {
+
         })
     }
 
-    unsubscribe() {
+    async unsubscribe() {
         console.log("Unsubscribing");
     }
 
