@@ -20,6 +20,10 @@ const styles = theme => ({
 		marginRight: theme.spacing.unit,
 		fontSize: theme.spacing.unit * 2,
 	},
+	rightIcon: {
+		marginLeft: theme.spacing.unit,
+		fontSize: theme.spacing.unit * 2,
+	},
 	bullet: {
 		display: 'inline-block',
 		margin: '0 2px',
@@ -34,11 +38,10 @@ class CommentCardComponent extends React.Component {
 		this.state = {
 			subComments: [],
 			multiline : '',
+			disabled: true,
 		}
 		this.upvote = this.upvote.bind(this);
 		this.downvote = this.downvote.bind(this);
-		this.getSubComments(props.comment.post, props.comment.id);
-
 		this.handleMultiline = this.handleMultiline.bind(this)
 	}
 
@@ -49,10 +52,16 @@ class CommentCardComponent extends React.Component {
 			else
 				this.setState({uid: null})
 		});
+		this.getSubComments(this.props.comment.post, this.props.comment.id);
 	}
 
 	handleMultiline(event) {
 		this.setState({multiline: event.target.value});
+		if(event.target.value === null || event.target.value.trim() === ''){
+			this.setState({disabled: true});
+		} else {
+			this.setState({disabled: false});
+		}
 	}
 
 	upvote(){
@@ -71,7 +80,7 @@ class CommentCardComponent extends React.Component {
 
 	handleSubComment = () => {
 		if(this.state.uid != null){
-			this.props.event(this.state.multiline, this.state.uid, this.props.comment.id);
+			this.props.event(this.state.multiline, this.state.uid, this.props.comment);
 			this.setState({multiline: ''});
 		} else {
 			console.log('you must log in to comment !');
@@ -103,7 +112,6 @@ class CommentCardComponent extends React.Component {
 
   	handleExpandClick = () => {
 		this.setState(state => ({ expanded: !state.expanded }));
-		console.log("test");
 	};	
 
 	render() {
@@ -112,16 +120,17 @@ class CommentCardComponent extends React.Component {
 		const comment = this.props.comment;
 		const subComments = this.state.subComments;
 		const {expanded} = this.state;
+		const disabled = this.state.disabled;
 
 		const commentsCard = subComments.map((item) => {
-			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event}/>);
+			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event} classes={classes} />);
 		});
 
 		return(
 			<Grid container>
 					<Grid container>
 						<Grid item xs={1}>
-							<VoteComponent upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} />
+							<VoteComponent className={classes.voteComment} upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} />
 						</Grid>
 						<Grid item xs={11}>
 							<Typography variant="subtitle2" color="textSecondary">
@@ -131,7 +140,7 @@ class CommentCardComponent extends React.Component {
 								{comment.content}
 							</Typography>
 							<Button color="default" onClick={() => this.handleExpandClick()}>
-								<CommentIcon  /><Typography >Reply</Typography>
+								<CommentIcon className={classes.leftIcon}/><Typography >Reply</Typography>
 							</Button>
 							<Collapse in={expanded}>
 								<TextField
@@ -141,13 +150,13 @@ class CommentCardComponent extends React.Component {
 									rows="3"
 									value={this.state.multiline}
 									onChange={this.handleMultiline}
-									
+									className={classes.textField}
 									fullWidth
 									variant="outlined"
 								/>
-								<Button variant="contained" color="primary"  onClick={() => this.handleSubComment()}>
+								<Button variant="contained" color="primary" className={classes.button} disabled={disabled} onClick={() => this.handleSubComment()}>
 									Reply
-									<SendIcon/>
+									<SendIcon className={classes.rightIcon}/>
 								</Button>
 							</Collapse>
 							{commentsCard}

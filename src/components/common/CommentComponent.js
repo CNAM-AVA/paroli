@@ -77,6 +77,7 @@ class CommentComponent extends React.Component {
 		super(props);
 		this.state = {
 			multiline : '',
+			disabled: true,
 		}
 		this.handleMultiline = this.handleMultiline.bind(this);
 	}
@@ -92,6 +93,11 @@ class CommentComponent extends React.Component {
 
 	handleMultiline(event) {
 		this.setState({multiline: event.target.value});
+		if(event.target.value === null || event.target.value.trim() === ''){
+			this.setState({disabled: true});
+		} else {
+			this.setState({disabled: false});
+		}
 	}
 	
 	handleComment = () => {
@@ -126,7 +132,7 @@ class CommentComponent extends React.Component {
 						variant="outlined"
 					/>
 					<Grid container justify="flex-end">
-						<Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleComment()}>
+						<Button variant="contained" color="primary" className={classes.button} disabled={this.state.disabled} onClick={() => this.handleComment()}>
 							Commenter
 							{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
 							<SendIcon className={classes.rightIcon}/>

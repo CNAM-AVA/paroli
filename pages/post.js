@@ -87,22 +87,46 @@ export default class Post extends React.Component {
 
 	
 
-	handleCommentEvent(multiline, uid, parentId = null){
+	handleCommentEvent(multiline, uid, parentComment = null){
 		console.log('tutu : ', multiline);
-		let comment = new ComDB({
-			creator: uid,
-			created: new Date(),
-			post: this.state.post.id,
-			content: multiline,
-			parentId: parentId,
-		});
-		console.log('new comment : ', comment);
-		console.log('muti : ', multiline);
-		comment.save().then(() => {
-			console.log('comment saved sucessfully !');
-			this.loadComments(this.state.post.id);
-			console.log('comments : ', this.state.comments);
-		});
+		
+		if(parentComment){
+			let comment = {
+				creator: uid,
+				created: new Date(),
+				post: this.state.post.id,
+				content: multiline,
+				comments: [],
+				upvotes: 0,
+				downvotes: 0,
+			};
+			let parent = firestore.collection("comments").doc(parentComment.id);
+			console.log('new comment : ', comment);
+			console.log('muti : ', multiline);
+			parent.update({
+				comments: firebase.firestore.FieldValue.arrayUnion(comment)
+			}).then(() => {
+				console.log('comment saved sucessfully !');
+				this.loadComments(this.state.post.id);
+				console.log('comments : ', this.state.comments);
+			});
+		} else {
+			let comment = new ComDB({
+				creator: uid,
+				created: new Date(),
+				post: this.state.post.id,
+				content: multiline,
+				comments: [],
+			});
+			console.log('new comment : ', comment);
+			console.log('muti : ', multiline);
+			comment.save().then(() => {
+				console.log('comment saved sucessfully !');
+				this.loadComments(this.state.post.id);
+				console.log('comments : ', this.state.comments);
+			});
+		}
+		
 	}
 
 	render() {

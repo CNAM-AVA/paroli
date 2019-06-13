@@ -2,23 +2,23 @@ import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
-    parentId: null,
     created: null,
     creator: null,
     post: null,
     content: null,
     upvotes: 0,
     downvotes: 0,
+    comments: [],
 };
 
 const FILLABLE = [
-    "parentId",
     "created",
     "creator",
     "post",
     "content",
     "upvotes",
     "downvotes",
+    "comments",
 ];
 
 export default class Comment extends Model {
