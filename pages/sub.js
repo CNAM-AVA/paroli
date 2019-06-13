@@ -89,6 +89,49 @@ class Sub extends React.Component {
         });
     }
 
+    asidePanel() {
+        if (window.innerWidth > 600) {
+            return (
+                <Grid container justify="center" spacing={24}>
+                    <Grid item xs={12} sm={6} md={6}>
+                        <DisplayPosts posts={this.state.posts} />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={4} cl={3}>
+                        <SubDescriptionCard sub={this.state.sub} />
+                        <Advertisement />
+                        {
+                            this.state.sub.rules
+                                ? <SubRulesCard sub={this.state.sub} />
+                                : null
+                        }
+                        <HotSubs />
+                        <Advertisement />
+                    </Grid>
+                </Grid>
+            )
+        } else {
+            return (
+                <Grid container justify="center" spacing={24}>
+                    <Grid item xs={12} sm={6} md={4} lg={4} cl={3}>
+                        <SubDescriptionCard sub={this.state.sub} />
+                        <Advertisement />
+                        {
+                            this.state.sub.rules
+                                ? <SubRulesCard sub={this.state.sub} />
+                                : null
+                        }
+                        <HotSubs />
+                        <Advertisement />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={6}>
+                        <DisplayPosts posts={this.state.posts} />
+                    </Grid>
+                </Grid>
+            )
+        }
+
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -107,22 +150,7 @@ class Sub extends React.Component {
                                     </Grid>
                                 </Grid>
                                 : this.state.sub
-                                    ? <Grid container justify="center" spacing={24}>
-                                        <Grid item xs={12} sm={6} md={6}>
-                                            <DisplayPosts posts={this.state.posts} />
-                                        </Grid>
-                                        <Grid item xs={12} sm={6} md={4} lg={4} cl={3}>
-                                            <SubDescriptionCard sub={this.state.sub} />
-                                            <Advertisement />
-                                            {
-                                                this.state.sub.rules
-                                                    ? <SubRulesCard sub={this.state.sub} />
-                                                    : null
-                                            }
-                                            <HotSubs />
-                                            <Advertisement />
-                                        </Grid>
-                                    </Grid>
+                                    ? this.asidePanel()
                                     : <Grid container justify="center" spacing={24}>
                                         <Grid item xs={8}>
                                             <NoResultsFound />
