@@ -14,7 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import MenuIcon from '@material-ui/icons/Menu';
+import BubbleChartIcon from '@material-ui/icons/BubbleChart';
 import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
 import Link from 'next/link';
 import Button from '@material-ui/core/Button'
 import LoginModal from './LoginModal'
@@ -161,33 +163,15 @@ class AppNavigation extends React.Component {
 			<div className={classes.list}>
 				<List>
 					<Link href="/">
-						<ListItem button key={'Dashboard'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Dashboard'} />
+						<ListItem button key={'Acceuil'}>
+							<ListItemIcon><HomeIcon /></ListItemIcon>
+							<ListItemText primary={'Accueil'} />
 						</ListItem>
 					</Link>
-					<Link href="/vled">
-						<ListItem button key={'Board Builder'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Board Builder'} />
-						</ListItem>
-					</Link>
-					<Link href="/">
-						<ListItem button key={'Configs'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Configs'} />
-						</ListItem>
-					</Link>
-					<Link href="/sub">
-						<ListItem button key={'Sub'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Sub'} />
-						</ListItem>
-					</Link>
-					<Link href="/post">
-						<ListItem button key={'Post'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Post'} />
+					<Link href="/subs">
+						<ListItem button key={'Subs'}>
+							<ListItemIcon><BubbleChartIcon /></ListItemIcon>
+							<ListItemText primary={'Subs'} />
 						</ListItem>
 					</Link>
 				</List>
