@@ -41,13 +41,23 @@ class SubRow extends React.Component {
         })
     }
 
+    unsubscribe() {
+        console.log("Unsubscribing");
+    }
+
     subButtonHandler() {
 
-        
+        const userIsSubbed = true;
 
-        return(
-            <Button variant={"contained"} color={"primary"} onClick={() => this.subscribe()}>Rejoindre</Button>
-        )
+        if (userIsSubbed) {
+            return(
+                <Button variant={"contained"} color={"secondary"} onClick={() => this.unsubscribe()}>Désabonner</Button>
+            )
+        } else {
+            return(
+                <Button variant={"contained"} color={"primary"} onClick={() => this.subscribe()}>Rejoindre</Button>
+            )
+        }
     }
 
     render() {
@@ -58,7 +68,7 @@ class SubRow extends React.Component {
         return (
             <Grid container className={classes.communities} key={`${community.name}${community.subs}`}>
                 <Grid container alignItems={"center"}>
-                    <Grid container justify={"space-between"} item xs={8}>
+                    <Grid container justify={"space-between"} item xs={8} sm={7} md={8}>
                         <Grid item xs={3}>
                             <Avatar className={classes.avatar}>{community.name.charAt(0).toUpperCase()}</Avatar>
                         </Grid>
@@ -67,7 +77,7 @@ class SubRow extends React.Component {
                             <Typography>{community.subscribersCount} subscribers</Typography>
                         </Grid>
                     </Grid>
-                    <Grid container item xs={4} justify={"flex-end"}>
+                    <Grid container item xs={4} sm={5} md={4} justify={"flex-end"}>
                         {
                             this.state.uid === null
                                 ? ''

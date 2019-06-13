@@ -48,6 +48,9 @@ class LoginModal extends React.Component {
     classicLogin() {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
+
+                // TODO: Insert in use table
+
                 this.props.visibilityHandler()
             })
             .catch((e) => {
@@ -75,6 +78,10 @@ class LoginModal extends React.Component {
             var user = result.user;
             // Hide the dialog
             this.props.visibilityHandler();
+
+            // TODO: Insert in user table
+            
+
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
