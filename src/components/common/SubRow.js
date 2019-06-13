@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Avatar, Typography, Button } from '@material-ui/core'
+import { Grid, Avatar, Typography, Button, Link } from '@material-ui/core'
 import firebase from '../../../lib/firebase'
 
 const styles = theme => ({
@@ -42,7 +42,7 @@ class SubRow extends React.Component {
                             <Avatar className={classes.avatar}>{community.name.charAt(0).toUpperCase()}</Avatar>
                         </Grid>
                         <Grid item xs={9}>
-                            <Typography>{community.name}</Typography>
+                            <Typography><Link href={"/p/"+community.name}>p/{community.name}</Link></Typography>
                             <Typography>{community.subscribers} subscribers</Typography>
                         </Grid>
                     </Grid>

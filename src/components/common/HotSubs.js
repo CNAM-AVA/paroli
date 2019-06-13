@@ -15,9 +15,9 @@ class HotSubs extends React.Component {
         super(props);
         this.state = {
             hotCommunities: [
-                { name: "p/orn", subs: 7000 },
-                { name: "p/apex", subs: 25 },
-                { name: "p/dofus", subs: 96 }
+                { name: "orn", subs: 7000 },
+                { name: "apex", subs: 25 },
+                { name: "dofus", subs: 96 }
             ]
         }
     }
