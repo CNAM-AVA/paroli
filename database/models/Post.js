@@ -37,4 +37,18 @@ export default class Post extends Model {
     static getById(id) {
         return firestore.collection("posts").doc(id).get();
     }
+
+    static filtered(filters) {
+        let coll = firestore.collection("posts");
+
+        coll = coll.where("sub", "==", filters.sub.documentId);
+
+        coll = coll.orderBy("upvotes");
+
+        if(filters.lastPost) {
+            coll = coll.startAfter(filters.lastPost);
+        }
+
+        return coll.limit(filters.limit || 20).get();
+    }
 }

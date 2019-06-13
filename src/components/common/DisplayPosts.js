@@ -30,7 +30,7 @@ class DisplayPosts extends React.Component {
                     {
                         this.props.posts.map((post, i) => {     
                         return (
-                            <SinglePost key={post.id+"-"+post.title} post={post} className={classes.card}></SinglePost>
+                            <SinglePost key={post.documentId+"-"+post.title} post={post} className={classes.card}></SinglePost>
                         ) 
                     })}
                 </Grid>

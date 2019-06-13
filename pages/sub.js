@@ -3,9 +3,10 @@ import "../static/styles.scss"
 import Layout from '../src/components/common/Layout';
 import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter';
-import {Grid} from '@material-ui/core';
+import {Grid, CircularProgress, Typography} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import Advertisement from '../src/components/common/Advertisement';
+import YouveReachedBottom from '../src/components/common/YouveReachedBottom';
 import DisplayPosts from '../src/components/common/DisplayPosts';
 import Loading from '../src/components/common/Loading';
 import SubDescriptionCard from '../src/components/sub/SubDescriptionCard';
@@ -14,6 +15,8 @@ import HotSubs from '../src/components/common/HotSubs';
 import {firestore} from '../lib/firebase';
 import NoResultsFound from '../src/components/common/NoResultsFound';
 import SubType from '../database/models/Sub';
+import Post from '../database/models/Post';
+import BottomScrollListener from '../node_modules/react-bottom-scroll-listener';
 
 const styles = theme => ({
     cardsContainer: {
@@ -30,48 +33,13 @@ class Sub extends React.Component {
     }
 
     constructor(props) {
-        console.log(props.query.slug);
         super(props);
         this.state = {
+            can_reload: true,
             sub: null,
-            posts: [
-                {
-                    title: 'Titre',
-                    author: 'John Doe',
-                    media: 'img',
-                    content: '/static/img/landscape-img-test.jpg',
-                    date: '??/??/????'
-                },
-                {
-                    title: 'Lorem Ipsum Dolor Sit Amet',
-                    author: 'Jules César',
-                    media: 'txt',
-                    content: 'Valentin mon meilleur copain',
-                    date: '??/??/????'
-                },
-                {
-                    title: 'Wiki mythologie grecque',
-                    author: 'Zeus',
-                    media: 'link',
-                    content: 'https://fr.wikipedia.org/wiki/Mythologie_grecque',
-                    date: '??/??/????'
-                },
-                {
-                    title: 'Un petit gif sympathique !',
-                    author: 'Giffy',
-                    media: 'img',
-                    content: 'http://www.roseedemiel.fr/wp-content/uploads/2012/10/question-mark-200x300.jpg',
-                    date: '??/??/????'
-                },
-                {
-                    title: 'Just Do It !',
-                    author: 'Shia Laboeuf',
-                    media: 'video',
-                    content: 'https://www.youtube.com/embed/watch?v=qD54sROmeIM?autoplay=1',
-                    date: '??/??/????'
-                },
-            ],
-            isLoading: true
+            posts: [],
+            isLoading: true,
+            lastVisible: null
         };
 
         let subsRef = SubType.getByName(this.props.query.slug);
@@ -83,10 +51,34 @@ class Sub extends React.Component {
                 })
             })
             this.setState({isLoading: false})
+            this.reloadPosts();
         }).catch((r) => {
             this.setState({isLoading: false})
             document.title = "You appear to be lost.";
         });
+    }
+
+    reloadPosts() {
+        if(this.state.can_reload) {
+            this.setState({can_reload: false});
+            let postsRef = Post.filtered({
+                sub: this.state.sub,
+                lastPost: this.state.lastVisible,
+                filterType: "top",
+            });
+
+            postsRef.then((r) => {
+                this.setState({no_more_posts: false});
+                if(r.docs.length > 0) {
+                    let lastVisible = r.docs[r.docs.length-1];
+                    let newPosts = r.docs.map(x => new Post(x.data(), x.id));
+                    this.setState({lastVisible, posts: this.state.posts.concat(newPosts)});
+                } else {
+                    this.setState({no_more_posts: true});
+                }
+                this.setState({can_reload: true});
+            })
+        }
     }
 
     render() {
@@ -94,6 +86,7 @@ class Sub extends React.Component {
 
         return (
             <Layout>
+                <BottomScrollListener onBottom={this.reloadPosts.bind(this)} />
                 <SubNavbar>
                     <DisplayFilter/>
                 </SubNavbar>
@@ -110,6 +103,16 @@ class Sub extends React.Component {
                                 ? <Grid container justify="center" spacing={24}>
                                     <Grid item xs={6}>
                                         <DisplayPosts posts={this.state.posts}/>
+                                        {
+                                            !this.state.can_reload ?
+                                            <Loading/>
+                                            : null
+                                        }
+                                        {
+                                            this.state.no_more_posts ?
+                                            <YouveReachedBottom/>
+                                            : null
+                                        }
                                     </Grid>
                                     <Grid item xs={3}>
                                         <SubDescriptionCard sub={this.state.sub}/>
