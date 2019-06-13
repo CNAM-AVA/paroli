@@ -142,7 +142,7 @@ class Index extends React.Component {
                 </SubNavbar>
                 <Grid container className={classes.root}>
                     <Grid container justify="center" spacing={40}>
-                        <Grid item xs={12} sm={7} md={6} lg={5} xl={4}>
+                        <Grid item xs={12} sm={7} md={6} lg={6} xl={4}>
                             <Grid container alignItems={"center"} className={classes.sectionHeader}>
                                 <Typography variant="h6" className={classes.feedTypo}>Feed</Typography>                            
                                 <RssFeedIcon className={classes.icon}/>
@@ -154,7 +154,7 @@ class Index extends React.Component {
                                 : this.fetchRandomPost()
                             }
                         </Grid>
-                        <Grid className={classes.infoCards} item xs={12} sm={5} md={4} lg={3} xl={2}>
+                        <Grid className={classes.infoCards} item xs={12} sm={5} md={4} lg={4} xl={2}>
                             <InfoCard title="Accueil" icon='home'>
                                 {
                                     firebase.auth().currentUser 
