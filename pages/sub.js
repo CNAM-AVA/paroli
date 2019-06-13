@@ -33,7 +33,6 @@ class Sub extends React.Component {
     }
 
     constructor(props) {
-        console.log(props.query.slug);
         super(props);
         this.state = {
             can_reload: true,
