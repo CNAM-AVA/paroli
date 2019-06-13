@@ -218,7 +218,9 @@ class AppNavigation extends React.Component {
 							message={
 								<Grid container spacing={16}>
 									<Grid item>
-										<Button color={"primary"} variant={"contained"}>Paramètres</Button>									
+										<Link href="/parameters">
+											<Button color={"primary"} variant={"contained"}>Paramètres</Button>
+										</Link>							
 									</Grid>
 									<Grid item>
 										<Button onClick={(e) => {this.toggleSnackbar();this.toggleModal(e)}} color={"secondary"} variant={"contained"}>Déconnexion</Button>
