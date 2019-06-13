@@ -68,6 +68,7 @@ class Sub extends React.Component {
             });
 
             postsRef.then((r) => {
+                this.setState({no_more_posts: false});
                 if(r.docs.length > 0) {
                     let lastVisible = r.docs[r.docs.length-1];
                     let newPosts = r.docs.map(x => new Post(x.data(), x.id));
