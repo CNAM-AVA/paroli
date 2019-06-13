@@ -235,6 +235,37 @@ class Parameters extends React.Component {
                         <Button variant={"contained"} color={"primary"} onClick={() => this.changePassword()}>Modifier</Button>
                     </Grid>
                 </Grid>
+
+                {/* <Divider className={classes.divider} />
+
+                <Grid container alignItems={"center"}>
+                    <Grid item xs={8} sm={8} md={9}>
+                        <Typography variant='subtitle1'>
+                            Photo
+                        </Typography>
+                        <input
+                            accept="image/png, image/jpeg"
+                            className={classes.input}
+                            style={{ display: 'none' }}
+                            id="raised-button-file"
+                            multiple
+                            type="file"
+                        />
+                        <label htmlFor="raised-button-file">
+                            <Button variant="raised" component="span" className={classes.button}>
+                                Télécharger
+                            </Button>
+                        </label>
+                        {
+                            this.state.showPasswordError
+                                ? <Typography variant={"body2"} color={"secondary"}>{this.state.passErrorMessage}</Typography>
+                                : ''
+                        }
+                    </Grid>
+                    <Grid item xs={12} sm={4} md={2}>
+                        <Button variant={"contained"} color={"primary"} onClick={() => this.changePassword()}>Modifier</Button>
+                    </Grid>
+                </Grid> */}
             </Paper>
         )
     }
