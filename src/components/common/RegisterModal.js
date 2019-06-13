@@ -12,6 +12,7 @@ import {
     Fab
 } from '@material-ui/core'
 import Link from "@material-ui/core/Link";
+import Auth from '../../../lib/Auth';
 
 const styles = {
     loginButton: {
@@ -71,15 +72,23 @@ class RegisterModal extends React.Component {
 
     register() {
 
-        console.log(this.state.password + '==' + this.state.passwordVerif)
-
         if (this.state.password !== this.state.passwordVerif) {
-            this.setState({error: 'Les mots de passe ne conrrespondent pas.'});
+            this.setState({error: 'Les mots de passe ne correspondent pas.'});
             return;
         }
 
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(() => {
+        Auth.register(this.state.email, this.state.password)
+            .then((r) => {
+                let user = r.user;
+
+                let docUser = new User({
+                    username: this.state.username,
+                    created: user.metadata.creationTime,
+                    mail: user.email,
+                }, user.uid);
+
+                docUser.save();
+
                 this.props.visibilityHandler();
             })
             .catch((error) => {

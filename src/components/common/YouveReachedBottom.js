@@ -6,7 +6,7 @@ const styles = theme => ({
 
 })
 
-class Loading extends React.Component {
+class YouveReachedBottom extends React.Component {
 
     constructor(props) {
         super(props);
@@ -21,7 +21,7 @@ class Loading extends React.Component {
         return (
             <Grid container justify="center">
                 <Grid item>
-                    <CircularProgress className={classes.progress} />
+                    <Typography>Vous êtes tellement profond dans le site que vous voyez Adèle.</Typography>
                 </Grid>
             </Grid>
         )
@@ -29,4 +29,4 @@ class Loading extends React.Component {
 
 }
 
-export default withStyles(styles)(Loading);
+export default withStyles(styles)(YouveReachedBottom);

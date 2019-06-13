@@ -13,6 +13,8 @@ import {
     Fab,
 }from '@material-ui/core'
 import Link from "@material-ui/core/Link";
+import Auth from '../../../lib/Auth';
+import User from '../../../database/models/User';
 
 const styles = {
     loginButton: {
@@ -46,24 +48,18 @@ class LoginModal extends React.Component {
     }
 
     classicLogin() {
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(() => {
-
-                // TODO: Insert in use table
-
-                this.props.visibilityHandler()
-            })
-            .catch((e) => {
-                this.setState({showLoginError: true})
-            })
+        Auth.login(this.state.email, this.state.password).then(() => {
+            this.props.visibilityHandler()
+        })
+        .catch((e) => {
+            this.setState({showLoginError: true})
+        })
     }
 
     toggleForgotPassword() {
         this.setState(prevState => ({
             showForgotPassword: !prevState.showForgotPassword
         }))
-
-        console.log(this.state.showForgotPassword)
     }
 
     googleLogin() {
@@ -71,11 +67,20 @@ class LoginModal extends React.Component {
         const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth.languageCode = 'fr';
 
-        firebase.auth().signInWithPopup(provider).then((result) => {
+        Auth.googleLogin(provider).then((result) => {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             // The signed-in user info.
             var user = result.user;
+
+            let docUser = new User({
+                username: user.displayName,
+                created: user.metadata.creationTime,
+                mail: user.email,
+            }, user.uid);
+            
+            docUser.save();
+
             // Hide the dialog
             this.props.visibilityHandler();
 
