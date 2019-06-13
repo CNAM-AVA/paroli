@@ -18,8 +18,15 @@ class SubRow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid: null
+            uid: null,
+            subButtonIsOnSubscribe: false
         }
+    }
+
+    componentWillMount() {
+        // Check if user is subbed and change button state
+
+        
     }
 
     componentDidMount() {
@@ -34,11 +41,15 @@ class SubRow extends React.Component {
     async subscribe() {
 
         let sub = await Sub.getByName(this.props.community.name);
+        const subName = sub.docs[0].data().name;
 
-        subscribeToSub(this.state.uid, sub.docs[0].data().name).then(() => {
-
+        subscribeToSub(this.state.uid, subName).then(() => {
+            console.log('subbed');
+            this.setState({
+                subButtonIsOnSubscribe: true
+            })
         }).catch((e) => {
-
+            console.log(e); 
         })
     }
 
@@ -47,10 +58,7 @@ class SubRow extends React.Component {
     }
 
     subButtonHandler() {
-
-        const userIsSubbed = true;
-
-        if (userIsSubbed) {
+        if (this.state.subButtonIsOnSubscribe) {
             return(
                 <Button variant={"contained"} color={"secondary"} onClick={() => this.unsubscribe()}>Désabonner</Button>
             )
