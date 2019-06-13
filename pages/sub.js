@@ -73,7 +73,7 @@ class Sub extends React.Component {
                                 ? <SubRulesCard sub={this.state.sub} />
                                 : null
                         }
-                        <HotSubs />
+                        <HotSubs subName={this.props.query.slug}/>
                         <Advertisement />
                     </Grid>
                 </Grid>
@@ -89,7 +89,7 @@ class Sub extends React.Component {
                                 ? <SubRulesCard sub={this.state.sub} />
                                 : null
                         }
-                        <HotSubs />
+                        <HotSubs subName={this.props.query.slug}/>
                         <Advertisement />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
@@ -133,7 +133,7 @@ class Sub extends React.Component {
                         ? <SubRulesCard sub={this.state.sub} />
                         : null
                 }
-                <HotSubs />
+                <HotSubs subName={this.props.query.slug}/>
                 <Advertisement />
             </Grid>
         )

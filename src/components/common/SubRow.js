@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, Button, Link } from '@material-ui/core'
 import firebase from '../../../lib/firebase'
-import { subscribeToSub } from '../../../lib/sub'
+import { subscribeToSub, isUserSubbed, unsubscribeToSub } from '../../../lib/sub'
 import Sub from '../../../database/models/Sub';
 
 const styles = theme => ({
@@ -23,25 +23,47 @@ class SubRow extends React.Component {
         }
     }
 
-    componentWillMount() {
-        // Check if user is subbed and change button state
-
-        
-    }
-
-    componentDidMount() {
+    async componentWillMount() {
         firebase.auth().onAuthStateChanged((user) => {
-            if (user)
+            if (user) {
                 this.setState({uid: user.uid})
+                this.updateSubsButton();
+            }
             else
                 this.setState({uid: null})
         })
+    }
+
+    async componentDidMount() {
+        if (this.state.uid != null) {
+            const userStatus = await isUserSubbed(this.state.uid, this.props.community.name);
+
+            if (userStatus.subbed) {
+                this.setState({
+                    subButtonIsOnSubscribe: true
+                })
+            }
+        }
+    }
+
+    async updateSubsButton() {
+        if (this.state.uid != null) {
+            const userStatus = await isUserSubbed(this.state.uid, this.props.community.name);
+
+            if (userStatus.subbed) {
+                this.setState({
+                    subButtonIsOnSubscribe: true
+                })
+            }
+        }
     }
 
     async subscribe() {
 
         let sub = await Sub.getByName(this.props.community.name);
         const subName = sub.docs[0].data().name;
+
+        console.log(this.state.uid + ' ' + subName)
 
         subscribeToSub(this.state.uid, subName).then(() => {
             console.log('subbed');
@@ -54,7 +76,17 @@ class SubRow extends React.Component {
     }
 
     async unsubscribe() {
-        console.log("Unsubscribing");
+
+        let sub = await Sub.getByName(this.props.community.name);
+        const subName = sub.docs[0].data().name;
+
+        unsubscribeToSub(this.state.uid, subName).then(() => {
+            this.setState({
+                subButtonIsOnSubscribe: false
+            })
+        }).catch((e) => {
+            console.log(e); 
+        })
     }
 
     subButtonHandler() {
