@@ -154,7 +154,7 @@ class Index extends React.Component {
                                 : this.fetchRandomPost()
                             }
                         </Grid>
-                        <Grid className={classes.infoCards} item xs={12} sm={5} md={4} lg={4} xl={2}>
+                        <Grid className={classes.infoCards} item xs={12} sm={5} md={4} lg={4} xl={3}>
                             <InfoCard title="Accueil" icon='home'>
                                 {
                                     firebase.auth().currentUser 
