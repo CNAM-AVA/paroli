@@ -1,10 +1,11 @@
 import React from 'react'
 import Layout from '../src/components/common/Layout';
-import { Grid, Typography, withStyles, Button, Paper, Divider, TextField, Snackbar } from '@material-ui/core';
+import { Grid, Typography, withStyles, Button, Paper, Divider, TextField, Snackbar, Avatar,CircularProgress } from '@material-ui/core';
 import Router from 'next/router'
 import firebase from '../lib/firebase'
 import { topMargin } from '../lib/constants'
 import LoginModal from '../src/components/common/LoginModal';
+import yellow from '@material-ui/core/colors/yellow';
 
 
 /**
@@ -40,7 +41,19 @@ const styles = theme => ({
     },
     snackBack: {
         backgroundColor: '#50C878'
-    }
+    },
+    buttonProgress: {
+        color: yellow[500],
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
+    wrapper: {
+        margin: theme.spacing.unit,
+        position: 'relative',
+    },
 })
 
 class Parameters extends React.Component {
@@ -58,7 +71,11 @@ class Parameters extends React.Component {
             password: '',
             passwordConfirm: '',
             passErrorMessage: '',
-            showPasswordError: false
+            showPasswordError: false,
+            profilePicture: null,
+            rawFile: null,
+            isLoadingUpload: false
+
         };
 
         this.visibilityHandler = this.visibilityHandler.bind(this);
@@ -69,13 +86,15 @@ class Parameters extends React.Component {
             if (user) {
                 this.setState({
                     user: user,
-                    currentEmail: user.email
+                    currentEmail: user.email,
                 })
             }
             else {
                 this.setState({ user: null })
             }
         })
+
+        // Todo: fetch user profile picture
     }
 
     visibilityHandler() {
@@ -154,6 +173,45 @@ class Parameters extends React.Component {
         )
     }
 
+    handleUpload(event) {
+        const file = event.target.files[0];
+        this.setState({
+            profilePicture: URL.createObjectURL(file),
+            rawFile: file
+        })
+    }
+
+    changeProfilePicture() {
+
+        const file = this.state.rawFile;
+
+        if (file == null) return;
+
+        this.setState({
+            isLoadingUpload: true
+        })
+
+        const uuid = this.state.user.uid;
+        const fileExtension = file.type.split('/').pop();
+
+        // Create the path reference to the user image
+        const storageRef = firebase.storage().ref(`profile_pictures/${uuid}.${fileExtension}`);
+
+        const profilePictureRef = storageRef.put(file).then((snapshot) => {
+            console.log('done uploading');
+            this.setState({
+                showSnackBar: true,
+                snackbarContent: 'Image de profil mise à jours !'
+            })
+        }).catch((error) => {
+            console.error(error);
+        }).finally(() => {
+            this.setState({
+                isLoadingUpload: false
+            })
+        })
+    }
+
     renderParameters() {
         const { classes } = this.props;
 
@@ -217,6 +275,7 @@ class Parameters extends React.Component {
                             type="password"
                             onChange={(e) => this.setState({ password: e.target.value })}
                         />
+                        <br/>
                         <TextField
                             id="emailinput"
                             label={'Confirmer mot de passe'}
@@ -225,6 +284,7 @@ class Parameters extends React.Component {
                             autoComplete="current-email"
                             onChange={(e) => this.setState({ passwordConfirm: e.target.value })}
                         />
+                        <br/>
                         {
                             this.state.showPasswordError
                                 ? <Typography variant={"body2"} color={"secondary"}>{this.state.passErrorMessage}</Typography>
@@ -236,10 +296,10 @@ class Parameters extends React.Component {
                     </Grid>
                 </Grid>
 
-                {/* <Divider className={classes.divider} />
+                <Divider className={classes.divider} />
 
                 <Grid container alignItems={"center"}>
-                    <Grid item xs={8} sm={8} md={9}>
+                    <Grid item xs={6}>
                         <Typography variant='subtitle1'>
                             Photo
                         </Typography>
@@ -248,11 +308,11 @@ class Parameters extends React.Component {
                             className={classes.input}
                             style={{ display: 'none' }}
                             id="raised-button-file"
-                            multiple
                             type="file"
+                            onChange={(e) => this.handleUpload(e)}
                         />
                         <label htmlFor="raised-button-file">
-                            <Button variant="raised" component="span" className={classes.button}>
+                            <Button variant="contained" component="span" className={classes.button}>
                                 Télécharger
                             </Button>
                         </label>
@@ -262,10 +322,17 @@ class Parameters extends React.Component {
                                 : ''
                         }
                     </Grid>
-                    <Grid item xs={12} sm={4} md={2}>
-                        <Button variant={"contained"} color={"primary"} onClick={() => this.changePassword()}>Modifier</Button>
+                    <Grid item xs={6}>
+                        <Avatar alt="Nouvelle PP" src={this.state.profilePicture} style={{marginTop: 25}}></Avatar>
                     </Grid>
-                </Grid> */}
+                    <Grid item xs={12} style={{marginTop: 25}}>
+                        <div className={classes.wrapper}>
+                            <Button variant={"contained"} color={"primary"} fullWidth onClick={() => this.changeProfilePicture()}>Modifier</Button>
+                            {this.state.isLoadingUpload && <CircularProgress size={24} className={classes.buttonProgress} />}
+                        </div>
+                        
+                    </Grid>
+                </Grid>
             </Paper>
         )
     }
