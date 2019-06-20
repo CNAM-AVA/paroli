@@ -113,11 +113,31 @@ class AppNavigation extends React.Component {
 			left: false,
 			showLogin: false,
 			showRegister: false,
-			showSnackbar: false
+			showSnackbar: false,
+			ppUrl: null
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 		this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
 
+	}
+
+	componentWillMount() {
+		// Load the user profilePicture
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) {
+				const ppRef = firebase.storage().ref(`profile_pictures/${user.uid}.png`);
+                
+                ppRef.getDownloadURL().then((url) => {
+                    this.setState({
+                        ppUrl: url
+                    })
+                }).catch((error) => {
+                    this.setState({
+                        ppUrl: null
+                    })  
+                })
+			}
+		})
 	}
 
 	toggleDrawer = (open) => () => {
@@ -205,7 +225,7 @@ class AppNavigation extends React.Component {
 						</div>
 						{
 							firebase.auth().currentUser
-								? <Avatar className={classes.avatar} onClick={() => this.toggleSnackbar()} alt="p">P</Avatar>
+								? <Avatar className={classes.avatar} onClick={() => this.toggleSnackbar()} src={this.state.ppUrl}></Avatar>
 								: <Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>Connexion</Button>
 						}
 						<Snackbar
