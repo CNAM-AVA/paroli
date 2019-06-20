@@ -84,17 +84,22 @@ class Parameters extends React.Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                this.setState({
-                    user: user,
-                    currentEmail: user.email,
+
+                // Download the profile picture
+                const ppRef = firebase.storage().ref(`profile_pictures/${user.uid}.png`);
+                
+                ppRef.getDownloadURL().then((url) => {
+                    this.setState({
+                        user: user,
+                        currentEmail: user.email,
+                        profilePicture: url
+                    })
                 })
             }
             else {
                 this.setState({ user: null })
             }
         })
-
-        // Todo: fetch user profile picture
     }
 
     visibilityHandler() {
@@ -304,7 +309,7 @@ class Parameters extends React.Component {
                             Photo
                         </Typography>
                         <input
-                            accept="image/png, image/jpeg"
+                            accept="image/png"
                             className={classes.input}
                             style={{ display: 'none' }}
                             id="raised-button-file"
