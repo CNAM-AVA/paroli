@@ -81,7 +81,7 @@ class Parameters extends React.Component {
         this.visibilityHandler = this.visibilityHandler.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
 
@@ -94,6 +94,12 @@ class Parameters extends React.Component {
                         currentEmail: user.email,
                         profilePicture: url
                     })
+                }).catch((error) => {
+                    this.setState({
+                        user: user,
+                        currentEmail: user.email,
+                        profilePicture: null
+                    })  
                 })
             }
             else {
