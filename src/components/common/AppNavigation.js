@@ -151,7 +151,7 @@ class AppNavigation extends React.Component {
 						Router.push({
 							pathname: '/search',
 							query: { q: this.state.textFieldContent }
-						}, `/search/${this.state.textFieldContent}`)
+						})
 					}
 				}
 			}
