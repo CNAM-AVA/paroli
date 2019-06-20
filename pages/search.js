@@ -3,6 +3,11 @@ import { withStyles, Grid, Typography, Paper, Divider, TextField, Button } from 
 import Layout from '../src/components/common/Layout';
 import Router, { withRouter } from 'next/router';
 
+/**
+ * Search page
+ * 
+ * TODO: Search firestore
+ */
 class Search extends React.Component {
 
     constructor(props) {
