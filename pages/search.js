@@ -1,9 +1,10 @@
 import React from 'react'
-import { withStyles, Grid, Typography, Paper, Divider, TextField, Button } from '@material-ui/core'
+import { withStyles, Grid, Typography, Paper, Divider, TextField, Button, CircularProgress } from '@material-ui/core'
 import Layout from '../src/components/common/Layout';
 import Router, { withRouter } from 'next/router';
 import { firestore } from '../lib/firebase';
 import Link from 'next/link'
+import Loading from '../src/components/common/Loading';
 
 /**
  * Search page
@@ -18,7 +19,8 @@ class Search extends React.Component {
             textFieldContent: '',
             posts: [],
             subs: [],
-            users: []
+            users: [],
+            isLoading: false
         }
     }
 
@@ -33,10 +35,7 @@ class Search extends React.Component {
             if (e.keyCode == 13) {
                 if (this.state.textFieldContent !== '') {
                     // Search the content
-                    Router.push({
-                        pathname: '/search',
-                        query: { q: this.state.textFieldContent }
-                    })
+                    window.location.href = `/search?q=${this.state.textFieldContent}`
                 }
             }
         }
@@ -45,7 +44,11 @@ class Search extends React.Component {
     /**
      * Retreive data from firestore using the query props
      */
-    getResultSample() {
+    async getResultSample() {
+
+        this.setState({
+            isLoading: true
+        })
 
         const searchData = this.props.router.query;
         let posts = [];
@@ -54,32 +57,35 @@ class Search extends React.Component {
 
         if (searchData.q == null) return;
 
-        // Get posts
-        firestore.collection("posts").orderBy('title').startAt(searchData.q).endAt(`${searchData.q}\uf8ff`).limit(10).get()
-            .then((snapshot) => {
-                snapshot.forEach((document) => {
-                    posts.push(document.data())
-                })
-                this.setState({ posts: posts })
-            })
+        // Posts
+        const postPromise = await firestore.collection("posts").orderBy('title').startAt(searchData.q).endAt(`${searchData.q}\uf8ff`).limit(10).get()
 
         // Subs
-        firestore.collection("subs").orderBy('name').startAt(searchData.q).endAt(`${searchData.q}\uf8ff`).limit(10).get()
-            .then((snapshot) => {
-                snapshot.forEach((document) => {
-                    subs.push(document.data())
-                })
-                this.setState({ subs: subs })
-            })
+        const subsPromise = await firestore.collection("subs").orderBy('name').startAt(searchData.q).endAt(`${searchData.q}\uf8ff`).limit(10).get()
 
         // Users
-        firestore.collection("users").orderBy('username').startAt(searchData.q).endAt(`${searchData.q}\uf8ff`).limit(10).get()
-            .then((snapshot) => {
-                snapshot.forEach((document) => {
-                    users.push(document.data())
-                })
-                this.setState({ users: users })
+        const usersPromise = await firestore.collection("users").orderBy('username').startAt(searchData.q).endAt(`${searchData.q}\uf8ff`).limit(10).get()
+
+        Promise.all([postPromise, subsPromise, usersPromise]).then(values => {
+            values[0].docs.forEach((document) => {
+                posts.push(document.data());
             })
+
+            values[1].docs.forEach((document) => {
+                subs.push(document.data());
+            })
+
+            values[2].docs.forEach((document) => {
+                users.push(document.data());
+            })
+
+            this.setState({
+                posts: posts,
+                subs: subs,
+                users: users,
+                isLoading: false
+            })
+        })
     }
 
     renderNoQuery() {
@@ -114,7 +120,7 @@ class Search extends React.Component {
             <Grid item md={6} key={index}>
                 <Paper className={classes.postPaper}>
                     <Typography variant="subtitle2" color="primary">
-                        <Link href={``}>{post.title}</Link>
+                        <Link href={``}><a>{post.title}</a></Link>
                     </Typography>
                     <Typography variant="body2">
                         {post.content}
@@ -145,6 +151,26 @@ class Search extends React.Component {
 
         return (
             <Grid container alignItems={"center"} justify={"center"} className={classes.root}>
+
+                {/* Search bar */}
+                <Grid item md={8} className={classes.searchSection}>
+                    <Grid container item md={4} className={classes.queryRoot}>
+                        <TextField
+                            className={classes.searchBar}
+                            label="rechercher"
+                            fullWidth
+                            variant="filled"
+                            onChange={(e) => this.setState({ textFieldContent: e.target.value })}
+                        />
+                        <Button variant="contained" color="primary" onClick={() => window.location.href = `/search?q=${this.state.textFieldContent}`}>Chercher</Button>
+                    </Grid>
+                </Grid>
+
+                <Grid container justify="center">
+                    <Grid item>
+                        {this.state.isLoading && <CircularProgress className={classes.progress} />}
+                    </Grid>
+                </Grid>
 
                 {/* The posts */}
                 <Grid container item md={8}>
@@ -238,6 +264,9 @@ const styles = (theme) => ({
     root: {
         padding: 20
     },
+    searchSection: {
+        marginBottom: 50
+    },
     contentRoot: {
         width: '100%',
         padding: '10px 15px 15px 15px',
@@ -249,6 +278,16 @@ const styles = (theme) => ({
     },
     sectionContent: {
         marginTop: 15
+    },
+    queryRoot: {
+        '& div': {
+            '& div': {
+                backgroundColor: 'rgba(33, 153, 243,0.65)'
+            }
+        },
+        '& button': {
+            marginTop: 20
+        }
     },
     noQueryRoot: {
         marginTop: '150px',
