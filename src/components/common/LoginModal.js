@@ -83,6 +83,10 @@ class LoginModal extends React.Component {
 
             // Hide the dialog
             this.props.visibilityHandler();
+
+            // TODO: Insert in user table
+            
+
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
