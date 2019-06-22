@@ -7,7 +7,7 @@ import AppNavigation from './AppNavigation'
 
 const styles = (theme) => ({
     main: {
-        background: 'url("../../static/background.png") no-repeat center center fixed',
+        background: 'url("../../static/background2.png") no-repeat center center fixed',
         backgroundSize: 'cover',
         minHeight: 'calc(100vh - 64px)',
         [theme.breakpoints.down('xs')]: {

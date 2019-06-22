@@ -7,6 +7,9 @@ const DEFAULT_VALUES = {
     mods: [],
     name: null,
     pageTitle: null,
+    subscribersCount: 0,
+    subscribers: [],
+    posts: []
 };
 
 const FILLABLE = [
@@ -16,7 +19,8 @@ const FILLABLE = [
     "name",
     "pageTitle",
     "posts",
-    "subscribers",
+    "subscribersCount",
+    "subscribers"
 ];
 
 export default class Sub extends Model {
