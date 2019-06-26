@@ -37,7 +37,7 @@ class SinglePost extends React.Component {
                     {(() => {
                         switch(this.props.post.type) {
                             case TYPE_TEXT:
-                                return  <p>{this.props.post.content}</p>
+                                return  <Typography>{this.props.post.content}</Typography>
                             case TYPE_IMAGE:
                                 return <Image post={this.props.post}/>
                             case TYPE_LINK:
