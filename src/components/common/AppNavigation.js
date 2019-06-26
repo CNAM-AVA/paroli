@@ -206,12 +206,6 @@ class AppNavigation extends React.Component {
 							<ListItemText primary={'Accueil'} />
 						</ListItem>
 					</Link>
-					<Link href="/subs">
-						<ListItem button key={'Subs'}>
-							<ListItemIcon><BubbleChartIcon /></ListItemIcon>
-							<ListItemText primary={'Subs'} />
-						</ListItem>
-					</Link>
 				</List>
 			</div>
 		);

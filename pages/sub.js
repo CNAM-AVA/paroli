@@ -3,7 +3,7 @@ import "../static/styles.scss"
 import Layout from '../src/components/common/Layout';
 import SubNavbar from '../src/components/common/SubNavbar';
 import DisplayFilter from '../src/components/common/DisplayFilter';
-import { Grid, CircularProgress, Typography } from '@material-ui/core';
+import { Grid, CircularProgress, Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Advertisement from '../src/components/common/Advertisement';
 import YouveReachedBottom from '../src/components/common/YouveReachedBottom';
@@ -17,6 +17,7 @@ import NoResultsFound from '../src/components/common/NoResultsFound';
 import SubType from '../database/models/Sub';
 import Post from '../database/models/Post';
 import BottomScrollListener from '../node_modules/react-bottom-scroll-listener';
+import SubAdminMenuCard from '../src/components/sub/SubAdminMenuCard';
 
 const styles = theme => ({
     cardsContainer: {
@@ -128,6 +129,7 @@ class Sub extends React.Component {
     asidePanel() {
         return(
             <Grid item xs={12} sm={6} md={4} lg={4} cl={3}>
+                <SubAdminMenuCard sub={this.state.sub}/>
                 <SubDescriptionCard sub={this.state.sub} />
                 <Advertisement />
                 {
