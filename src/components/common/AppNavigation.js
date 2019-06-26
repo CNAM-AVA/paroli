@@ -201,7 +201,7 @@ class AppNavigation extends React.Component {
 			<div className={classes.list}>
 				<List>
 					<Link href="/">
-						<ListItem button key={'Acceuil'}>
+						<ListItem button key={'Accueil'}>
 							<ListItemIcon><HomeIcon /></ListItemIcon>
 							<ListItemText primary={'Accueil'} />
 						</ListItem>

@@ -1,10 +1,12 @@
 import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
+import { FILTER_TOP, FILTER_HOT, FILTER_NEW } from "../../lib/filters";
 
 const DEFAULT_VALUES = {
     created: null,
     creator: null,
     sub: null,
+    subName: null,
     title: null,
     type: null,
     content: null,
@@ -16,6 +18,7 @@ const FILLABLE = [
     "created",
     "creator",
     "sub",
+    "subName",
     "title",
     "type",
     "content",
@@ -28,6 +31,10 @@ export default class Post extends Model {
 
     constructor(data = {}, documentId = null) {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);
+    }
+
+    getLink() {
+        return "/p/"+this.subName+"/"+this.documentId;
     }
 
     static getByTitle(title) {
@@ -43,12 +50,23 @@ export default class Post extends Model {
 
         coll = coll.where("sub", "==", filters.sub.documentId);
 
-        coll = coll.orderBy("upvotes");
+        coll = Post.getOrderBy(coll, filters.filterType);
 
         if(filters.lastPost) {
             coll = coll.startAfter(filters.lastPost);
         }
 
         return coll.limit(filters.limit || 20).get();
+    }
+
+    static getOrderBy(coll, type) {
+        switch(type) {
+            case FILTER_TOP:
+                return coll.orderBy("upvotes");
+            case FILTER_NEW:
+                return coll.orderBy("created");
+            default:
+                return coll.orderBy("upvotes");
+        }
     }
 }

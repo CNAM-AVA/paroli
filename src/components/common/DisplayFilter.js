@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
+import { FILTER_NEW, FILTER_TOP, FILTER_HOT } from '../../../lib/filters';
 
 const styles = {
     root: {
@@ -67,9 +68,9 @@ class DisplayFilter extends React.Component {
         return(
             <div className={classes.root}>
                     <Typography variant={"body2"} className={classes.subNavTitle}>SORT BY</Typography>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter('hot')} color={"primary"} label={"Hot"} variant={this.state.filter.hot ? "default": "outlined"}></Chip>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter('new')} color={"primary"} label={"New"} variant={this.state.filter.new ? "default": "outlined"}></Chip>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter('trending')} color={"primary"} label={"Trending"} variant={this.state.filter.trending ? "default": "outlined"}></Chip>
+                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_HOT)} color={"primary"} label={"Hot"} variant={this.state.filter.hot ? "default": "outlined"}></Chip>
+                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_NEW)} color={"primary"} label={"New"} variant={this.state.filter.new ? "default": "outlined"}></Chip>
+                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_TOP)} color={"primary"} label={"Top"} variant={this.state.filter.trending ? "default": "outlined"}></Chip>
             </div>
         );
     }

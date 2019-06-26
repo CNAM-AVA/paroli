@@ -119,6 +119,8 @@ class Sub extends React.Component {
                     this.setState({ no_more_posts: true });
                 }
                 this.setState({ can_reload: true });
+            }).catch((e) => {
+                console.log(e);
             })
         }
     }
@@ -146,7 +148,7 @@ class Sub extends React.Component {
             <Layout>
                 <BottomScrollListener onBottom={this.reloadPosts.bind(this)} />
                 <SubNavbar>
-                    <DisplayFilter />
+                    <DisplayFilter/>
                 </SubNavbar>
                 <Grid container justify="center" className={classes.cardsContainer}>
                     <Grid item xs={12} md={12} lg={10}>
