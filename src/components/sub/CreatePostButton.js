@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import {Fab, Grid, Dialog, TextField, DialogTitle, Button, DialogContent, Tabs, Tab, AppBar} from '@material-ui/core';
 import Post from "../../../database/models/Post";
 import firebase from "../../../lib/firebase";
+import { TYPE_TEXT, TYPE_IMAGE, TYPE_VIDEO } from '../../../lib/post';
 
 const styles = {
     fab: {
@@ -52,13 +53,13 @@ class CreatePostButton extends React.Component {
     tabToType() {
         switch(this.state.tab) {
             case this.TEXT_TAB:
-                return "text";
+                return TYPE_TEXT;
             case this.LINK_TAB:
-                return "link";
+                return TYPE_LINK;
             case this.IMAGE_TAB:
-                return "image";
+                return TYPE_IMAGE;
             case this.VIDEO_TAB:
-                return "video";
+                return TYPE_VIDEO;
         }
     }
 

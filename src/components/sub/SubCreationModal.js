@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography, Dialog, Grid, TextField, Button } from '@material-ui/core';
 import { firestoreCreateSub } from '../../../lib/sub'
 import firebase from '../../../lib/firebase'
+import Router from 'next/router'
 
 const styles = {
     root: {
@@ -52,7 +53,7 @@ class SubCreationModal extends React.Component {
             this.setState({
                 display: false
             })
-            window.location.replace(`/p/${this.state.name}`);
+            Router.push(`/p/${this.state.name}`)
         })
         .catch((e) => {
             console.log('catched');

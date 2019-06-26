@@ -41,6 +41,8 @@ export default class Model {
         this.fillable.forEach((e) => {
             if(typeof this[e] !== 'undefined') {
                 ret[e] = this[e];
+            } else {
+                ret[e] = this.defaultValues[e];
             }
         });
         return ret;

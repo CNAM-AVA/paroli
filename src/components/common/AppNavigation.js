@@ -14,7 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import MenuIcon from '@material-ui/icons/Menu';
+import BubbleChartIcon from '@material-ui/icons/BubbleChart';
 import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
 import Link from 'next/link';
 import Button from '@material-ui/core/Button'
 import LoginModal from './LoginModal'
@@ -23,6 +25,8 @@ import firebase from '../../../lib/firebase'
 import Select from '@material-ui/core/Select';
 import { MenuItem, FormControl, InputLabel, Avatar, Snackbar, Grid } from '@material-ui/core';
 import { appName } from '../../../lib/constants'
+import { getUserPicture } from '../../../lib/user'
+import Router from 'next/router'
 
 const styles = theme => ({
 	root: {
@@ -111,11 +115,47 @@ class AppNavigation extends React.Component {
 			left: false,
 			showLogin: false,
 			showRegister: false,
-			showSnackbar: false
+			showSnackbar: false,
+			ppUrl: null,
+			textFieldContent: ''
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 		this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
+	}
 
+	componentWillMount() {
+		// Load the user profilePicture
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) {
+				getUserPicture(user.uid).then((url) => {
+					this.setState({
+						ppUrl: url
+					})
+				}).catch((error) => {
+					console.log(error)
+					this.setState({
+						ppUrl: null
+					})
+				})
+			}
+		})
+	}
+
+	componentDidMount() {
+		// Add key listener on the search bar
+		window.onkeypress = (e) => {
+			if (e.keyCode == 13) {
+				if (this.state.textFieldContent !== '') {
+					if (document.getElementById("searchBar") === document.activeElement) {
+						// Search the content
+						Router.push({
+							pathname: '/search',
+							query: { q: this.state.textFieldContent }
+						})
+					}
+				}
+			}
+		}
 	}
 
 	toggleDrawer = (open) => () => {
@@ -161,33 +201,15 @@ class AppNavigation extends React.Component {
 			<div className={classes.list}>
 				<List>
 					<Link href="/">
-						<ListItem button key={'Dashboard'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Dashboard'} />
+						<ListItem button key={'Acceuil'}>
+							<ListItemIcon><HomeIcon /></ListItemIcon>
+							<ListItemText primary={'Accueil'} />
 						</ListItem>
 					</Link>
-					<Link href="/vled">
-						<ListItem button key={'Board Builder'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Board Builder'} />
-						</ListItem>
-					</Link>
-					<Link href="/">
-						<ListItem button key={'Configs'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Configs'} />
-						</ListItem>
-					</Link>
-					<Link href="/sub">
-						<ListItem button key={'Sub'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Sub'} />
-						</ListItem>
-					</Link>
-					<Link href="/post">
-						<ListItem button key={'Post'}>
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary={'Post'} />
+					<Link href="/subs">
+						<ListItem button key={'Subs'}>
+							<ListItemIcon><BubbleChartIcon /></ListItemIcon>
+							<ListItemText primary={'Subs'} />
 						</ListItem>
 					</Link>
 				</List>
@@ -212,20 +234,22 @@ class AppNavigation extends React.Component {
 								<SearchIcon />
 							</div>
 							<InputBase
+								id="searchBar"
 								placeholder="Rechercher…"
 								classes={{
 									root: classes.inputRoot,
 									input: classes.inputInput,
 								}}
+								onChange={(e) => this.setState({ textFieldContent: e.target.value })}
 							/>
 						</div>
 						{
 							firebase.auth().currentUser
-								? <Avatar className={classes.avatar} onClick={() => this.toggleSnackbar()} alt="p">P</Avatar>
+								? <Avatar className={classes.avatar} onClick={() => this.toggleSnackbar()} src={this.state.ppUrl}></Avatar>
 								: <Button onClick={(e) => this.toggleModal(e)} variant={"outlined"} color={"inherit"}>Connexion</Button>
 						}
 						<Snackbar
-							anchorOrigin={{vertical: 'top',horizontal: 'right'}}
+							anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 							open={this.state.showSnackbar}
 							onClose={() => this.toggleSnackbar()}
 							ContentProps={{
@@ -234,10 +258,12 @@ class AppNavigation extends React.Component {
 							message={
 								<Grid container spacing={16}>
 									<Grid item>
-										<Button color={"primary"} variant={"contained"}>Paramètres</Button>									
+										<Link href="/parameters">
+											<Button color={"primary"} variant={"contained"}>Paramètres</Button>
+										</Link>
 									</Grid>
 									<Grid item>
-										<Button onClick={(e) => {this.toggleSnackbar();this.toggleModal(e)}} color={"secondary"} variant={"contained"}>Déconnexion</Button>
+										<Button onClick={(e) => { this.toggleSnackbar(); this.toggleModal(e) }} color={"secondary"} variant={"contained"}>Déconnexion</Button>
 									</Grid>
 								</Grid>
 							}
