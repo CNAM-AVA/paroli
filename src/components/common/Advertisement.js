@@ -34,7 +34,7 @@ class Advertisement extends React.Component {
             <Card>
                 <CardContent>
                     <img src={"/static/img/adverts/ad_"+this.state.advert.id+".png"} className={classes.img}/>
-                    {this.state.advert.text}
+                    <Typography>{this.state.advert.text}</Typography>
                 </CardContent>
             </Card>
         );
