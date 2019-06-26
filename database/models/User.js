@@ -33,4 +33,8 @@ export default class User extends Model {
     static getById(id) {
         return firestore.collection("users").doc(id).get();
     }
+
+    static getByName(name) {
+        return firestore.collection("users").where("username", "==", name).get();
+    }
 }

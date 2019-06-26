@@ -3,3 +3,4 @@ const routes = require('next-routes')
 module.exports = routes()                           // ----   ----   -----
 .add('sub', '/p/:slug', 'sub')                      // sub    sub    /p/:slug
 .add('post', '/p/:slug/:post', 'post')              // post   post   /p/:slug/:post
+.add('user', '/user/:slug', 'user')                  // user   user   /user/:slug

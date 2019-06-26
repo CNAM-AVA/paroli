@@ -25,7 +25,7 @@ import firebase from '../../../lib/firebase'
 import Select from '@material-ui/core/Select';
 import { MenuItem, FormControl, InputLabel, Avatar, Snackbar, Grid } from '@material-ui/core';
 import { appName } from '../../../lib/constants'
-import { getUserPicture } from '../../../lib/user'
+import { getUserPictureWithID } from '../../../lib/user'
 import Router from 'next/router'
 
 const styles = theme => ({
@@ -127,7 +127,7 @@ class AppNavigation extends React.Component {
 		// Load the user profilePicture
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
-				getUserPicture(user.uid).then((url) => {
+				getUserPictureWithID(user.uid).then((url) => {
 					this.setState({
 						ppUrl: url
 					})
