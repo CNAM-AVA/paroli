@@ -33,6 +33,9 @@ class UserPage extends React.Component {
     componentDidMount() {
         if (this.props.query.slug == null) {
             // TODO: Redirect
+            this.setState({
+                pageLoading: false
+            })
 
         } else {
             this.getUserInfos(this.props.query.slug)
