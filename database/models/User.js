@@ -27,7 +27,7 @@ const FILLABLE = [
 const collectionName = "users";
 
 export default class User extends Model {
-    
+    collectionName = "users";
 
     constructor(data = {}, documentId = null) {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);

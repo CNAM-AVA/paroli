@@ -45,8 +45,6 @@ class CommentCardComponent extends React.Component {
 			multiline : '',
 			disabled: true,
 		}
-		this.upvote = this.upvote.bind(this);
-		this.downvote = this.downvote.bind(this);
 		this.handleMultiline = this.handleMultiline.bind(this)
 	}
 
@@ -150,11 +148,11 @@ class CommentCardComponent extends React.Component {
 
 		return(
 			<Grid container>
-				<Grid item xs={sub ? 1 : 0}>
+				<Grid item xs={sub ? 1 : false}>
 
 				</Grid>
 					{/* <VoteComponent className={classes.voteComment} upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} /> */}
- 				<Grid item xs={sub ? 11 : 12}>
+ 				<Grid item xs={sub ? 11 : true}>
 				
 					<Typography variant="subtitle2" color="textSecondary">
 						{comment.creator} {bull} {comment.created}

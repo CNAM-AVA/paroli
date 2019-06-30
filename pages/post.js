@@ -9,7 +9,7 @@ import UserDB from '../database/models/User';
 import moment from 'moment';
 import firebase from "../lib/firebase";
 import {firestore} from "../lib/firebase";
-import { getUserPicture } from '../lib/user';
+import { getUserPictureWithID } from '../lib/user';
 
 
 export default class Post extends React.Component {
@@ -92,7 +92,7 @@ export default class Post extends React.Component {
 	}
 
 	loadUserPicture(userId){
-		getUserPicture(userId).then((url) => {
+		getUserPictureWithID(userId).then((url) => {
 			let post = this.state.post;
 			post.creatorAvatar = url;
 			this.setState({post: post});
@@ -163,36 +163,37 @@ export default class Post extends React.Component {
 	}
 
 	upvote() {
-		let post = this.state.post;
-		post.upvotes = post.upvotes + 1;
-		if(this.voted || this.state.user.downvotedPosts.includes(post.id)){
-			PostDB.upvote(post.id, true);
-			this.voted = true;
-		}
-		else
-			PostDB.upvote(post.id);
+		if(this.state.uid){
+			let post = this.state.post;
+			post.upvotes = post.upvotes + 1;
+			if(this.voted || this.state.user.downvotedPosts.includes(post.id)){
+				PostDB.upvote(post.id, true);
+				this.voted = true;
+			}
+			else
+				PostDB.upvote(post.id);
 
-		UserDB.upvote(this.state.uid, post.id);
+			UserDB.upvote(this.state.uid, post.id);
+		}
 	
 	}
 
 	downvote() {
-		let post = this.state.post;
-		post.downvotes = post.downvotes + 1;
-		if(this.voted || this.state.user.upvotedPosts.includes(post.id)){
-			PostDB.downvote(post.id, true);
-			this.voted = true;
-		}
-		else
-			PostDB.downvote(post.id);
+		if(this.state.uid){
+			let post = this.state.post;
+			post.downvotes = post.downvotes + 1;
+			if(this.voted || this.state.user.upvotedPosts.includes(post.id)){
+				PostDB.downvote(post.id, true);
+				this.voted = true;
+			}
+			else
+				PostDB.downvote(post.id);
 
-		UserDB.downvote(this.state.uid, post.id);
-		
+			UserDB.downvote(this.state.uid, post.id);
+		}
 	}
 
 	handleCommentEvent(multiline, uid, parentComment = null){
-		console.log('tutu : ', multiline);
-		
 		let comment = new ComDB({
 			creator: uid,
 			created: new Date(),
