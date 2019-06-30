@@ -8,11 +8,16 @@ import ComDB from '../database/models/Comment';
 import UserDB from '../database/models/User';
 import moment from 'moment';
 import firebase from "../lib/firebase";
-import {firestore} from "../lib/firebase";
 import { getUserPictureWithID } from '../lib/user';
+import { withStyles } from '@material-ui/core';
 
+const styles = theme => ({
+	snackBar: {
+        backgroundColor: '#ffa000'
+    },
+})
 
-export default class Post extends React.Component {
+class Post extends React.Component {
 
 	static async getInitialProps({query}) {
 		return {
@@ -27,6 +32,8 @@ export default class Post extends React.Component {
 			comments: [],
 			uid: null,
 			user: {},
+			showSnackBar: false,
+            snackbarContent: '',
 		};
 		this.handleCommentEvent = this.handleCommentEvent.bind(this);
 		this.upvote = this.upvote.bind(this);
@@ -163,7 +170,7 @@ export default class Post extends React.Component {
 	}
 
 	upvote() {
-		if(this.state.uid){
+			console.log('up');
 			let post = this.state.post;
 			post.upvotes = post.upvotes + 1;
 			if(this.voted || this.state.user.downvotedPosts.includes(post.id)){
@@ -174,12 +181,14 @@ export default class Post extends React.Component {
 				PostDB.upvote(post.id);
 
 			UserDB.upvote(this.state.uid, post.id);
-		}
+		
 	
 	}
 
 	downvote() {
 		if(this.state.uid){
+			console.log('down');
+
 			let post = this.state.post;
 			post.downvotes = post.downvotes + 1;
 			if(this.voted || this.state.user.upvotedPosts.includes(post.id)){
@@ -190,6 +199,11 @@ export default class Post extends React.Component {
 				PostDB.downvote(post.id);
 
 			UserDB.downvote(this.state.uid, post.id);
+		} else {
+			this.setState({
+                showSnackBar: true,
+                snackbarContent: 'Vous devez vous connecter pour voter'
+            })
 		}
 	}
 
@@ -209,6 +223,7 @@ export default class Post extends React.Component {
 	}
 
 	render() {
+		const { classes } = this.props;
 		let post = this.state.post;
 		let comments = this.state.comments;
 		let user = this.state.user;
@@ -220,3 +235,5 @@ export default class Post extends React.Component {
 		);
 	}
 }
+
+export default withStyles(styles)(Post);

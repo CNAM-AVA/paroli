@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Card, Typography, CardContent, Button, Collapse, TextField } from '@material-ui/core';
+import { Grid, Card, Typography, CardContent, Button, Collapse, TextField, Snackbar } from '@material-ui/core';
 import CommentIcon from '@material-ui/icons/Comment';
 import VoteComponent from './VoteComponent';
 import SendIcon from '@material-ui/icons/Send';
@@ -33,7 +33,10 @@ const styles = theme => ({
 	},
 	sub: {
 		marginLeft : '20px',
-	}
+	},
+	snackBar: {
+        backgroundColor: '#ffa000'
+    },
 });
 
 class CommentCardComponent extends React.Component {
@@ -44,6 +47,8 @@ class CommentCardComponent extends React.Component {
 			subComments: [],
 			multiline : '',
 			disabled: true,
+			showSnackBar: false,
+            snackbarContent: '',
 		}
 		this.handleMultiline = this.handleMultiline.bind(this)
 	}
@@ -86,6 +91,10 @@ class CommentCardComponent extends React.Component {
 			this.props.event(this.state.multiline, this.state.uid, this.props.comment.id);
 			this.setState({multiline: ''});
 		} else {
+			this.setState({
+                showSnackBar: true,
+                snackbarContent: 'Vous devez vous connecter pour pouvoir commenter'
+            });
 			console.log('you must log in to comment !');
 		}
 	}
@@ -148,6 +157,18 @@ class CommentCardComponent extends React.Component {
 
 		return(
 			<Grid container>
+				<Snackbar
+					anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+					open={this.state.showSnackBar}
+					onClose={() => this.setState({ showSnackBar: false })}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+						classes: {
+							root: classes.snackBar
+						}
+					}}
+					message={<span id="message-id">{this.state.snackbarContent}</span>}
+				/>
 				<Grid item xs={sub ? 1 : false}>
 
 				</Grid>

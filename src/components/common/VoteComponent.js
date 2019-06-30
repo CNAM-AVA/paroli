@@ -1,9 +1,9 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { IconButton, Grid, Typography, Snackbar } from '@material-ui/core';
 import ArrowDownIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import ArrowUpIcon from '@material-ui/icons/KeyboardArrowUpRounded';
-
+import firebase from "../../../lib/firebase";
 
 const styles = theme => ({
 	root: {
@@ -16,7 +16,10 @@ const styles = theme => ({
 	},
 	vote: {
 		padding: '7px'
-	}
+	},
+	snackBar: {
+        backgroundColor: '#ffa000'
+    },
 });
 
 class VoteComponent extends React.Component {
@@ -29,7 +32,20 @@ class VoteComponent extends React.Component {
 			downvotes: 0,
 			user: this.props.user,
 			postId: this.props.postId,
+			uid: null,
+			showSnackBar: false,
+            snackbarContent: '',
 		};
+	}
+
+	componentDidMount() {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user){
+				this.setState({uid: user.uid});
+			}
+			else
+				this.setState({uid: null})
+		});
 	}
 
 	componentDidUpdate(prevProps){		
@@ -60,28 +76,42 @@ class VoteComponent extends React.Component {
 	// state = { expanded: false };
 
   	handleUpvoteClick = () => {
-	  	if(this.state.vote !== 'up'){
-			let upvotes = this.state.upvotes
+		if(this.state.uid){
+			if(this.state.vote !== 'up'){
+				let upvotes = this.state.upvotes
+				this.setState({
+					vote: 'up',
+					upvotes: upvotes+1,
+				});
+				if(this.state.vote)
+					this.setState({downvotes : this.state.downvotes - 1});
+				this.props.upvote();
+			}
+		} else {
 			this.setState({
-				vote: 'up',
-				upvotes: upvotes+1,
-			});
-			if(this.state.vote)
-				this.setState({downvotes : this.state.downvotes - 1});
-			this.props.upvote();
+                showSnackBar: true,
+                snackbarContent: 'Vous devez vous connecter pour pouvoir voter'
+            });
 		}
 	};
 
 	handleDownvoteClick = () => {
-		if(this.state.vote !== 'down'){
-			let downvotes = this.state.downvotes;
+		if(this.state.uid){
+			if(this.state.vote !== 'down'){
+				let downvotes = this.state.downvotes;
+				this.setState({
+					vote: 'down',
+					downvotes: downvotes+1,
+				});
+				if(this.state.vote)
+					this.setState({upvotes : this.state.upvotes - 1});
+				this.props.downvote();
+			}
+		} else {
 			this.setState({
-				vote: 'down',
-				downvotes: downvotes+1,
-			});
-			if(this.state.vote)
-				this.setState({upvotes : this.state.upvotes - 1});
-			this.props.downvote();
+                showSnackBar: true,
+                snackbarContent: 'Vous devez vous connecter pour pouvoir voter'
+            });
 		}
 	};
 
@@ -91,6 +121,18 @@ class VoteComponent extends React.Component {
 
 		return(
 			<div className={classes.root}>
+				<Snackbar
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    open={this.state.showSnackBar}
+                    onClose={() => this.setState({ showSnackBar: false })}
+                    ContentProps={{
+						'aria-describedby': 'message-id',
+						classes: {
+                            root: classes.snackBar
+                        }
+					}}
+                    message={<span id="message-id">{this.state.snackbarContent}</span>}
+                />
 				<Grid container direction="column" alignItems="center" justify="flex-start">
 					<IconButton className={classes.vote} color={(this.state.vote === 'up') ? 'primary' : 'default'} onClick={() => this.handleUpvoteClick()} aria-pressed="false" aria-label="upvote">
 						<ArrowUpIcon/>
