@@ -1,8 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader, Divider } from '@material-ui/core';
+import { Grid, Button, TextField, Divider, Snackbar } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import CommentCardComponent from './CommentCardComponent';
 import firebase from "../../../lib/firebase";
 
 
@@ -69,6 +68,9 @@ const styles = theme => ({
 		marginTop: theme.spacing.unit,
 		marginBottom: theme.spacing.unit,
 	},
+	snackBar: {
+        backgroundColor: '#ffa000'
+    },
 });
 
 class CommentComponent extends React.Component {
@@ -79,6 +81,8 @@ class CommentComponent extends React.Component {
 			uid : null,
 			multiline : '',
 			disabled : true,
+			showSnackBar: false,
+            snackbarContent: '',
 
 		};
 		this.handleMultiline = this.handleMultiline.bind(this);
@@ -108,6 +112,10 @@ class CommentComponent extends React.Component {
 			this.props.event(this.state.multiline, this.state.uid);
 			this.setState({multiline: ''});
 		} else {
+			this.setState({
+                showSnackBar: true,
+                snackbarContent: 'Vous devez vous connecter pour pouvoir commenter'
+            });
 			console.log('you must log in to comment !');
 		}
 	}
@@ -119,25 +127,37 @@ class CommentComponent extends React.Component {
 
 		return(
 			<div className={classes.root}>
-					<TextField
-						id="outlined-multiline-flexible"
-						label="Commenter"
-						multiline
-						rows="3"
-						value={this.state.multiline}
-						onChange={this.handleMultiline}
-						className={classes.textField}
-						fullWidth
-						variant="outlined"
-					/>
-					<Grid container justify="flex-end">
-						<Button variant="contained" color="primary" className={classes.button} disabled={this.state.disabled} onClick={() => this.handleComment()}>
-							Commenter
-							{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
-							<SendIcon className={classes.rightIcon}/>
-						</Button>
-					</Grid>
-					<Divider variant="middle" className={classes.divider}/>
+				<Snackbar
+					anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+					open={this.state.showSnackBar}
+					onClose={() => this.setState({ showSnackBar: false })}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+						classes: {
+							root: classes.snackBar
+						}
+					}}
+					message={<span id="message-id">{this.state.snackbarContent}</span>}
+				/>
+				<TextField
+					id="outlined-multiline-flexible"
+					label="Commenter"
+					multiline
+					rows="3"
+					value={this.state.multiline}
+					onChange={this.handleMultiline}
+					className={classes.textField}
+					fullWidth
+					variant="outlined"
+				/>
+				<Grid container justify="flex-end">
+					<Button variant="contained" color="primary" className={classes.button} disabled={this.state.disabled} onClick={() => this.handleComment()}>
+						Commenter
+						{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
+						<SendIcon className={classes.rightIcon}/>
+					</Button>
+				</Grid>
+				<Divider variant="middle" className={classes.divider}/>
 			</div>
 		)
 	}
