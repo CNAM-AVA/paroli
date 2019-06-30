@@ -16,6 +16,10 @@ import DisplayPosts from '../src/components/common/DisplayPosts'
 import RssFeedIcon from '@material-ui/icons/RssFeed'
 import { titleIcon } from '../lib/constants'
 import SubCreationModal from '../src/components/sub/SubCreationModal';
+import User from '../database/models/User';
+import { getSubPostsWithName } from '../lib/sub'
+import { fetchRandom } from '../lib/post'
+import Post from '../database/models/Post';
 
 const styles = theme => ({
     root: {
@@ -49,19 +53,23 @@ class Index extends React.Component {
         super(props);
         this.state = {
             uid: null,
-            showSubCreationModal: false
+            showSubCreationModal: false,
+            posts: []
         }
 
         this.switchSubCreationModal = this.switchSubCreationModal.bind(this);
     }
-    
 
-    componentDidMount = async () => {
+    componentWillMount() {
         firebase.auth().onAuthStateChanged((user) => {
-            if (user)
+            if (user) {
                 this.setState({uid: user.uid})
-            else
+                this.fetchUserFeed();
+            }
+            else {
                 this.setState({uid: null})
+                this.fetchRandomPost();
+            }
         })
     }
 
@@ -101,22 +109,39 @@ class Index extends React.Component {
     }
 
     // Fetch user feed if logged in
-    fetchUserFeed(){
-        const posts = [];
+    async fetchUserFeed(){
 
-        return (
-            <DisplayPosts posts={posts}/>
-        )
+        if (this.state.uid == null) return;
+
+        let user = await User.getById(this.state.uid);
+        let subsFollowed = user.data().subsFollowed;
+
+        if (subsFollowed.length == 0) {
+            this.fetchRandomPost();
+            return;
+        }
+
+        subsFollowed.map((sub) => {
+            let subPosts = getSubPostsWithName(sub).then((postList) => {
+                postList.posts.forEach(element => {
+                    element = new Post(element.data(), element.id)
+
+                    this.setState({
+                        posts: [...this.state.posts, element]
+                    })
+                });
+            });
+        })
     }
 
     // Fetch random posts to feed p/all
     fetchRandomPost() {
-
-        const posts = [];
-
-        return (
-            <DisplayPosts posts={posts}/>
-        )
+        fetchRandom().then((r) => {
+            
+            // r.map(x => new Post(x.data(), x.id))
+            r = r.map(x => new Post(x.data(), x.id))
+            this.setState({posts: r})
+        })
     }
 
     render() {
@@ -135,12 +160,7 @@ class Index extends React.Component {
                                 <Typography variant="h6" className={classes.feedTypo}>Feed</Typography>                            
                                 <RssFeedIcon className={classes.icon}/>
                             </Grid>
-                            
-                            {
-                                firebase.auth().currentUser
-                                ? this.fetchUserFeed()
-                                : this.fetchRandomPost()
-                            }
+                            <DisplayPosts posts={this.state.posts}/>
                         </Grid>
                         <Grid className={classes.infoCards} item xs={12} sm={5} md={4} lg={4} xl={3}>
                             <InfoCard title="Accueil" icon='home'>
