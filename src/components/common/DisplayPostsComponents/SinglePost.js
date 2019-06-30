@@ -31,9 +31,11 @@ class SinglePost extends React.Component {
         return(
             <Card key={this.props.post.id+"-"+this.props.post.title} className={this.props.className}>
                 <CardContent>
-                    <Typography variant="h5" component="h2" className={classes.headerTitle}>
-                        { this.props.post.title }
-                    </Typography>
+                    <Link href={this.props.post.getLink()}>
+                        <Typography variant="h5" component="h2" className={classes.headerTitle}>
+                            { this.props.post.title }
+                        </Typography>
+                    </Link>
                     {(() => {
                         switch(this.props.post.type) {
                             case TYPE_TEXT:

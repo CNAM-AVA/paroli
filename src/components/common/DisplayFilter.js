@@ -27,7 +27,7 @@ class DisplayFilter extends React.Component {
             filter: {
                 hot: true,
                 new: false,
-                trending: false
+                top: false
             }
         };
     }
@@ -39,21 +39,21 @@ class DisplayFilter extends React.Component {
                 this.setState({filter: {
                     hot: true,
                     new: false,
-                    trending: false
+                    top: false
                 }})
                 break;
             case 'new':
                 this.setState({filter: {
                     hot: false,
                     new: true,
-                    trending: false
+                    top: false
                 }})
                 break;
-            case 'trending':
+            case 'top':
                 this.setState({filter: {
                     hot: false,
                     new: false,
-                    trending: true
+                    top: true
                 }})
                 break;
             default:
@@ -70,7 +70,7 @@ class DisplayFilter extends React.Component {
                     <Typography variant={"body2"} className={classes.subNavTitle}>SORT BY</Typography>
                     <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_HOT)} color={"primary"} label={"Hot"} variant={this.state.filter.hot ? "default": "outlined"}></Chip>
                     <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_NEW)} color={"primary"} label={"New"} variant={this.state.filter.new ? "default": "outlined"}></Chip>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_TOP)} color={"primary"} label={"Top"} variant={this.state.filter.trending ? "default": "outlined"}></Chip>
+                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_TOP)} color={"primary"} label={"Top"} variant={this.state.filter.top ? "default": "outlined"}></Chip>
             </div>
         );
     }
