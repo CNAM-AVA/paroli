@@ -76,13 +76,15 @@ class CommentComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			uid : null,
 			multiline : '',
-			disabled: true,
-		}
+			disabled : true,
+
+		};
 		this.handleMultiline = this.handleMultiline.bind(this);
 	}
 
-	componentDidMount = async () => {
+	componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user)
 				this.setState({uid: user.uid})
@@ -92,11 +94,12 @@ class CommentComponent extends React.Component {
 	}
 
 	handleMultiline(event) {
-		this.setState({multiline: event.target.value});
+		let multiline = event.target.value;
+		this.setState({multiline : multiline});
 		if(event.target.value === null || event.target.value.trim() === ''){
-			this.setState({disabled: true});
+			this.state.disabled = true;
 		} else {
-			this.setState({disabled: false});
+			this.state.disabled = false;
 		}
 	}
 	
@@ -113,10 +116,6 @@ class CommentComponent extends React.Component {
 		const {classes} = this.props;
 		const bull = <span className={classes.bullet}>•</span>;
 		const comments = this.props.comments;
-
-		const commentsCard = comments.map((item) => {
-			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event}/>);
-		});
 
 		return(
 			<div className={classes.root}>
@@ -139,11 +138,6 @@ class CommentComponent extends React.Component {
 						</Button>
 					</Grid>
 					<Divider variant="middle" className={classes.divider}/>
-						{ commentsCard.length 
-							? (commentsCard)
-							: <center style={{margin: '30px'}}><Typography variant="title">No comments yet</Typography><Typography variant="body1">Be the first to comment !</Typography></center> 
-						}
-					
 			</div>
 		)
 	}

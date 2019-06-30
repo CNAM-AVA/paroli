@@ -1,5 +1,6 @@
 import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
+import firebase from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
     created: null,
@@ -23,9 +24,13 @@ const FILLABLE = [
     "downvotes",
 ];
 
-export default class Post extends Model {
-    collectionName = "posts";
+const collectionName = "posts";
 
+const db = firebase.firestore();
+
+export default class Post extends Model {
+    
+    
     constructor(data = {}, documentId = null) {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);
     }
@@ -50,5 +55,19 @@ export default class Post extends Model {
         }
 
         return coll.limit(filters.limit || 20).get();
+    }
+
+    static upvote(id, decrement = null) {
+        return db.collection(collectionName).doc(id).update({
+            upvotes: firebase.firestore.FieldValue.increment(1),
+            downvotes: decrement ? firebase.firestore.FieldValue.increment(-1) : firebase.firestore.FieldValue.increment(0)
+        });
+    }
+
+    static downvote(id, decrement = null) {
+        return db.collection(collectionName).doc(id).update({
+            upvotes: decrement ? firebase.firestore.FieldValue.increment(-1) : firebase.firestore.FieldValue.increment(0),
+            downvotes: firebase.firestore.FieldValue.increment(1)
+        });
     }
 }

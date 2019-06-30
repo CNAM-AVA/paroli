@@ -4,9 +4,11 @@ import { Grid, Card, Typography, CardContent, Button, Collapse, TextField } from
 import CommentIcon from '@material-ui/icons/Comment';
 import VoteComponent from './VoteComponent';
 import SendIcon from '@material-ui/icons/Send';
+import UserDB from '../../../database/models/User';
 import ComDB from '../../../database/models/Comment';
 import firebase from "../../../lib/firebase";
 import moment from 'moment';
+
 
 const styles = theme => ({
 	root: {
@@ -29,6 +31,9 @@ const styles = theme => ({
 		margin: '0 2px',
 		transform: 'scale(0.8)',
 	},
+	sub: {
+		marginLeft : '20px',
+	}
 });
 
 class CommentCardComponent extends React.Component {
@@ -45,7 +50,7 @@ class CommentCardComponent extends React.Component {
 		this.handleMultiline = this.handleMultiline.bind(this)
 	}
 
-	componentDidMount = async () => {
+	componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user)
 				this.setState({uid: user.uid})
@@ -80,11 +85,26 @@ class CommentCardComponent extends React.Component {
 
 	handleSubComment = () => {
 		if(this.state.uid != null){
-			this.props.event(this.state.multiline, this.state.uid, this.props.comment);
+			this.props.event(this.state.multiline, this.state.uid, this.props.comment.id);
 			this.setState({multiline: ''});
 		} else {
 			console.log('you must log in to comment !');
 		}
+	}
+
+	loadSubCommentCreator(creatorId, index){
+		UserDB.getById(creatorId).then(doc => {
+			if (!doc.exists) {
+				console.log('No such creator!');
+			} else {
+				let subComments = this.state.subComments;
+				subComments[index].creator = doc.data().username; 
+				this.setState({subComments : subComments});
+			}
+		})
+		.catch(err => {
+			console.log('Error getting subCommentCreator', err);
+		});
 	}
 
 	getSubComments(postId, commentId){
@@ -99,8 +119,9 @@ class CommentCardComponent extends React.Component {
 				let subComment = doc.data();
 				subComment.id = doc.id;
 				subComment.created = moment.unix(subComment.created.seconds).fromNow();
-				subComments.push(subComment);
+				let length = subComments.push(subComment);
 				this.setState({subComments : subComments});
+				this.loadSubCommentCreator(subComment.creator, length-1);
 			});
 		})
 		.catch(err => {
@@ -121,47 +142,48 @@ class CommentCardComponent extends React.Component {
 		const subComments = this.state.subComments;
 		const {expanded} = this.state;
 		const disabled = this.state.disabled;
+		const sub = this.props.sub;
 
 		const commentsCard = subComments.map((item) => {
-			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event} classes={classes} />);
+			return <CommentCardComponent sub={true} comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event} classes={classes} />;
 		});
 
 		return(
 			<Grid container>
-					<Grid container>
-						<Grid item xs={1}>
-							<VoteComponent className={classes.voteComment} upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} />
-						</Grid>
-						<Grid item xs={11}>
-							<Typography variant="subtitle2" color="textSecondary">
-								{comment.creator} {bull} {comment.created}
-							</Typography>
-							<Typography variant="body1">
-								{comment.content}
-							</Typography>
-							<Button color="default" onClick={() => this.handleExpandClick()}>
-								<CommentIcon className={classes.leftIcon}/><Typography >Reply</Typography>
-							</Button>
-							<Collapse in={expanded}>
-								<TextField
-									id="outlined-multiline-flexible"
-									label="Commenter"
-									multiline
-									rows="3"
-									value={this.state.multiline}
-									onChange={this.handleMultiline}
-									className={classes.textField}
-									fullWidth
-									variant="outlined"
-								/>
-								<Button variant="contained" color="primary" className={classes.button} disabled={disabled} onClick={() => this.handleSubComment()}>
-									Reply
-									<SendIcon className={classes.rightIcon}/>
-								</Button>
-							</Collapse>
-							{commentsCard}
-						</Grid>
-					</Grid>
+				<Grid item xs={sub ? 1 : 0}>
+
+				</Grid>
+					{/* <VoteComponent className={classes.voteComment} upvote={this.upvote} downvote={this.downvote} upvotes={comment.upvotes} downvotes={comment.downvotes} /> */}
+ 				<Grid item xs={sub ? 11 : 12}>
+				
+					<Typography variant="subtitle2" color="textSecondary">
+						{comment.creator} {bull} {comment.created}
+					</Typography>
+					<Typography variant="body1">
+						{comment.content}
+					</Typography>
+					<Button color="default" onClick={() => this.handleExpandClick()}>
+						<CommentIcon className={classes.leftIcon}/><Typography >Reply</Typography>
+					</Button>
+					<Collapse in={expanded}>
+						<TextField
+							id="outlined-multiline-flexible"
+							label="Commenter"
+							multiline
+							rows="3"
+							value={this.state.multiline}
+							onChange={this.handleMultiline}
+							className={classes.textField}
+							fullWidth
+							variant="outlined"
+						/>
+						<Button variant="contained" color="primary" className={classes.button} disabled={disabled} onClick={() => this.handleSubComment()}>
+							Reply
+							<SendIcon className={classes.rightIcon}/>
+						</Button>
+					</Collapse>
+					{commentsCard}
+				</Grid>
 			</Grid>
 		)
 	}

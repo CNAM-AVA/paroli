@@ -10,6 +10,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import { Grid, Paper, Icon, Button } from '@material-ui/core';
 import CommentComponent from '../common/CommentComponent';
 import PostCardComponent from '../common/PostCardComponent';
+import CommentCardComponent from '../common/CommentCardComponent';
 import pink from '@material-ui/core/colors/pink';
 
 
@@ -76,49 +77,40 @@ class PostComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// comments: Array(4).fill(
-			// 	{
-			// 		id: 6516,
-			// 		author: 'r/johnDoe', 
-			// 		date: '5 min. ago', 
-			// 		content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, \
-			// 		dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. \
-			// 		Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.',
-			// 		upvotes: 10,
-			// 		downvotes: 3,
-			// 		subComments: [],
-			// 	},
-			// ),
+
 		}
-		this.upvote = this.upvote.bind(this);
-		this.downvote = this.downvote.bind(this);
+		// this.upvote = this.upvote.bind(this);
+		// this.downvote = this.downvote.bind(this);
 	}
 
-	
+	// upvote() {
+	// 	let post = this.props.post;
+	// 	post.upvotes = post.upvotes + 1;
+	// 	this.setState({post : post});
+	// 	console.log('up');
+	// }
 
-	upvote() {
-		let post = {...this.props.post};
-		post.upvotes = post.upvotes + 1;
-		this.setState({post : post});
-		console.log('up');
-	}
-
-	downvote() {
-		let post = {...this.props.post};
-		post.downvotes = post.downvotes + 1;
-		this.setState({post : post});
-		console.log('down');
-	}
+	// downvote() {
+	// 	let post = this.props.post;
+	// 	post.downvotes = post.downvotes + 1;
+	// 	this.setState({post : post});
+	// 	console.log('down');
+	// }
 
 	render() {
 		const {classes} = this.props;
 		const post = this.props.post;
 		const comments = this.props.comments;
+		const user = this.props.user;
+
+		const commentsCard = comments.map((item) => {
+			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)} event={this.props.event}/>);
+		});
 
 		return(
 			<Grid container className={classes.root} justify={"center"}>
 				<Grid item md={8} xs={12}>
-					<PostCardComponent post={post} upvote={this.upvote} downvote={this.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
+					<PostCardComponent post={post} upvote={this.props.upvote} downvote={this.props.downvote} upvotes={post.upvotes} downvotes={post.downvotes} user={user}/>
 				</Grid>
 				<Grid container item md={8} xs={12} >
 					<Grid item md={1}></Grid>
@@ -132,7 +124,11 @@ class PostComponent extends React.Component {
 							}>
 							</CardHeader>
 							<CardContent>
-								<CommentComponent comments={comments} post={post} event={this.props.event}/>
+								<CommentComponent comments={comments} post={post} upvote={this.upvote} downvote={this.downvote} upvotes={post.upvotes} downvotes={post.downvotes} event={this.props.event}/>
+								{ commentsCard.length 
+									? (commentsCard)
+									: <center style={{margin: '30px'}}><Typography variant="h6">No comments yet</Typography><Typography variant="body1">Be the first to comment !</Typography></center> 
+								}
 							</CardContent>
 						</Card>
 					</Grid>

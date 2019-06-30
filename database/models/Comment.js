@@ -8,7 +8,7 @@ const DEFAULT_VALUES = {
     content: null,
     upvotes: 0,
     downvotes: 0,
-    comments: [],
+    parentId: null,
 };
 
 const FILLABLE = [
@@ -18,7 +18,7 @@ const FILLABLE = [
     "content",
     "upvotes",
     "downvotes",
-    "comments",
+    "parentId",
 ];
 
 export default class Comment extends Model {
