@@ -19,6 +19,7 @@ import SubCreationModal from '../src/components/sub/SubCreationModal';
 import User from '../database/models/User';
 import { getSubPostsWithName } from '../lib/sub'
 import { fetchRandom } from '../lib/post'
+import Post from '../database/models/Post';
 
 const styles = theme => ({
     root: {
@@ -114,7 +115,6 @@ class Index extends React.Component {
 
         let user = await User.getById(this.state.uid);
         let subsFollowed = user.data().subsFollowed;
-        let posts = [];
 
         if (subsFollowed.length == 0) {
             this.fetchRandomPost();
@@ -123,8 +123,9 @@ class Index extends React.Component {
 
         subsFollowed.map((sub) => {
             let subPosts = getSubPostsWithName(sub).then((postList) => {
-                console.log(postList.posts)
                 postList.posts.forEach(element => {
+                    element = new Post(element.data(), element.id)
+
                     this.setState({
                         posts: [...this.state.posts, element]
                     })
@@ -136,6 +137,9 @@ class Index extends React.Component {
     // Fetch random posts to feed p/all
     fetchRandomPost() {
         fetchRandom().then((r) => {
+            
+            // r.map(x => new Post(x.data(), x.id))
+            r = r.map(x => new Post(x.data(), x.id))
             this.setState({posts: r})
         })
     }
