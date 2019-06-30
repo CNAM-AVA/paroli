@@ -1,6 +1,7 @@
 import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
 import { FILTER_TOP, FILTER_HOT, FILTER_NEW } from "../../lib/filters";
+import firebase from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
     created: null,
@@ -28,7 +29,7 @@ const FILLABLE = [
 
 const collectionName = "posts";
 
-const db = firestore.firestore();
+const db = firebase.firestore();
 
 export default class Post extends Model {
     
@@ -72,18 +73,19 @@ export default class Post extends Model {
             default:
                 return coll.orderBy("upvotes");
         }
+    }
 
-      static upvote(id, decrement = null) {
+    static upvote(id, decrement = null) {
         return db.collection(collectionName).doc(id).update({
-            upvotes: firestore.firestore.FieldValue.increment(1),
-            downvotes: decrement ? firestore.firestore.FieldValue.increment(-1) : firestore.firestore.FieldValue.increment(0)
+            upvotes: firebase.firestore.FieldValue.increment(1),
+            downvotes: decrement ? firebase.firestore.FieldValue.increment(-1) : firebase.firestore.FieldValue.increment(0)
         });
     }
 
     static downvote(id, decrement = null) {
         return db.collection(collectionName).doc(id).update({
-            upvotes: decrement ? firestore.firestore.FieldValue.increment(-1) : firestore.firestore.FieldValue.increment(0),
-            downvotes: firestore.firestore.FieldValue.increment(1)
+            upvotes: decrement ? firebase.firestore.FieldValue.increment(-1) : firebase.firestore.FieldValue.increment(0),
+            downvotes: firebase.firestore.FieldValue.increment(1)
         });
     }
 }
