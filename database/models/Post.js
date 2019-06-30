@@ -1,11 +1,12 @@
 import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
-import firebase from "../../lib/firebase";
+import { FILTER_TOP, FILTER_HOT, FILTER_NEW } from "../../lib/filters";
 
 const DEFAULT_VALUES = {
     created: null,
     creator: null,
     sub: null,
+    subName: null,
     title: null,
     type: null,
     content: null,
@@ -17,6 +18,7 @@ const FILLABLE = [
     "created",
     "creator",
     "sub",
+    "subName",
     "title",
     "type",
     "content",
@@ -26,13 +28,17 @@ const FILLABLE = [
 
 const collectionName = "posts";
 
-const db = firebase.firestore();
+const db = firestore.firestore();
 
 export default class Post extends Model {
     
     
     constructor(data = {}, documentId = null) {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);
+    }
+
+    getLink() {
+        return "/p/"+this.subName+"/"+this.documentId;
     }
 
     static getByTitle(title) {
@@ -48,7 +54,7 @@ export default class Post extends Model {
 
         coll = coll.where("sub", "==", filters.sub.documentId);
 
-        coll = coll.orderBy("upvotes");
+        coll = Post.getOrderBy(coll, filters.filterType);
 
         if(filters.lastPost) {
             coll = coll.startAfter(filters.lastPost);
@@ -57,17 +63,27 @@ export default class Post extends Model {
         return coll.limit(filters.limit || 20).get();
     }
 
-    static upvote(id, decrement = null) {
+    static getOrderBy(coll, type) {
+        switch(type) {
+            case FILTER_TOP:
+                return coll.orderBy("upvotes");
+            case FILTER_NEW:
+                return coll.orderBy("created");
+            default:
+                return coll.orderBy("upvotes");
+        }
+
+      static upvote(id, decrement = null) {
         return db.collection(collectionName).doc(id).update({
-            upvotes: firebase.firestore.FieldValue.increment(1),
-            downvotes: decrement ? firebase.firestore.FieldValue.increment(-1) : firebase.firestore.FieldValue.increment(0)
+            upvotes: firestore.firestore.FieldValue.increment(1),
+            downvotes: decrement ? firestore.firestore.FieldValue.increment(-1) : firestore.firestore.FieldValue.increment(0)
         });
     }
 
     static downvote(id, decrement = null) {
         return db.collection(collectionName).doc(id).update({
-            upvotes: decrement ? firebase.firestore.FieldValue.increment(-1) : firebase.firestore.FieldValue.increment(0),
-            downvotes: firebase.firestore.FieldValue.increment(1)
+            upvotes: decrement ? firestore.firestore.FieldValue.increment(-1) : firestore.firestore.FieldValue.increment(0),
+            downvotes: firestore.firestore.FieldValue.increment(1)
         });
     }
 }

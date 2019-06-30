@@ -41,4 +41,12 @@ export default class Sub extends Model {
     getDisplayName() {
         return "p/"+this.name;
     }
+
+    getAdmins() {
+        return [this.creator];
+    }
+
+    getMods() {
+        return [this.creator]
+    }
 }

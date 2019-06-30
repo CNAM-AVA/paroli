@@ -58,4 +58,8 @@ export default class User extends Model {
     static getOwnPosts(id) {
         return firestore.collection("posts").where("creator", "==", id).get()
     }
+
+    isAdminOfSub(sub) {
+        return sub.includes(this.documentId);
+    }
 }

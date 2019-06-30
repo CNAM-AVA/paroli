@@ -90,6 +90,7 @@ class CreatePostButton extends React.Component {
                 created: new Date(),
                 title: this.state.title,
                 sub: this.props.sub.documentId,
+                subName: this.props.sub.name,
                 content: this.state.content,
                 type: this.tabToType()
             });
