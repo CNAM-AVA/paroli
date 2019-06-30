@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, CardActions, Button, Fab, Collapse } from '@material-ui/core';
+import { Card, CardContent, Typography, CardActions, Button, Link, Collapse } from '@material-ui/core';
 import { TYPE_TEXT, TYPE_IMAGE, TYPE_LINK, TYPE_VIDEO } from '../../../../lib/post';
 import Image from './SinglePostComponents/Image';
 
@@ -31,9 +31,11 @@ class SinglePost extends React.Component {
         return(
             <Card key={this.props.post.id+"-"+this.props.post.title} className={this.props.className}>
                 <CardContent>
-                    <Typography variant="h5" component="h2" className={classes.headerTitle}>
-                        { this.props.post.title }
-                    </Typography>
+                    <Link href={this.props.post.getLink()}>
+                        <Typography variant="h5" component="h2" className={classes.headerTitle}>
+                            { this.props.post.title }
+                        </Typography>
+                    </Link>
                     {(() => {
                         switch(this.props.post.type) {
                             case TYPE_TEXT:
@@ -41,7 +43,7 @@ class SinglePost extends React.Component {
                             case TYPE_IMAGE:
                                 return <Image post={this.props.post}/>
                             case TYPE_LINK:
-                                return  <a href={this.props.post.content}>{this.props.post.title}</a>
+                                return  <a target="_blank" href={this.props.post.content}>{this.props.post.content}</a>
                             case TYPE_VIDEO:
                                 return  <p>WIP</p>
                             
@@ -49,7 +51,9 @@ class SinglePost extends React.Component {
                     })()}
                 </CardContent>
                 <CardActions>
+                <Link href={this.props.post.getLink()}>
                     <Button size="small">Comments</Button>
+                </Link>
                     <Button size="small">Upvote</Button>
                     <Button size="small">Downvote</Button>
                 </CardActions>

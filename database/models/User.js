@@ -1,5 +1,6 @@
 import Model from "../config/Model";
 import {firestore} from "../../lib/firebase";
+import firebase from "../../lib/firebase";
 
 const DEFAULT_VALUES = {
     "admin": 0,
@@ -23,6 +24,8 @@ const FILLABLE = [
     "mail"
 ];
 
+const collectionName = "users";
+
 export default class User extends Model {
     collectionName = "users";
 
@@ -31,7 +34,21 @@ export default class User extends Model {
     }
 
     static getById(id) {
-        return firestore.collection("users").doc(id).get();
+        return firestore.collection(collectionName).doc(id).get();
+    }
+
+    static upvote(userId, postId) {
+        return firestore.collection(collectionName).doc(userId).update({
+            upvotedPosts: firebase.firestore.FieldValue.arrayUnion(postId),
+            downvotedPosts: firebase.firestore.FieldValue.arrayRemove(postId)
+        });
+    }
+
+    static downvote(userId, postId) {
+        return firestore.collection(collectionName).doc(userId).update({
+            downvotedPosts: firebase.firestore.FieldValue.arrayUnion(postId),
+            upvotedPosts: firebase.firestore.FieldValue.arrayRemove(postId)
+        });
     }
 
     static getByName(name) {
@@ -40,5 +57,9 @@ export default class User extends Model {
 
     static getOwnPosts(id) {
         return firestore.collection("posts").where("creator", "==", id).get()
+    }
+
+    isAdminOfSub(sub) {
+        return sub.includes(this.documentId);
     }
 }

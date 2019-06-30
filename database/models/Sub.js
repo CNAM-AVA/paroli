@@ -23,6 +23,9 @@ const FILLABLE = [
     "subscribers"
 ];
 
+const collectionName = "subs";
+
+
 export default class Sub extends Model {
     collectionName = "subs";
 
@@ -31,14 +34,22 @@ export default class Sub extends Model {
     }
 
     static getById(id) {
-        return firestore.collection("subs").doc(id).get();
+        return firestore.collection(collectionName).doc(id).get();
     }
 
     static getByName(name) {
-        return firestore.collection("subs").where('name', '==', name).limit(1).get();
+        return firestore.collection(collectionName).where('name', '==', name).limit(1).get();
     }
 
     getDisplayName() {
         return "p/"+this.name;
+    }
+
+    getAdmins() {
+        return [this.creator];
+    }
+
+    getMods() {
+        return [this.creator]
     }
 }

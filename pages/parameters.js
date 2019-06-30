@@ -123,7 +123,7 @@ class Parameters extends React.Component {
         } else {
             this.state.user.updatePassword(this.state.passwordConfirm).then(() => {
                 this.setState(prevState => ({
-                    snackbarContent: 'Mot de passe mis à jours !',
+                    snackbarContent: 'Mot de passe mis à jour !',
                     showSnackBar: true
                 }))
             }).catch((error) => {
@@ -212,7 +212,7 @@ class Parameters extends React.Component {
             console.log('done uploading');
             this.setState({
                 showSnackBar: true,
-                snackbarContent: 'Image de profil mise à jours !'
+                snackbarContent: 'Image de profil mise à jour !'
             })
         }).catch((error) => {
             console.error(error);

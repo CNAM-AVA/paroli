@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import {Fab, Grid, Dialog, TextField, DialogTitle, Button, DialogContent, Tabs, Tab, AppBar} from '@material-ui/core';
 import Post from "../../../database/models/Post";
 import firebase from "../../../lib/firebase";
-import { TYPE_TEXT, TYPE_IMAGE, TYPE_VIDEO } from '../../../lib/post';
+import { TYPE_TEXT, TYPE_LINK, TYPE_IMAGE, TYPE_VIDEO } from '../../../lib/post';
 
 const styles = {
     fab: {
@@ -90,6 +90,7 @@ class CreatePostButton extends React.Component {
                 created: new Date(),
                 title: this.state.title,
                 sub: this.props.sub.documentId,
+                subName: this.props.sub.name,
                 content: this.state.content,
                 type: this.tabToType()
             });
@@ -151,7 +152,7 @@ class CreatePostButton extends React.Component {
                                     margin="dense"
                                     id="name"
                                     label="Lien"
-                                    type="text"
+                                    type="link"
                                     fullWidth
                                     onChange={this.handleContent}
                                 />
