@@ -8,6 +8,7 @@ const DEFAULT_VALUES = {
     content: null,
     upvotes: 0,
     downvotes: 0,
+    parentId: null,
 };
 
 const FILLABLE = [
@@ -17,6 +18,7 @@ const FILLABLE = [
     "content",
     "upvotes",
     "downvotes",
+    "parentId",
 ];
 
 export default class Comment extends Model {
@@ -31,6 +33,14 @@ export default class Comment extends Model {
     }
 
     static getByPost(postId) {
-        return firestore.collection("comments").where('post', '==', postId).orderBy('created', 'desc').get();
+        return firestore.collection("comments").where('post', '==', postId).where('parentId', '==', null).orderBy('created', 'desc').get();
+    }
+
+    static getSubComments(postId, commentId) {
+        return firestore.collection("comments")
+            .where('post', '==', postId)
+            .where('parentId', '==', commentId)
+            .orderBy('created', 'desc')
+            .get();
     }
 }

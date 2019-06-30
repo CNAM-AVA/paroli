@@ -35,6 +35,10 @@ const styles = theme => ({
 		color: 'white',
 	},
 	avatar: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
+		width: 30,
+		height: 30,
 	},
 	button: {
 		margin: theme.spacing.unit,
@@ -92,19 +96,23 @@ class PostCardComponent extends React.Component {
 		super(props);
 	}
 
-
-
 	render() {
 		const {classes} = this.props;
 		const post = this.props.post;
 		const sub = post.sub;
-
-		console.log('card sub : ', sub);
+		const user = this.props.user;
 
 		return(
 			<Grid container className={classes.container}>
 				<Grid item xs={1} className={classes.vote}>
-					<VoteComponent upvote={this.props.upvote} downvote={this.props.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
+					<VoteComponent 
+						user={user} 
+						postId={post.id} 
+						upvote={this.props.upvote} 
+						downvote={this.props.downvote} 
+						upvotes={post.upvotes} 
+						downvotes={post.downvotes}
+					/>
 				</Grid>
 				<Grid item xs={11}>
 					<Card className={classes.card}>
@@ -130,7 +138,7 @@ class PostCardComponent extends React.Component {
 														<Typography className={classes.typoHeader}>{post.creator}</Typography>
 													</Grid>
 													<Grid item>
-														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
+														<Avatar alt="Avatar" src={post.creatorAvatar} className={classes.avatar}/>
 													</Grid>
 												</Grid>
 											</Grid>

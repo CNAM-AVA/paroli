@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Card, Typography, CardContent, CardActions, Button, TextField, CardHeader, Divider } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CommentCardComponent from './CommentCardComponent';
-import Comment from "../../../database/models/Comment";
 import firebase from "../../../lib/firebase";
 
 
@@ -12,10 +11,10 @@ const styles = theme => ({
 		flexGrow: 1,
 	},
 	paper: {
-  	padding: theme.spacing.unit * 2,
-    // margin: 'auto',
-    // maxWidth: 500,
-  },
+		padding: theme.spacing.unit * 2,
+		// margin: 'auto',
+		// maxWidth: 500,
+	},
 	cardsContainer: {
 		marginTop: 20
 	},
@@ -30,27 +29,27 @@ const styles = theme => ({
 		padding: theme.spacing.unit * 2,
 	},
 	card: {
-    // maxWidth: 400,
-  },
-  media: {
+		// maxWidth: 400,
+	},
+	media: {
 		marginTop: 0,
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		width: 500,
-    height: 700,
-  },
-  actions: {
-    display: 'flex',
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
+		height: 700,
+	},
+	actions: {
+		display: 'flex',
+	},
+	expand: {
+		transform: 'rotate(0deg)',
+		marginLeft: 'auto',
+		transition: theme.transitions.create('transform', {
+			duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+		transform: 'rotate(180deg)',
 	},
 	divider: {
 		marginTop: theme.spacing.unit,
@@ -59,8 +58,8 @@ const styles = theme => ({
 		marginRight: 0,
 	},
 	bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
+		display: 'inline-block',
+		margin: '0 2px',
 		transform: 'scale(0.8)',
 	},
 	card: {
@@ -77,48 +76,46 @@ class CommentComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			uid : null,
 			multiline : '',
-		}
+			disabled : true,
+
+		};
 		this.handleMultiline = this.handleMultiline.bind(this);
 	}
 
-	componentDidMount = async () => {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user)
-                this.setState({uid: user.uid})
-            else
-                this.setState({uid: null})
-        })
-    }
+	componentDidMount() {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user)
+				this.setState({uid: user.uid})
+			else
+				this.setState({uid: null})
+		});
+	}
 
 	handleMultiline(event) {
-        this.setState({multiline: event.target.value});
-    }
+		let multiline = event.target.value;
+		this.setState({multiline : multiline});
+		if(event.target.value === null || event.target.value.trim() === ''){
+			this.state.disabled = true;
+		} else {
+			this.state.disabled = false;
+		}
+	}
 	
-	createComment() {
-        if (this.state.uid) {
-            let comment = new Comment({
-                creator: this.state.uid,
-				created: new Date(),
-				post: this.props.post.id,
-                content: this.state.multiline
-            });
-			comment.save();
+	handleComment = () => {
+		if(this.state.uid){
+			this.props.event(this.state.multiline, this.state.uid);
 			this.setState({multiline: ''});
-        }
-    }
+		} else {
+			console.log('you must log in to comment !');
+		}
+	}
 
 	render() {
 		const {classes} = this.props;
 		const bull = <span className={classes.bullet}>•</span>;
 		const comments = this.props.comments;
-		console.log('toto: ', comments);
-
-		const commentsCard = comments.map((item) => {
-			return (<CommentCardComponent comment={item} key={Math.random().toString(36).substr(2, 9)}/>);
-		});
-
-		console.log(commentsCard);
 
 		return(
 			<div className={classes.root}>
@@ -134,18 +131,13 @@ class CommentComponent extends React.Component {
 						variant="outlined"
 					/>
 					<Grid container justify="flex-end">
-						<Button variant="contained" color="primary" className={classes.button} onClick={() => this.createComment()}>
+						<Button variant="contained" color="primary" className={classes.button} disabled={this.state.disabled} onClick={() => this.handleComment()}>
 							Commenter
 							{/* This Button uses a Font Icon, see the installation instructions in the docs. */}
 							<SendIcon className={classes.rightIcon}/>
 						</Button>
 					</Grid>
 					<Divider variant="middle" className={classes.divider}/>
-						{ commentsCard.length 
-							? (commentsCard)
-							: <center><Typography variant="body1" style={{margin: '30px'}}>Be the first to comment !</Typography></center> 
-						}
-					
 			</div>
 		)
 	}
