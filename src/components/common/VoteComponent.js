@@ -66,7 +66,7 @@ class VoteComponent extends React.Component {
 				vote: 'up',
 				upvotes: upvotes+1,
 			});
-			if(this.state.vote !== null)
+			if(this.state.vote)
 				this.setState({downvotes : this.state.downvotes - 1});
 			this.props.upvote();
 		}
@@ -79,7 +79,7 @@ class VoteComponent extends React.Component {
 				vote: 'down',
 				downvotes: downvotes+1,
 			});
-			if(this.state.vote !== null)
+			if(this.state.vote)
 				this.setState({upvotes : this.state.upvotes - 1});
 			this.props.downvote();
 		}
