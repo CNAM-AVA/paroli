@@ -32,7 +32,7 @@ const collectionName = "posts";
 const db = firebase.firestore();
 
 export default class Post extends Model {
-    
+    collectionName = "posts";
     
     constructor(data = {}, documentId = null) {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);
@@ -43,15 +43,15 @@ export default class Post extends Model {
     }
 
     static getByTitle(title) {
-        return firestore.collection("posts").where('title', '==', title).limit(1).get();
+        return firestore.collection(collectionName).where('title', '==', title).limit(1).get();
     }
 
     static getById(id) {
-        return firestore.collection("posts").doc(id).get();
+        return firestore.collection(collectionName).doc(id).get();
     }
 
     static filtered(filters) {
-        let coll = firestore.collection("posts");
+        let coll = firestore.collection(collectionName);
 
         coll = coll.where("sub", "==", filters.sub.documentId);
 
