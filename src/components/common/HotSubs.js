@@ -19,7 +19,7 @@ class HotSubs extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
         getPopularSubs().then((data) => {
 

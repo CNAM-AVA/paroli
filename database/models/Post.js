@@ -26,9 +26,13 @@ const FILLABLE = [
     "downvotes",
 ];
 
-export default class Post extends Model {
-    collectionName = "posts";
+const collectionName = "posts";
 
+const db = firestore.firestore();
+
+export default class Post extends Model {
+    
+    
     constructor(data = {}, documentId = null) {
         super(data, documentId, DEFAULT_VALUES, FILLABLE);
     }
@@ -68,5 +72,18 @@ export default class Post extends Model {
             default:
                 return coll.orderBy("upvotes");
         }
+
+      static upvote(id, decrement = null) {
+        return db.collection(collectionName).doc(id).update({
+            upvotes: firestore.firestore.FieldValue.increment(1),
+            downvotes: decrement ? firestore.firestore.FieldValue.increment(-1) : firestore.firestore.FieldValue.increment(0)
+        });
+    }
+
+    static downvote(id, decrement = null) {
+        return db.collection(collectionName).doc(id).update({
+            upvotes: decrement ? firestore.firestore.FieldValue.increment(-1) : firestore.firestore.FieldValue.increment(0),
+            downvotes: firestore.firestore.FieldValue.increment(1)
+        });
     }
 }

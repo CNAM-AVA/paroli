@@ -6,7 +6,7 @@ import firebase from '../lib/firebase'
 import { topMargin } from '../lib/constants'
 import LoginModal from '../src/components/common/LoginModal';
 import yellow from '@material-ui/core/colors/yellow';
-import { getUserPicture } from '../lib/user';
+import { getUserPictureWithID } from '../lib/user';
 
 
 /**
@@ -88,7 +88,7 @@ class Parameters extends React.Component {
 
                 // Download the profile picture
                 
-                getUserPicture(user.uid).then((url) => {
+                getUserPictureWithID(user.uid).then((url) => {
                     this.setState({
                         user: user,
                         currentEmail: user.email,
