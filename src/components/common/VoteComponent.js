@@ -123,7 +123,8 @@ class VoteComponent extends React.Component {
 			<div className={classes.root}>
 				<Snackbar
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                    open={this.state.showSnackBar}
+					open={this.state.showSnackBar}
+					autoHideDuration={6000}
                     onClose={() => this.setState({ showSnackBar: false })}
                     ContentProps={{
 						'aria-describedby': 'message-id',

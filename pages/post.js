@@ -230,7 +230,7 @@ class Post extends React.Component {
 
 		return(
 			<Layout>
-				<PostComponent post={post} comments={comments} user={user} event={this.handleCommentEvent} upvote={this.upvote} downvote={this.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
+				<PostComponent postId={post.id} post={post} comments={comments} user={user} event={this.handleCommentEvent} upvote={this.upvote} downvote={this.downvote} upvotes={post.upvotes} downvotes={post.downvotes}/>
 			</Layout>
 		);
 	}

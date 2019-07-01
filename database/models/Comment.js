@@ -45,4 +45,10 @@ export default class Comment extends Model {
             .orderBy('created', 'desc')
             .get();
     }
+
+    static getNbComments(postId) {
+        return firestore.collection(collectionName)
+            .where('post', '==', postId)
+            .get();
+    }
 }

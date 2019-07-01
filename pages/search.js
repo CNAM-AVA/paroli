@@ -68,7 +68,9 @@ class Search extends React.Component {
 
         Promise.all([postPromise, subsPromise, usersPromise]).then(values => {
             values[0].docs.forEach((document) => {
-                posts.push(document.data());
+                let post = document.data();
+                post.id = document.id;
+                posts.push(post);
             })
 
             values[1].docs.forEach((document) => {
@@ -116,11 +118,13 @@ class Search extends React.Component {
     renderQuery() {
         const { classes } = this.props;
 
+        console.log(this.state.posts);
+
         const posts = this.state.posts.map((post, index) =>
             <Grid item md={6} key={index}>
                 <Paper className={classes.postPaper}>
                     <Typography variant="subtitle2" color="primary">
-                        <Link href={``}><a>{post.title}</a></Link>
+                        <Link href={`p/${post.subName}/${post.id}`}><a>{post.title}</a></Link>
                     </Typography>
                     <Typography variant="body2">
                         {post.content}
