@@ -27,7 +27,8 @@ class Paroli extends App {
     return (
       <Container>
         <Head>
-          <title>My page</title>
+          <title>Paroli</title>
+          <link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
         </Head>
         {/* Wrap every page in Jss and Theme providers */}
         <JssProvider
