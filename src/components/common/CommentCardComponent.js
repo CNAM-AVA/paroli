@@ -160,6 +160,7 @@ class CommentCardComponent extends React.Component {
 				<Snackbar
 					anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 					open={this.state.showSnackBar}
+					autoHideDuration={6000}
 					onClose={() => this.setState({ showSnackBar: false })}
 					ContentProps={{
 						'aria-describedby': 'message-id',
@@ -184,7 +185,7 @@ class CommentCardComponent extends React.Component {
 						{comment.content}
 					</Typography>
 					<Button color="default" onClick={() => this.handleExpandClick()}>
-						<CommentIcon className={classes.leftIcon} /><Typography >Reply</Typography>
+						<CommentIcon className={classes.leftIcon}/><Typography >Répondre</Typography>
 					</Button>
 					<Collapse in={expanded}>
 						<TextField
@@ -199,8 +200,8 @@ class CommentCardComponent extends React.Component {
 							variant="outlined"
 						/>
 						<Button variant="contained" color="primary" className={classes.button} disabled={disabled} onClick={() => this.handleSubComment()}>
-							Reply
-							<SendIcon className={classes.rightIcon} />
+							Répondre
+							<SendIcon className={classes.rightIcon}/>
 						</Button>
 					</Collapse>
 					{commentsCard}

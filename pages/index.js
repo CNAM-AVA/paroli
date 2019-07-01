@@ -86,7 +86,8 @@ class Index extends React.Component {
         return(
             <Grid container justify="center">
                 <Typography variant="body2">
-                    Your personal Reddit frontpage. Come here to check in with your favorite communities.
+                    Votre page d'accueil personnelle. 
+                    C'est ici que vous retrouvez les publications de vos communautées préférées
                 </Typography>
                 <Fab onClick={() => this.switchSubCreationModal()} variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Créer un sub</Fab>
                 <Fab variant="extended" aria-label="Delete" color={"secondary"} className={classes.fab}>Explorer les subs</Fab>
@@ -157,7 +158,7 @@ class Index extends React.Component {
                     <Grid container justify="center" spacing={40}>
                         <Grid item xs={12} sm={7} md={6} lg={6} xl={4}>
                             <Grid container alignItems={"center"} className={classes.sectionHeader}>
-                                <Typography variant="h6" className={classes.feedTypo}>Feed</Typography>                            
+                                <Typography variant="h6" className={classes.feedTypo}>Fil d'actualités</Typography>                            
                                 <RssFeedIcon className={classes.icon}/>
                             </Grid>
                             <DisplayPosts posts={this.state.posts}/>

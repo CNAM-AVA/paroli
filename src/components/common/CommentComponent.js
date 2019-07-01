@@ -130,6 +130,7 @@ class CommentComponent extends React.Component {
 				<Snackbar
 					anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 					open={this.state.showSnackBar}
+					autoHideDuration={6000}
 					onClose={() => this.setState({ showSnackBar: false })}
 					ContentProps={{
 						'aria-describedby': 'message-id',

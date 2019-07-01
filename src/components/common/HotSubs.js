@@ -40,9 +40,9 @@ class HotSubs extends React.Component {
         const { classes } = this.props;
 
         return (
-            <InfoCard title="Hot" icon='hot'>
+            <InfoCard title="Tendance" icon='hot'>
                 <Typography variant="subtitle1" color="primary">
-                    Communities
+                    Communautées
                 </Typography>
                 {
                     this.state.hotCommunities.map((community, index) => {

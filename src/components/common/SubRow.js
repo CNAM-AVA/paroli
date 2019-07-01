@@ -148,7 +148,7 @@ class SubRow extends React.Component {
                         </Grid>
                         <Grid item xs={9}>
                             <Typography><Link href={"/p/" + community.name}>p/{community.name}</Link></Typography>
-                            <Typography>{community.subscribersCount} subscribers</Typography>
+                            <Typography>{community.subscribersCount} abonnés</Typography>
                         </Grid>
                     </Grid>
                     <Grid container item xs={4} sm={5} md={4} justify={"flex-end"}>

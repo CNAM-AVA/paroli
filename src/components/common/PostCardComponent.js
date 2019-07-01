@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
-import { Grid, Button, Avatar } from '@material-ui/core';
+import { Grid, Button, Avatar, Snackbar, Link } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 
 const styles = theme => ({
@@ -46,6 +46,9 @@ const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit,
 	},
+	snackBar: {
+        backgroundColor: '#43a047'
+    },
 });
 
 function DisplayMedia(props){
@@ -94,6 +97,26 @@ class PostCardComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			showSnackBar: false,
+			snackbarContent: '',
+		}
+	}
+
+	copyToCB = () => {
+		let el = document.createElement('textarea');
+		el.value = window.location.href;
+		el.setAttribute('readonly', '');
+		el.style.position = 'absolute';
+		el.style.left = '-9999px';
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+		this.setState({
+			showSnackBar: true,
+			snackbarContent: 'le lien du post a été copié dans le presse-papier',
+		});
 	}
 
 	render() {
@@ -104,6 +127,19 @@ class PostCardComponent extends React.Component {
 
 		return(
 			<Grid container className={classes.container}>
+				<Snackbar
+					anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+					open={this.state.showSnackBar}
+					autoHideDuration={6000}
+					onClose={() => this.setState({ showSnackBar: false })}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+						classes: {
+							root: classes.snackBar
+						}
+					}}
+					message={<span id="message-id">{this.state.snackbarContent}</span>}
+				/>
 				<Grid item xs={1} className={classes.vote}>
 					<VoteComponent 
 						user={user} 
@@ -124,21 +160,30 @@ class PostCardComponent extends React.Component {
 											<Grid item>
 												<Grid container alignItems={'center'}>
 													<Grid item>
-														<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
+														<Link href={`./`}>
+															<Avatar alt="Avatar" src="/static/img/logo.png" className={classes.avatar}/>
+														</Link>
 													</Grid>
 													<Grid item>
-														<Typography className={classes.typoHeader}>{sub +' - '+ post.created}</Typography>
+														<Link href={`./`}>
+															<Typography className={classes.typoHeader}>{sub +' - '+ post.created}</Typography>
+														</Link>
 													</Grid>
+
 												</Grid>
 											</Grid>
 											
 											<Grid item>
 												<Grid container alignItems={'center'}>
 													<Grid item>
-														<Typography className={classes.typoHeader}>{post.creator}</Typography>
+														<Link href={`/user/${post.creator}`}>
+															<Typography className={classes.typoHeader}>{post.creator}</Typography>
+														</Link>
 													</Grid>
 													<Grid item>
-														<Avatar alt="Avatar" src={post.creatorAvatar} className={classes.avatar}/>
+														<Link href={`/user/${post.creator}`}>
+															<Avatar alt="Avatar" src={post.creatorAvatar} className={classes.avatar}/>
+														</Link>
 													</Grid>
 												</Grid>
 											</Grid>
@@ -151,12 +196,12 @@ class PostCardComponent extends React.Component {
 								}
 							/>
 							<CardContent style={{paddingBottom: 0}}>
-								<DisplayMedia className={classes} media={post.media} content={post.content}/>
+								<DisplayMedia className={classes} media={post.type} content={post.content}/>
 								<Button color="default" className={classes.button}>
-									<CommentIcon className={classes.leftIcon}/> ??? Comments
+									<CommentIcon className={classes.leftIcon}/> {this.props.nbComments + ' Commentaires'}
 								</Button>
-								<Button className={classes.button}>
-									<ShareIcon className={classes.leftIcon}/>Share
+								<Button className={classes.button} onClick={() => this.copyToCB()}>
+									<ShareIcon className={classes.leftIcon}/>Partager
 								</Button>
 							</CardContent>
 						</Card>

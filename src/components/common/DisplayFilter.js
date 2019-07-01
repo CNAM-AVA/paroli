@@ -67,10 +67,10 @@ class DisplayFilter extends React.Component {
 
         return(
             <div className={classes.root}>
-                    <Typography variant={"body2"} className={classes.subNavTitle}>SORT BY</Typography>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_HOT)} color={"primary"} label={"Hot"} variant={this.state.filter.hot ? "default": "outlined"}></Chip>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_NEW)} color={"primary"} label={"New"} variant={this.state.filter.new ? "default": "outlined"}></Chip>
-                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_TOP)} color={"primary"} label={"Top"} variant={this.state.filter.top ? "default": "outlined"}></Chip>
+                    <Typography variant={"body2"} className={classes.subNavTitle}>TRIER PAR</Typography>
+                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_HOT)} color={"primary"} label={"Tendance"} variant={this.state.filter.hot ? "default": "outlined"}></Chip>
+                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_NEW)} color={"primary"} label={"Nouveautées"} variant={this.state.filter.new ? "default": "outlined"}></Chip>
+                    <Chip className={classes.subnavItems} clickable onClick={() => this.changeFilter(FILTER_TOP)} color={"primary"} label={"Meilleur"} variant={this.state.filter.top ? "default": "outlined"}></Chip>
             </div>
         );
     }
